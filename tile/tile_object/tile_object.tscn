@@ -48,5 +48,5 @@ data = ExtResource("2_5k012")
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sf4dn")
 autoplay = "default"
-frame_progress = 0.858292
+frame_progress = 0.41543958
 centered = false
