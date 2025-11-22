@@ -17,7 +17,7 @@ font = ExtResource("2_trrkg")
 font_size = 8
 
 [node name="Card" type="Control" node_paths=PackedStringArray("effect_label", "modifier_slots", "range_label", "effect_size_label")]
-custom_minimum_size = Vector2(107, 159)
+custom_minimum_size = Vector2(107, 180)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fdnr0")

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpsyv3nuyvf5d"]
+
+[ext_resource type="Script" uid="uid://dlktcg44c12sb" path="res://tile/tile.gd" id="1_btt4l"]
+[ext_resource type="Texture2D" uid="uid://ylwdu1kes44o" path="res://tile/tile.png" id="1_su6p1"]
+
+[node name="Tile" type="Node2D" node_paths=PackedStringArray("bg")]
+scale = Vector2(2, 2)
+script = ExtResource("1_btt4l")
+bg = NodePath("Sprite")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_su6p1")
+centered = false
