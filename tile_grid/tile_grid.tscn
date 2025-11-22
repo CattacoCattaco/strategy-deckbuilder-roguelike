@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3li581ttt0ou"]
+
+[ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
+[ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
+[ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="3_gjkwh"]
+
+[node name="TileGrid" type="Node2D"]
+script = ExtResource("1_slx1t")
+tile_scene = ExtResource("2_fwkuo")
+size = Vector2i(15, 15)
+
+[node name="DraggableCamera" type="Camera2D" parent="." node_paths=PackedStringArray("tile_grid")]
+script = ExtResource("3_gjkwh")
+tile_grid = NodePath("..")

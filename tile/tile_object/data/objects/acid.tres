@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="TileObjectData" load_steps=3 format=3 uid="uid://dq2vskswinh63"]
-
-[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile/tile_object/data/tile_object_data.gd" id="1_m7kcy"]
-[ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile/tile_object/textures/acid.png" id="2_j74ae"]
-
-[resource]
-script = ExtResource("1_m7kcy")
-texture = ExtResource("2_j74ae")
-metadata/_custom_type_script = "uid://g0hmwqu3bxiu"
