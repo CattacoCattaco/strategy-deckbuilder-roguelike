@@ -2,9 +2,11 @@ class_name TileGrid
 extends Node2D
 
 @export var tile_scene: PackedScene
-@export var camera_padding := Vector2i(128, 128)
+@export var level_builder: LevelBuilder
 
-@export var size := Vector2i(15, 10)
+@export var camera_padding := Vector2i(64, 64)
+
+@export var size := Vector2i(15, 15)
 
 var tiles: Array[Array] = []
 
@@ -26,6 +28,8 @@ func _ready() -> void:
 			tile.position = Vector2(32 * x, 32 * y) + offset
 		
 		tiles.append(column)
+	
+	level_builder.place_objects()
 
 
 func get_camera_bounds() -> Rect2:

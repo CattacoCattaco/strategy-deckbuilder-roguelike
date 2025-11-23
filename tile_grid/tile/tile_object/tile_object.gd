@@ -15,5 +15,4 @@ func load_sprite_anim() -> void:
 	
 	sprite.sprite_frames = data.get_sprite_frames()
 	
-	sprite.autoplay = "default"
 	sprite.play("default")

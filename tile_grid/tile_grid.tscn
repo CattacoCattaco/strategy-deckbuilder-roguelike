@@ -1,13 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=8 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="3_gjkwh"]
+[ext_resource type="Script" uid="uid://cvaphaq5sg73r" path="res://tile_grid/level_builder/level_builder.gd" id="3_tunm5"]
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="4_t02f7"]
+[ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="5_pf1a3"]
+[ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
 
-[node name="TileGrid" type="Node2D"]
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
-size = Vector2i(15, 15)
+level_builder = NodePath("LevelBuilder")
+size = Vector2i(10, 10)
+
+[node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
+script = ExtResource("3_tunm5")
+tile_grid = NodePath("..")
+clump_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
+clump_obstacle_weights = Array[int]([1])
+single_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("5_pf1a3"), ExtResource("6_pf1a3")])
+single_obstacle_weights = Array[int]([1, 2])
 
 [node name="DraggableCamera" type="Camera2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_gjkwh")
