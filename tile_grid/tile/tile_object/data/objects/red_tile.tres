@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="TileObjectData" load_steps=5 format=3 uid="uid://dy6mxnqsycfeo"]
+
+[ext_resource type="Script" uid="uid://c2nkdbuc7i2gr" path="res://tile_grid/tile/tile_object/data/action_source/null_action_source.gd" id="1_2gnpt"]
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="2_trfam"]
+[ext_resource type="Texture2D" uid="uid://chlnmu3ap8seg" path="res://tile_grid/tile/tile_object/textures/red_tile.png" id="3_2gnpt"]
+
+[sub_resource type="Resource" id="Resource_p0noj"]
+script = ExtResource("1_2gnpt")
+preview_actions = false
+metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
+
+[resource]
+script = ExtResource("2_trfam")
+texture = ExtResource("3_2gnpt")
+action_source = SubResource("Resource_p0noj")
+metadata/_custom_type_script = "uid://g0hmwqu3bxiu"
