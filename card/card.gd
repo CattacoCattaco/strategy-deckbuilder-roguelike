@@ -7,18 +7,9 @@ extends Control
 @export var range_label: Label
 @export var effect_size_label: Label
 
-@export var effect_range: int
-@export var effect_size: int
-
 var hand: Hand
 
-var modifiers: Array[Modifier] = [
-	Modifier.Heal.new(),
-	Modifier.Attack.new(),
-	Modifier.Poison.new(),
-	Modifier.Jump.new(),
-	Modifier.Split2.new(),
-]
+var card_data: CardData
 
 
 func _ready() -> void:
@@ -43,19 +34,17 @@ func _unhover() -> void:
 
 
 func load_data() -> void:
-	Modifier.sort(modifiers)
+	Modifier.sort(card_data.modifiers)
 	
 	for i in range(5):
-		if i < len(modifiers):
-			var modifier: Modifier = modifiers[i]
+		if i < len(card_data.modifiers):
+			var modifier: Modifier = card_data.modifiers[i]
 			modifier_slots[i].texture = modifier._get_image()
 			modifier_slots[i].show()
 		else:
 			modifier_slots[i].hide()
 	
-	range_label.text = str(effect_range)
-	effect_size_label.text = str(effect_size)
+	range_label.text = str(card_data.effect_range)
+	effect_size_label.text = str(card_data.effect_size)
 	
-	var effects: Array[Effect] = Effect.get_effects(modifiers, effect_range, effect_size)
-	
-	effect_label.text = Effect.get_effects_text(effects)
+	effect_label.text = card_data.get_effects_text()

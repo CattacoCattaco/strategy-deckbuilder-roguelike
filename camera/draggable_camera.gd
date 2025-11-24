@@ -2,7 +2,6 @@ class_name DraggableCamera
 extends Camera2D
 
 @export var tile_grid: TileGrid
-@export var full_screen_ui: Control
 
 
 func _input(event: InputEvent) -> void:

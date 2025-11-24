@@ -26,8 +26,6 @@ effect_label = NodePath("Card/EffectLabel")
 modifier_slots = [NodePath("Card/Modifier1"), NodePath("Card/Modifier2"), NodePath("Card/Modifier3"), NodePath("Card/Modifier4"), NodePath("Card/Modifier5")]
 range_label = NodePath("Card/RangeLabel")
 effect_size_label = NodePath("Card/EffectSizeLabel")
-effect_range = 2
-effect_size = 1
 
 [node name="Card" type="Sprite2D" parent="."]
 texture = ExtResource("1_fjcud")

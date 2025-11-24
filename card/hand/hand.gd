@@ -3,7 +3,9 @@ extends HBoxContainer
 
 @export var card_scene: PackedScene
 
-@export var ui: Control
+@export var deck: Deck
+
+@export var hand_size: int = 5
 
 var cards: Array[Card]
 
@@ -12,7 +14,7 @@ func _ready() -> void:
 	mouse_entered.connect(_hovered_over)
 	mouse_exited.connect(_check_unhovered)
 	
-	for i in range(5):
+	for i in range(hand_size):
 		draw_card()
 
 
@@ -42,6 +44,7 @@ func draw_card() -> void:
 	var card: Card = card_scene.instantiate()
 	
 	card.hand = self
+	card.card_data = deck.draw_card()
 	
 	cards.append(card)
 	add_child(card)

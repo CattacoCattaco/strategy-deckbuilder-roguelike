@@ -59,7 +59,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("13_3s7rm")
 
-[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("deck")]
+[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -71,4 +71,3 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("11_pawdl")
 card_scene = ExtResource("11_d6b8m")
-deck = NodePath("../Deck")

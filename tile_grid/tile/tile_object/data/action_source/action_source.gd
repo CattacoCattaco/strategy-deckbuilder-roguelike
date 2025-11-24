@@ -11,7 +11,7 @@ extends Resource
 ## Should actions be shown in advance?
 @export var preview_actions: bool
 
-var next_action: Array[Effect] = []
+var next_action: CardData
 var next_action_targets: Array[Vector2i] = []
 
 

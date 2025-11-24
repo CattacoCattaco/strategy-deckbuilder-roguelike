@@ -46,9 +46,11 @@ func load_sprite_anim() -> void:
 	sprite.play("default")
 
 
-func do_action(action: Array[Effect], targets: Array[Vector2i]) -> void:
-	for i in len(action):
-		var effect: Effect = action[i]
+func do_action(action: CardData, targets: Array[Vector2i]) -> void:
+	var effects: Array[Effect] = action.get_effects()
+	
+	for i in len(effects):
+		var effect: Effect = effects[i]
 		var target: Vector2i = targets[i]
 		
 		if effect.base_action is Modifier.Move:
@@ -67,32 +69,32 @@ func move_to(new_pos: Vector2i) -> void:
 	tile.object = self
 
 
-func display_action_thought_bubble(action: Array[Effect]) -> void:
+func display_action_thought_bubble(action: CardData) -> void:
 	var is_attack: bool = false
 	var is_heal: bool = false
 	var is_move: bool = false
 	var is_poison: bool = false
 	
-	for effect in action:
-		if effect.base_action is Modifier.Attack:
+	for modifier in action.modifiers:
+		if modifier is Modifier.Attack:
 			is_attack = true
 			
 			if is_heal or is_move or is_poison:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
-		elif effect.base_action is Modifier.Heal:
+		elif modifier is Modifier.Heal:
 			is_heal = true
 			
 			if is_attack or is_move or is_poison:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
-		elif effect.base_action is Modifier.Move:
+		elif modifier is Modifier.Move:
 			is_move = true
 			
 			if is_attack or is_heal or is_poison:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
-		elif effect.base_action is Modifier.Poison:
+		elif modifier is Modifier.Poison:
 			is_poison = true
 			
 			if is_attack or is_heal or is_move:

@@ -7,5 +7,5 @@ func _init(p_speed: int = 0, p_preview_actions: bool = false) -> void:
 
 
 func generate_next_action(_object: TileObject) -> void:
-	next_action = []
+	next_action = CardData.new([], 0, 0)
 	next_action_targets = []

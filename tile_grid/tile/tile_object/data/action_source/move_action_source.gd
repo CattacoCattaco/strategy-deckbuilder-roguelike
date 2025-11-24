@@ -23,8 +23,8 @@ func generate_next_action(object: TileObject) -> void:
 			empty_neighbors.append(neighbor)
 	
 	if len(empty_neighbors) == 0:
-		next_action = []
+		next_action = CardData.new([], 0, 0)
 		next_action_targets = []
 	else:
-		next_action = [Effect.create(Modifier.Move.new(), [], [], 1, 0)]
+		next_action = CardData.new([Modifier.Move.new()], 1, 0)
 		next_action_targets = [empty_neighbors.pick_random()]
