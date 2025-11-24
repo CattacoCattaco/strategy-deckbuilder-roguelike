@@ -54,8 +54,21 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
 		tile.add_object(movement_region_object_data)
 	
-	var clump_count: int = floori(randf_range(tile_count / 80.0, tile_count / 25.0))
+	var clump_count: int
+	match density:
+		ObjectDensity.SPARSE:
+			clump_count = floori(randf_range(tile_count * 0.01, tile_count * 0.02))
+		ObjectDensity.MILD:
+			clump_count = floori(randf_range(tile_count * 0.02, tile_count * 0.04))
+		ObjectDensity.FEATUREFUL:
+			clump_count = floori(randf_range(tile_count * 0.04, tile_count * 0.06))
+		ObjectDensity.DENSE:
+			clump_count = floori(randf_range(tile_count * 0.06, tile_count * 0.1))
+	
 	for i in range(clump_count):
+		if len(untouched_cells) == 0:
+			break
+		
 		var clump_object: TileObjectData = (
 				pick_random_weighted(clump_obstacles, clump_obstacle_weights))
 		
@@ -66,7 +79,18 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
 		tile.add_object(clump_object)
 		
-		for j in range(randi_range(2, 7)):
+		var clump_size: int
+		match density:
+			ObjectDensity.SPARSE:
+				clump_size = randi_range(1, 3)
+			ObjectDensity.MILD:
+				clump_size = randi_range(2, 5)
+			ObjectDensity.FEATUREFUL:
+				clump_size = randi_range(3, 7)
+			ObjectDensity.DENSE:
+				clump_size = randi_range(4, 10)
+		
+		for j in range(clump_size):
 			var empty_neighbors: Array[Vector2i] = []
 			for dir in [Vector2i(0, 1), Vector2i(1,0), Vector2i(0, -1), Vector2i(-1,0)]:
 				if pos + dir in untouched_cells:
@@ -81,8 +105,20 @@ func place_objects() -> void:
 			tile = tile_grid.tiles[pos.x][pos.y]
 			tile.add_object(clump_object)
 	
-	var single_obstacle_count: int = floori(randf_range(tile_count / 20.0, tile_count / 10.0))
+	var single_obstacle_count: int
+	match density:
+		ObjectDensity.SPARSE:
+			single_obstacle_count = floori(randf_range(tile_count * 0.025, tile_count * 0.5))
+		ObjectDensity.MILD:
+			single_obstacle_count = floori(randf_range(tile_count * 0.05, tile_count * 0.1))
+		ObjectDensity.FEATUREFUL:
+			single_obstacle_count = floori(randf_range(tile_count * 0.1, tile_count * 0.15))
+		ObjectDensity.DENSE:
+			single_obstacle_count = floori(randf_range(tile_count * 0.15, tile_count * 0.2))
 	for i in range(single_obstacle_count):
+		if len(untouched_cells) == 0:
+			break
+		
 		var pos_index: int = randi_range(0, len(untouched_cells) - 1)
 		var pos: Vector2i = untouched_cells[pos_index]
 		untouched_cells.remove_at(pos_index)

@@ -13,7 +13,6 @@
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 level_builder = NodePath("LevelBuilder")
-size = Vector2i(10, 10)
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")
