@@ -2,26 +2,22 @@ class_name DraggableCamera
 extends Camera2D
 
 @export var tile_grid: TileGrid
+@export var full_screen_ui: Control
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			position -= event.relative
+			var scale_factor: Vector2 = tile_grid.scale
+			
+			position -= event.relative / scale_factor
 			
 			if tile_grid:
 				fit_pos_to_bounds(tile_grid.get_camera_bounds())
-	elif event is InputEventKey:
-		if event.is_action_pressed("zoom"):
-			print(zoom)
-			if zoom == Vector2(1, 1):
-				zoom = Vector2(2, 2)
-			else:
-				zoom = Vector2(1, 1)
 
 
 func fit_pos_to_bounds(bounds: Rect2) -> void:
-	var half_view_size: Vector2 = get_viewport_rect().size / zoom / 2
+	var half_view_size: Vector2 = get_viewport_rect().size / 2
 	var view_top_left: Vector2 = position - half_view_size
 	var view_bottom_right: Vector2 = position + half_view_size
 	

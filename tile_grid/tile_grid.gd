@@ -4,6 +4,7 @@ extends Node2D
 @export var tile_scene: PackedScene
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
+@export var camera: Camera2D
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -36,8 +37,22 @@ func _ready() -> void:
 	round_manager.start_rounds()
 
 
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_action_pressed("zoom"):
+			if scale == Vector2(1, 1):
+				camera.position *= 2
+				# Set camera scale to reciprocal of self scale so UI doesn't get scaled
+				camera.scale = Vector2(0.5, 0.5)
+				scale = Vector2(2, 2)
+			else:
+				camera.position /= 2
+				camera.scale = Vector2(1, 1)
+				scale = Vector2(1, 1)
+
+
 func has_tile(x: int, y: int) -> bool:
-	return x < size.x and y < size.y
+	return x < size.x and y < size.y and x > 0 and y > 0
 
 
 func get_tile(x: int, y: int) -> Tile:
@@ -49,7 +64,7 @@ func get_camera_bounds() -> Rect2:
 	var top_left: Vector2 = -bottom_right
 	
 	var bounds := Rect2()
-	bounds.position = top_left - Vector2(camera_padding)
-	bounds.size = Vector2(size * 32 + camera_padding * 2)
+	bounds.position = top_left * scale - Vector2(camera_padding)
+	bounds.size = Vector2(size * 32 * Vector2i(scale) + camera_padding * 2)
 	
 	return bounds

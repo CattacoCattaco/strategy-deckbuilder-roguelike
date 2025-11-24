@@ -1,0 +1,47 @@
+class_name Hand
+extends HBoxContainer
+
+@export var card_scene: PackedScene
+
+@export var ui: Control
+
+var cards: Array[Card]
+
+
+func _ready() -> void:
+	mouse_entered.connect(_hovered_over)
+	mouse_exited.connect(_check_unhovered)
+	
+	for i in range(5):
+		draw_card()
+
+
+func _hovered_over() -> void:
+	var tween: Tween = create_tween()
+	tween.tween_method(set_bottom_offset, get_bottom_offset(), 65, 0.5)
+
+
+func _check_unhovered() -> void:
+	if Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
+		# Hovered over card, didn't actually leave
+		return
+	
+	var tween: Tween = create_tween()
+	tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
+
+
+func set_bottom_offset(offset: int) -> void:
+	set_offset(SIDE_BOTTOM, offset)
+
+
+func get_bottom_offset() -> int:
+	return roundi(get_offset(SIDE_BOTTOM))
+
+
+func draw_card() -> void:
+	var card: Card = card_scene.instantiate()
+	
+	card.hand = self
+	
+	cards.append(card)
+	add_child(card)

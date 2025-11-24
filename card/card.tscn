@@ -16,11 +16,12 @@ font_color = Color(0, 0, 0, 1)
 font = ExtResource("2_trrkg")
 font_size = 8
 
-[node name="Card" type="Control" node_paths=PackedStringArray("effect_label", "modifier_slots", "range_label", "effect_size_label")]
+[node name="Card" type="Control" node_paths=PackedStringArray("card_frame", "effect_label", "modifier_slots", "range_label", "effect_size_label")]
 custom_minimum_size = Vector2(107, 180)
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_fdnr0")
+card_frame = NodePath("Card")
 effect_label = NodePath("Card/EffectLabel")
 modifier_slots = [NodePath("Card/Modifier1"), NodePath("Card/Modifier2"), NodePath("Card/Modifier3"), NodePath("Card/Modifier4"), NodePath("Card/Modifier5")]
 range_label = NodePath("Card/RangeLabel")

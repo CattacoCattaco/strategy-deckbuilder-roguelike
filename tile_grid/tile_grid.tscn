@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=13 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -10,12 +10,15 @@
 [ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
 [ext_resource type="Script" uid="uid://drke1av0c1b7k" path="res://tile_grid/round_manager/round_manager.gd" id="8_5axyk"]
 [ext_resource type="Resource" uid="uid://bx23711k3y2hb" path="res://tile_grid/tile/tile_object/data/objects/enemy.tres" id="8_gcgwy"]
+[ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
+[ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 
-[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager")]
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 level_builder = NodePath("LevelBuilder")
 round_manager = NodePath("RoundManager")
+camera = NodePath("DraggableCamera")
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")
@@ -33,6 +36,33 @@ enemy_weights = Array[int]([1])
 script = ExtResource("8_5axyk")
 tile_grid = NodePath("..")
 
-[node name="DraggableCamera" type="Camera2D" parent="." node_paths=PackedStringArray("tile_grid")]
+[node name="DraggableCamera" type="Camera2D" parent="." node_paths=PackedStringArray("tile_grid", "full_screen_ui")]
 script = ExtResource("3_gjkwh")
 tile_grid = NodePath("..")
+full_screen_ui = NodePath("UI")
+
+[node name="UI" type="Control" parent="DraggableCamera"]
+z_index = 10
+custom_minimum_size = Vector2(960, 540)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("ui")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("11_pawdl")
+card_scene = ExtResource("11_d6b8m")
+ui = NodePath("..")

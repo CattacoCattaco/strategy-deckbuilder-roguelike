@@ -53,7 +53,7 @@ func place_objects() -> void:
 				[Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)].pick_random())
 	
 	#for pos in designated_movement_region:
-		#var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		#var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		#tile.add_object(movement_region_object_data)
 	
 	var clump_count: int
@@ -78,7 +78,7 @@ func place_objects() -> void:
 		var pos: Vector2i = untouched_cells[start_pos_index]
 		untouched_cells.remove_at(start_pos_index)
 		
-		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(clump_object)
 		
 		var clump_size: int
@@ -104,7 +104,7 @@ func place_objects() -> void:
 			pos = empty_neighbors.pick_random()
 			untouched_cells.erase(pos)
 			
-			tile = tile_grid.tiles[pos.x][pos.y]
+			tile = tile_grid.get_tile(pos.x, pos.y)
 			tile.add_object(clump_object)
 	
 	var single_obstacle_count: int
@@ -126,7 +126,7 @@ func place_objects() -> void:
 		var pos: Vector2i = untouched_cells[pos_index]
 		untouched_cells.remove_at(pos_index)
 		
-		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
 	
 	var enemy_count: int = 3
@@ -135,7 +135,7 @@ func place_objects() -> void:
 		var pos: Vector2i = designated_movement_region[pos_index]
 		designated_movement_region.remove_at(pos_index)
 		
-		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(enemies, enemy_weights))
 
 

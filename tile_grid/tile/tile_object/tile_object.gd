@@ -61,8 +61,6 @@ func move_to(new_pos: Vector2i) -> void:
 	
 	tile.object = null
 	
-	print("Moved from %s to %s" % [pos, new_pos])
-	
 	pos = new_pos
 	tile = tile_grid.get_tile(pos.x, pos.y)
 	reparent(tile, false)

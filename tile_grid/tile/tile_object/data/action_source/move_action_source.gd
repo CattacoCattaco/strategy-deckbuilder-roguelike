@@ -22,9 +22,6 @@ func generate_next_action(object: TileObject) -> void:
 		if not neighbor_tile.object:
 			empty_neighbors.append(neighbor)
 	
-	print(pos)
-	print(empty_neighbors)
-	
 	if len(empty_neighbors) == 0:
 		next_action = []
 		next_action_targets = []

@@ -12,7 +12,7 @@ func start_rounds() -> void:
 	
 	for x in range(tile_grid.size.x):
 		for y in range(tile_grid.size.y):
-			var tile: Tile = tile_grid.tiles[x][y]
+			var tile: Tile = tile_grid.get_tile(x, y)
 			
 			if not tile.object:
 				continue
