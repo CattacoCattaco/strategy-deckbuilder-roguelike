@@ -3,6 +3,7 @@ extends Node2D
 
 @export var tile_scene: PackedScene
 @export var level_builder: LevelBuilder
+@export var round_manager: RoundManager
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -26,10 +27,21 @@ func _ready() -> void:
 			
 			tile.pos = Vector2i(x, y)
 			tile.position = Vector2(32 * x, 32 * y) + offset
+			
+			tile.tile_grid = self
 		
 		tiles.append(column)
 	
 	level_builder.place_objects()
+	round_manager.start_rounds()
+
+
+func has_tile(x: int, y: int) -> bool:
+	return x < size.x and y < size.y
+
+
+func get_tile(x: int, y: int) -> Tile:
+	return tiles[x][y]
 
 
 func get_camera_bounds() -> Rect2:

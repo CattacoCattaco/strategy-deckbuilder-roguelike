@@ -16,6 +16,8 @@ enum ObjectDensity {
 @export var clump_obstacle_weights: Array[int]
 @export var single_obstacles: Array[TileObjectData]
 @export var single_obstacle_weights: Array[int]
+@export var enemies: Array[TileObjectData]
+@export var enemy_weights: Array[int]
 
 var untouched_cells: Array[Vector2i]
 
@@ -50,9 +52,9 @@ func place_objects() -> void:
 		walk(movement_region_origin, designated_movement_region, movement_region_size, 
 				[Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)].pick_random())
 	
-	for pos in designated_movement_region:
-		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
-		tile.add_object(movement_region_object_data)
+	#for pos in designated_movement_region:
+		#var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		#tile.add_object(movement_region_object_data)
 	
 	var clump_count: int
 	match density:
@@ -115,6 +117,7 @@ func place_objects() -> void:
 			single_obstacle_count = floori(randf_range(tile_count * 0.1, tile_count * 0.15))
 		ObjectDensity.DENSE:
 			single_obstacle_count = floori(randf_range(tile_count * 0.15, tile_count * 0.2))
+	
 	for i in range(single_obstacle_count):
 		if len(untouched_cells) == 0:
 			break
@@ -125,6 +128,15 @@ func place_objects() -> void:
 		
 		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
 		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
+	
+	var enemy_count: int = 3
+	for i in range(enemy_count):
+		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
+		var pos: Vector2i = designated_movement_region[pos_index]
+		designated_movement_region.remove_at(pos_index)
+		
+		var tile: Tile = tile_grid.tiles[pos.x][pos.y]
+		tile.add_object(pick_random_weighted(enemies, enemy_weights))
 
 
 func walk(current_pos: Vector2i, region: Array[Vector2i], goal_size: int, from: Vector2i,

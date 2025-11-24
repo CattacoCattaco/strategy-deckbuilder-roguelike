@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://iwl66mv6hxcn"]
+[gd_scene load_steps=10 format=3 uid="uid://iwl66mv6hxcn"]
 
 [ext_resource type="Script" uid="uid://8jj7we008eup" path="res://tile_grid/tile/tile_object/tile_object.gd" id="1_634g3"]
 [ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="2_5k012"]
 [ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile_grid/tile/tile_object/textures/acid.png" id="2_634g3"]
+[ext_resource type="Texture2D" uid="uid://ci3bqqtsxhfnu" path="res://tile_grid/tile/tile_object/thought_bubble/thought_bubble.png" id="4_vv2ea"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
 atlas = ExtResource("2_634g3")
@@ -40,13 +41,18 @@ animations = [{
 "speed": 1.25
 }]
 
-[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite")]
+[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite", "thought_bubble")]
 script = ExtResource("1_634g3")
 sprite = NodePath("Sprite")
+thought_bubble = NodePath("ThoughtBubble")
 data = ExtResource("2_5k012")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sf4dn")
 autoplay = "default"
 frame_progress = 0.6501309
+centered = false
+
+[node name="ThoughtBubble" type="Sprite2D" parent="."]
+texture = ExtResource("4_vv2ea")
 centered = false

@@ -5,13 +5,14 @@ extends Resource
 
 ## Higher [param speed] = goes earlier in turn order[br][br]
 ## If [param speed] = -1, always acts at the start of round[br]
-## If [param speed] = -2, always goes last
+## If [param speed] = 0, always goes last
 @export var speed: int = 0
 
 ## Should actions be shown in advance?
-@export var preview_actions: bool = true
+@export var preview_actions: bool
 
-var next_action: Array[Modifier] = []
+var next_action: Array[Effect] = []
+var next_action_targets: Array[Vector2i] = []
 
 
 func _init(p_speed: int = 0, p_preview_actions: bool = true) -> void:
@@ -19,4 +20,4 @@ func _init(p_speed: int = 0, p_preview_actions: bool = true) -> void:
 	preview_actions = p_preview_actions
 
 
-@abstract func generate_next_action() -> void
+@abstract func generate_next_action(object: TileObject) -> void

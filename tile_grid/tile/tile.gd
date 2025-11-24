@@ -5,12 +5,18 @@ extends Node2D
 
 @export var bg: Sprite2D
 
-var object: TileObject
-
+var tile_grid: TileGrid
 var pos: Vector2i
+
+var object: TileObject
 
 
 func add_object(data: TileObjectData) -> void:
 	object = tile_object_scene.instantiate()
+	
 	add_child(object)
+	
 	object.data = data
+	object.tile_grid = tile_grid
+	object.tile = self
+	object.pos = pos
