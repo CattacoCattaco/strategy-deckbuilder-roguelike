@@ -55,6 +55,8 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 		
 		if effect.base_action is Modifier.Move:
 			move_to(target)
+		
+		await get_tree().create_timer(0.8).timeout
 
 
 func move_to(new_pos: Vector2i) -> void:
@@ -67,6 +69,48 @@ func move_to(new_pos: Vector2i) -> void:
 	tile = tile_grid.get_tile(pos.x, pos.y)
 	reparent(tile, false)
 	tile.object = self
+
+
+func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool) -> Array[Tile]:
+	var tiles: Array[Tile] = []
+	var positions: Array[Vector2i] = []
+	var prev_layer: Array[Vector2i] = [pos]
+	
+	for distance in range(1, range_size + 1):
+		var new_layer: Array[Vector2i]
+		for prev_pos in prev_layer:
+			for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+				var neighbor_pos: Vector2i = prev_pos + dir
+				
+				# Not on board
+				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
+					continue
+				
+				# Already found
+				if neighbor_pos in positions:
+					continue
+				
+				var neighbor: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
+				
+				if not neighbor.object:
+					new_layer.append(neighbor_pos)
+					
+					if not target_characters:
+						tiles.append(neighbor)
+						positions.append(neighbor_pos)
+					
+					continue
+				
+				if can_jump:
+					new_layer.append(neighbor_pos)
+				
+				if target_characters and neighbor.object.data.max_health >= 0:
+					tiles.append(neighbor)
+					positions.append(neighbor_pos)
+		
+		prev_layer = new_layer
+	
+	return tiles
 
 
 func display_action_thought_bubble(action: CardData) -> void:

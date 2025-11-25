@@ -1,10 +1,15 @@
 class_name TileGrid
 extends Node2D
 
+@warning_ignore("unused_signal")
+signal tile_targeted(pos: Vector2i)
+
 @export var tile_scene: PackedScene
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
 @export var camera: Camera2D
+@export var hand: Hand
+@export var your_turn_label: Label
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -14,6 +19,8 @@ var tiles: Array[Array] = []
 
 
 func _ready() -> void:
+	your_turn_label.hide()
+	
 	var pixel_size: Vector2 = size * 32
 	var offset := -Vector2(pixel_size) / 2
 	
@@ -57,6 +64,12 @@ func has_tile(x: int, y: int) -> bool:
 
 func get_tile(x: int, y: int) -> Tile:
 	return tiles[x][y]
+
+
+func show_your_turn() -> void:
+	your_turn_label.show()
+	await get_tree().create_timer(0.4).timeout
+	your_turn_label.hide()
 
 
 func get_camera_bounds() -> Rect2:

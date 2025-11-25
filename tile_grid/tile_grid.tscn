@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=17 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="3_gjkwh"]
 [ext_resource type="Script" uid="uid://cvaphaq5sg73r" path="res://tile_grid/level_builder/level_builder.gd" id="3_tunm5"]
 [ext_resource type="Resource" uid="uid://dy6mxnqsycfeo" path="res://tile_grid/tile/tile_object/data/objects/red_tile.tres" id="4_0vku6"]
+[ext_resource type="Resource" uid="uid://dbbpwgdj87um5" path="res://tile_grid/tile/tile_object/data/objects/player.tres" id="4_kqtwp"]
 [ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="4_t02f7"]
 [ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="5_pf1a3"]
 [ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
@@ -13,18 +14,27 @@
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 [ext_resource type="Script" uid="uid://ctbryeqoij1nf" path="res://card/deck/deck.gd" id="13_3s7rm"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="14_ofus2"]
 
-[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera")]
+[sub_resource type="LabelSettings" id="LabelSettings_kqtwp"]
+font = ExtResource("14_ofus2")
+font_size = 64
+font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
+
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 level_builder = NodePath("LevelBuilder")
 round_manager = NodePath("RoundManager")
 camera = NodePath("DraggableCamera")
+hand = NodePath("DraggableCamera/UI/Hand")
+your_turn_label = NodePath("DraggableCamera/UI/YourTurnLabel")
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
 density = 3
+player_data = ExtResource("4_kqtwp")
 movement_region_object_data = ExtResource("4_0vku6")
 clump_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
 clump_obstacle_weights = Array[int]([1])
@@ -59,7 +69,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("13_3s7rm")
 
-[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("deck")]
+[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("tile_grid", "deck")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -71,4 +81,24 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("11_pawdl")
 card_scene = ExtResource("11_d6b8m")
+tile_grid = NodePath("../../..")
 deck = NodePath("../Deck")
+
+[node name="YourTurnLabel" type="Label" parent="DraggableCamera/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Your Turn!"
+label_settings = SubResource("LabelSettings_kqtwp")
+horizontal_alignment = 1
+vertical_alignment = 1

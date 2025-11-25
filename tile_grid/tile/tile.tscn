@@ -1,14 +1,70 @@
-[gd_scene load_steps=4 format=3 uid="uid://bpsyv3nuyvf5d"]
+[gd_scene load_steps=11 format=3 uid="uid://bpsyv3nuyvf5d"]
 
 [ext_resource type="Script" uid="uid://dlktcg44c12sb" path="res://tile_grid/tile/tile.gd" id="1_btt4l"]
 [ext_resource type="Texture2D" uid="uid://ylwdu1kes44o" path="res://tile_grid/tile/tile.png" id="1_su6p1"]
 [ext_resource type="PackedScene" uid="uid://iwl66mv6hxcn" path="res://tile_grid/tile/tile_object/tile_object.tscn" id="2_exanw"]
+[ext_resource type="Texture2D" uid="uid://veqi5jg4hg7s" path="res://tile_grid/tile/action_markers/attack_marker.png" id="4_m4xch"]
+[ext_resource type="Texture2D" uid="uid://ba7yj3f6jnd13" path="res://tile_grid/tile/action_markers/poison_marker.png" id="5_2s4jd"]
+[ext_resource type="Texture2D" uid="uid://56uyg7dx75c8" path="res://tile_grid/tile/action_markers/move_marker.png" id="6_a0n5t"]
+[ext_resource type="Texture2D" uid="uid://bd4uby3twrmrp" path="res://tile_grid/tile/action_markers/heal_marker.png" id="7_a3ykk"]
 
-[node name="Tile" type="Node2D" node_paths=PackedStringArray("bg")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4xch"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s4jd"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.47058824)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0n5t"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.23529412)
+corner_detail = 5
+
+[node name="Tile" type="Node2D" node_paths=PackedStringArray("bg", "action_markers", "target_button")]
 script = ExtResource("1_btt4l")
 tile_object_scene = ExtResource("2_exanw")
 bg = NodePath("Sprite")
+action_markers = [NodePath("AttackMarker"), NodePath("PoisonMarker"), NodePath("MoveMarker"), NodePath("HealMarker")]
+target_button = NodePath("TargetButton")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_su6p1")
 centered = false
+
+[node name="AttackMarker" type="Sprite2D" parent="."]
+texture = ExtResource("4_m4xch")
+centered = false
+
+[node name="PoisonMarker" type="Sprite2D" parent="."]
+texture = ExtResource("5_2s4jd")
+centered = false
+
+[node name="MoveMarker" type="Sprite2D" parent="."]
+texture = ExtResource("6_a0n5t")
+centered = false
+
+[node name="HealMarker" type="Sprite2D" parent="."]
+texture = ExtResource("7_a3ykk")
+centered = false
+
+[node name="TargetButton" type="Button" parent="."]
+z_index = 2
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_m4xch")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2s4jd")
+theme_override_styles/hover = SubResource("StyleBoxFlat_a0n5t")

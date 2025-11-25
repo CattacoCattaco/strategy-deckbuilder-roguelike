@@ -3,11 +3,13 @@ extends Node2D
 
 @export var tile_grid: TileGrid
 
+var is_player_turn: bool
 var current_turn_index: int
 var turn_order: Array[TileObject]
 
 
 func start_rounds() -> void:
+	is_player_turn = false
 	turn_order = []
 	
 	for x in range(tile_grid.size.x):
@@ -41,11 +43,13 @@ func do_turn() -> void:
 	var action_source: ActionSource = current_object.data.action_source
 	
 	if action_source.preview_actions:
-		current_object.do_action(action_source.next_action, action_source.next_action_targets)
+		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
 		action_source.generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
-	
-	await get_tree().create_timer(0.8).timeout
+	else:
+		@warning_ignore("redundant_await")
+		await action_source.generate_next_action(current_object)
+		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
 	
 	current_turn_index += 1
 	

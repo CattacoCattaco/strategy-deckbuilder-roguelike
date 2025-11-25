@@ -6,7 +6,6 @@
 
 [sub_resource type="Resource" id="Resource_p0noj"]
 script = ExtResource("1_nhe0o")
-preview_actions = false
 metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
 
 [resource]

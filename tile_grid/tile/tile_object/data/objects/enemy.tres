@@ -7,6 +7,7 @@
 [sub_resource type="Resource" id="Resource_dy3dk"]
 script = ExtResource("1_dy3dk")
 speed = 2
+preview_actions = true
 metadata/_custom_type_script = "uid://ciuicupnr8tm8"
 
 [resource]

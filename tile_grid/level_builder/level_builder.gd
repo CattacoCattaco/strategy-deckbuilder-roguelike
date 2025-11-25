@@ -10,7 +10,10 @@ enum ObjectDensity {
 
 @export var tile_grid: TileGrid
 
+@export var enemy_count: int = 3
 @export var density: ObjectDensity
+
+@export var player_data: TileObjectData
 @export var movement_region_object_data: TileObjectData
 @export var clump_obstacles: Array[TileObjectData]
 @export var clump_obstacle_weights: Array[int]
@@ -55,6 +58,11 @@ func place_objects() -> void:
 	#for pos in designated_movement_region:
 		#var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		#tile.add_object(movement_region_object_data)
+	
+	designated_movement_region.erase(movement_region_origin)
+	var origin_tile: Tile = tile_grid.get_tile(movement_region_origin.x, movement_region_origin.y)
+	origin_tile.add_object(player_data)
+	tile_grid.hand.player = origin_tile.object
 	
 	var clump_count: int
 	match density:
@@ -129,7 +137,6 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
 	
-	var enemy_count: int = 3
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
 		var pos: Vector2i = designated_movement_region[pos_index]

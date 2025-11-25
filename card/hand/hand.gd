@@ -1,13 +1,19 @@
 class_name Hand
 extends HBoxContainer
 
+@warning_ignore("unused_signal")
+signal card_played(card: CardData, targets: Array[Vector2i])
+
 @export var card_scene: PackedScene
 
+@export var tile_grid: TileGrid
 @export var deck: Deck
 
 @export var hand_size: int = 5
 
 var cards: Array[Card]
+
+var player: TileObject
 
 
 func _ready() -> void:
