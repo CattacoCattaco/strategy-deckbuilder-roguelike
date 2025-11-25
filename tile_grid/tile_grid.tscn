@@ -10,7 +10,7 @@
 [ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="5_pf1a3"]
 [ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
 [ext_resource type="Script" uid="uid://drke1av0c1b7k" path="res://tile_grid/round_manager/round_manager.gd" id="8_5axyk"]
-[ext_resource type="Resource" uid="uid://bx23711k3y2hb" path="res://tile_grid/tile/tile_object/data/objects/enemy.tres" id="8_gcgwy"]
+[ext_resource type="Resource" uid="uid://bx23711k3y2hb" path="res://tile_grid/tile/tile_object/data/objects/dumbbot.tres" id="8_gcgwy"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 [ext_resource type="Script" uid="uid://ctbryeqoij1nf" path="res://card/deck/deck.gd" id="13_3s7rm"]
@@ -29,6 +29,7 @@ round_manager = NodePath("RoundManager")
 camera = NodePath("DraggableCamera")
 hand = NodePath("DraggableCamera/UI/Hand")
 your_turn_label = NodePath("DraggableCamera/UI/YourTurnLabel")
+size = Vector2i(10, 10)
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")

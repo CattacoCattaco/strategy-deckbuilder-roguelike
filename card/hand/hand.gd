@@ -54,3 +54,10 @@ func draw_card() -> void:
 	
 	cards.append(card)
 	add_child(card)
+
+
+func discard(card: Card) -> void:
+	deck.discard(card.card_data)
+	
+	cards.erase(card)
+	card.queue_free()

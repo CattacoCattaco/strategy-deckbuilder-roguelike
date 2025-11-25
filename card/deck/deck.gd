@@ -7,11 +7,18 @@ var all_cards: Array[CardData] = [
 	CardData.new([Modifier.Move.new()], 1, 1),
 	CardData.new([Modifier.Move.new()], 1, 1),
 	CardData.new([Modifier.Move.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
+	CardData.new([Modifier.Heal.new()], 1, 1),
+	CardData.new([Modifier.Heal.new()], 1, 1),
 	CardData.new([Modifier.Heal.new()], 1, 1),
 	CardData.new([Modifier.Heal.new()], 1, 1),
 ]
@@ -39,3 +46,7 @@ func draw_card() -> CardData:
 		remaining_cards.shuffle()
 	
 	return remaining_cards.pop_back()
+
+
+func discard(card: CardData) -> void:
+	used_cards.append(card)

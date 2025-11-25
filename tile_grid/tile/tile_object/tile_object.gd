@@ -31,6 +31,7 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 var tile_grid: TileGrid
 var tile: Tile
 var pos: Vector2i
+var health: int
 
 
 func _ready() -> void:
@@ -43,7 +44,14 @@ func load_sprite_anim() -> void:
 	
 	sprite.sprite_frames = data.get_sprite_frames()
 	
-	sprite.play("default")
+	match data.texture_type:
+		TileObjectData.TextureType.ANIMATED:
+			sprite.play("default")
+		TileObjectData.TextureType.VARIANTS:
+			var varients: int = data.texture.get_height() >> 5
+			sprite.play(str(randi_range(0, varients - 1)))
+		TileObjectData.TextureType.HEALTH_STATES:
+			show_health()
 
 
 func do_action(action: CardData, targets: Array[Vector2i]) -> void:
@@ -55,6 +63,8 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 		
 		if effect.base_action is Modifier.Move:
 			move_to(target)
+		elif effect.base_action is Modifier.Attack:
+			damage(target, effect.effect_size)
 		
 		await get_tree().create_timer(0.8).timeout
 
@@ -69,6 +79,33 @@ func move_to(new_pos: Vector2i) -> void:
 	tile = tile_grid.get_tile(pos.x, pos.y)
 	reparent(tile, false)
 	tile.object = self
+
+
+func damage(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
+		return
+	
+	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	target.health -= amount
+	target.show_health()
+	
+	if target.health <= 0:
+		target.tile.delete_object()
+
+
+func heal(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
+		return
+	
+	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	target.health += amount
+	
+	if target.health >= target.data.max_health:
+		target.health = target.data.max_health
+	
+	target.show_health()
 
 
 func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool) -> Array[Tile]:
@@ -162,3 +199,9 @@ func set_thought_bubble(type: ThoughtBubbleType) -> void:
 
 func hide_thought_bubble() -> void:
 	thought_bubble.hide()
+
+
+func show_health() -> void:
+	var health_chunks: int = data.texture.get_height() >> 5
+	var current_health_chunk: int = roundi(health as float / data.max_health * (health_chunks - 1))
+	sprite.play(str(current_health_chunk))

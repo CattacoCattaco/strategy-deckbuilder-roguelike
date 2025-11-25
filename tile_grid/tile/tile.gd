@@ -37,6 +37,18 @@ func add_object(data: TileObjectData) -> void:
 	object.tile_grid = tile_grid
 	object.tile = self
 	object.pos = pos
+	object.health = data.max_health
+
+
+func delete_object() -> void:
+	if object in tile_grid.round_manager.turn_order:
+		tile_grid.round_manager.turn_order.erase(object)
+	
+	if object == tile_grid.hand.player:
+		tile_grid.hand.player = null
+	
+	object.queue_free()
+	object = null
 
 
 func _targeted() -> void:

@@ -73,8 +73,6 @@ func try_play() -> void:
 		else:
 			targetable_tiles = player.get_tiles_in_range(effect.effect_range, false, true)
 		
-		print(targetable_tiles)
-		
 		var action_marker: Tile.ActionMarker
 		
 		if effect.base_action is Modifier.Attack:
@@ -97,5 +95,8 @@ func try_play() -> void:
 		for tile in targetable_tiles:
 			tile.hide_action_marker(action_marker)
 			tile.become_untargetable()
+	
+	hand.discard(self)
+	hand.draw_card()
 	
 	hand.card_played.emit(card_data, targets)
