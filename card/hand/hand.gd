@@ -1,13 +1,13 @@
 class_name Hand
 extends HBoxContainer
 
-@warning_ignore("unused_signal")
 signal card_played(card: CardData, targets: Array[Vector2i])
 
 @export var card_scene: PackedScene
 
 @export var tile_grid: TileGrid
 @export var deck: Deck
+@export var pass_button: TextureButton
 
 @export var hand_size: int = 5
 
@@ -19,6 +19,8 @@ var player: TileObject
 func _ready() -> void:
 	mouse_entered.connect(_hovered_over)
 	mouse_exited.connect(_check_unhovered)
+	
+	pass_button.pressed.connect(_pass)
 	
 	for i in range(hand_size):
 		draw_card()
@@ -36,6 +38,16 @@ func _check_unhovered() -> void:
 	
 	var tween: Tween = create_tween()
 	tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
+
+
+func _pass() -> void:
+	if not tile_grid.round_manager.is_player_turn:
+		return
+	
+	draw_card()
+	
+	var no_targets: Array[Vector2i] = []
+	card_played.emit(CardData.new([], 0, 0), no_targets)
 
 
 func set_bottom_offset(offset: int) -> void:

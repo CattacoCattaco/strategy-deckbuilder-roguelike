@@ -65,6 +65,8 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 			move_to(target)
 		elif effect.base_action is Modifier.Attack:
 			damage(target, effect.effect_size)
+		elif effect.base_action is Modifier.Heal:
+			heal(target, effect.effect_size)
 		
 		await get_tree().create_timer(0.8).timeout
 
@@ -102,7 +104,7 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 	
 	target.health += amount
 	
-	if target.health >= target.data.max_health:
+	if target.health > target.data.max_health:
 		target.health = target.data.max_health
 	
 	target.show_health()

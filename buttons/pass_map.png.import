@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://4t61j2twqjb8"
+path="res://.godot/imported/pass_map.png-992d1a479f296f6839cd4ee0cd98180e.res"
+
+[deps]
+
+source_file="res://buttons/pass_map.png"
+dest_files=["res://.godot/imported/pass_map.png-992d1a479f296f6839cd4ee0cd98180e.res"]
+
+[params]
+
+create_from=0
+threshold=0.5
