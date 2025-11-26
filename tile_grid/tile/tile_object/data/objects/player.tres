@@ -13,6 +13,7 @@ metadata/_custom_type_script = "uid://bbtl7rujuvj8b"
 script = ExtResource("2_140pt")
 texture = ExtResource("3_1aavb")
 texture_type = 2
+object_type = 1
 max_health = 6
 action_source = SubResource("Resource_140pt")
 metadata/_custom_type_script = "uid://g0hmwqu3bxiu"

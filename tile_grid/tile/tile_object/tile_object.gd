@@ -81,6 +81,9 @@ func move_to(new_pos: Vector2i) -> void:
 	tile = tile_grid.get_tile(pos.x, pos.y)
 	reparent(tile, false)
 	tile.object = self
+	
+	if data.action_source is PlayerActionSource:
+		EnemyActionSource.recalc_distances(tile_grid)
 
 
 func damage(target_pos: Vector2i, amount: int) -> void:
@@ -116,10 +119,7 @@ func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool
 	var prev_layer: Array[Vector2i] = [pos]
 	
 	if target_characters:
-		if data.max_health >= 0:
-			tiles.append(tile)
-	else:
-		if data.max_health == -1:
+		if data.object_type != TileObjectData.ObjectType.STATIC:
 			tiles.append(tile)
 	
 	for distance in range(1, range_size + 1):

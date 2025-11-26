@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TileObjectData" load_steps=5 format=3 uid="uid://cfdfyqpbcdxpb"]
+
+[ext_resource type="Script" uid="uid://qcayqubqp7nh" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_source.gd" id="1_c6l4x"]
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="2_grf4y"]
+[ext_resource type="Texture2D" uid="uid://hofpl2s67ppm" path="res://tile_grid/tile/tile_object/textures/dumbbot.png" id="3_gl1p2"]
+
+[sub_resource type="Resource" id="Resource_c6l4x"]
+script = ExtResource("1_c6l4x")
+aggressiveness = 0.0
+fearfulness = 1.0
+metadata/_custom_type_script = "uid://qcayqubqp7nh"
+
+[resource]
+script = ExtResource("2_grf4y")
+texture = ExtResource("3_gl1p2")
+texture_type = 2
+object_type = 2
+max_health = 2
+action_source = SubResource("Resource_c6l4x")
+metadata/_custom_type_script = "uid://g0hmwqu3bxiu"

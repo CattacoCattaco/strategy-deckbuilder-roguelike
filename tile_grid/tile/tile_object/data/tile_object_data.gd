@@ -13,6 +13,16 @@ enum TextureType {
 	HEALTH_STATES,
 }
 
+## What type of object is this?
+enum ObjectType {
+	## Doesn't move
+	STATIC,
+	## Player
+	PLAYER,
+	## Enemy
+	ENEMY,
+}
+
 ## The fps of all animations
 static var fps: float = 1.25
 
@@ -21,6 +31,8 @@ static var fps: float = 1.25
 @export var texture: Texture2D
 ## Determines how the sprites of the texture are interpreted
 @export var texture_type: TextureType
+## Determines what kind of object this is
+@export var object_type: ObjectType
 ## The maximum health that this object can be at [br][br]
 ## If [param max_health] is -1, this object will not use health and can't be targeted
 @export var max_health: int = -1
@@ -29,9 +41,11 @@ static var fps: float = 1.25
 
 
 func _init(p_texture: Texture2D = null, p_texture_type: TextureType = TextureType.ANIMATED, 
-		p_max_health: int = -1, p_action_source: ActionSource = NullActionSource.new()) -> void:
+		p_object_type: ObjectType = ObjectType.STATIC, p_max_health: int = -1,
+		p_action_source: ActionSource = NullActionSource.new()) -> void:
 	texture = p_texture
 	texture_type = p_texture_type
+	object_type = p_object_type
 	max_health = p_max_health
 	action_source = p_action_source
 

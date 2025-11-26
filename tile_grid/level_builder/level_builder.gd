@@ -144,6 +144,8 @@ func place_objects() -> void:
 		
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(enemies, enemy_weights))
+	
+	EnemyActionSource.recalc_distances(tile_grid)
 
 
 func walk(current_pos: Vector2i, region: Array[Vector2i], goal_size: int, from: Vector2i,

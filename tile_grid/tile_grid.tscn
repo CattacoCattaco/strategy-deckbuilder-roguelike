@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=23 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -10,7 +10,8 @@
 [ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="5_pf1a3"]
 [ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
 [ext_resource type="Script" uid="uid://drke1av0c1b7k" path="res://tile_grid/round_manager/round_manager.gd" id="8_5axyk"]
-[ext_resource type="Resource" uid="uid://bx23711k3y2hb" path="res://tile_grid/tile/tile_object/data/objects/dumbbot.tres" id="8_gcgwy"]
+[ext_resource type="Resource" uid="uid://c6m158xb2ol3q" path="res://tile_grid/tile/tile_object/data/objects/aggressive_bot.tres" id="9_eoot7"]
+[ext_resource type="Resource" uid="uid://cfdfyqpbcdxpb" path="res://tile_grid/tile/tile_object/data/objects/fear_bot.tres" id="10_jp86b"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 [ext_resource type="Script" uid="uid://ctbryeqoij1nf" path="res://card/deck/deck.gd" id="13_3s7rm"]
@@ -55,8 +56,8 @@ clump_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
 clump_obstacle_weights = Array[int]([1])
 single_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("5_pf1a3"), ExtResource("6_pf1a3")])
 single_obstacle_weights = Array[int]([1, 2])
-enemies = Array[ExtResource("4_t02f7")]([ExtResource("8_gcgwy")])
-enemy_weights = Array[int]([1])
+enemies = Array[ExtResource("4_t02f7")]([ExtResource("9_eoot7"), ExtResource("10_jp86b")])
+enemy_weights = Array[int]([1, 1])
 
 [node name="RoundManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("8_5axyk")
