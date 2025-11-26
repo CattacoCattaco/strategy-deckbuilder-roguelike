@@ -31,13 +31,13 @@ func _ready() -> void:
 func add_object(data: TileObjectData) -> void:
 	object = tile_object_scene.instantiate()
 	
-	add_child(object)
-	
+	object.health = data.max_health
 	object.data = data
 	object.tile_grid = tile_grid
 	object.tile = self
 	object.pos = pos
-	object.health = data.max_health
+	
+	add_child(object)
 
 
 func delete_object() -> void:

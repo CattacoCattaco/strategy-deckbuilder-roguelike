@@ -112,8 +112,15 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 
 func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool) -> Array[Tile]:
 	var tiles: Array[Tile] = []
-	var positions: Array[Vector2i] = []
+	var positions: Array[Vector2i] = [pos]
 	var prev_layer: Array[Vector2i] = [pos]
+	
+	if target_characters:
+		if data.max_health >= 0:
+			tiles.append(tile)
+	else:
+		if data.max_health == -1:
+			tiles.append(tile)
 	
 	for distance in range(1, range_size + 1):
 		var new_layer: Array[Vector2i]
@@ -133,19 +140,20 @@ func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool
 				
 				if not neighbor.object:
 					new_layer.append(neighbor_pos)
+					positions.append(neighbor_pos)
 					
 					if not target_characters:
 						tiles.append(neighbor)
-						positions.append(neighbor_pos)
 					
 					continue
+				
+				positions.append(neighbor_pos)
 				
 				if can_jump:
 					new_layer.append(neighbor_pos)
 				
 				if target_characters and neighbor.object.data.max_health >= 0:
 					tiles.append(neighbor)
-					positions.append(neighbor_pos)
 		
 		prev_layer = new_layer
 	
@@ -205,5 +213,6 @@ func hide_thought_bubble() -> void:
 
 func show_health() -> void:
 	var health_chunks: int = data.texture.get_height() >> 5
-	var current_health_chunk: int = roundi(health as float / data.max_health * (health_chunks - 1))
+	var current_health_chunk: int = (
+			health_chunks - 1 - roundi(health as float / data.max_health * (health_chunks - 1)))
 	sprite.play(str(current_health_chunk))
