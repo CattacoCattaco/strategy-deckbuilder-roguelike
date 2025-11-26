@@ -11,6 +11,9 @@ var hand: Hand
 
 var card_data: CardData
 
+var needs_targets: bool = false
+var cancelled: bool = false
+
 
 func _ready() -> void:
 	load_data()
@@ -59,7 +62,14 @@ func load_data() -> void:
 
 
 func try_play() -> void:
+	if hand.card_currently_playing:
+		hand.stop_playing_card()
+	
+	hand.card_currently_playing = self
+	
 	var effects: Array[Effect] = card_data.get_effects()
+	
+	needs_targets = true
 	
 	var targets: Array[Vector2i] = []
 	
@@ -95,6 +105,14 @@ func try_play() -> void:
 		for tile in targetable_tiles:
 			tile.hide_action_marker(action_marker)
 			tile.become_untargetable()
+	
+	needs_targets = false
+	
+	hand.card_currently_playing = null
+	
+	if cancelled:
+		cancelled = false
+		return
 	
 	hand.discard(self)
 	hand.draw_card()

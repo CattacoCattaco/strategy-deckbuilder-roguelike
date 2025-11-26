@@ -59,7 +59,7 @@ func _input(event: InputEvent) -> void:
 
 
 func has_tile(x: int, y: int) -> bool:
-	return x < size.x and y < size.y and x > 0 and y > 0
+	return x < size.x and y < size.y and x >= 0 and y >= 0
 
 
 func get_tile(x: int, y: int) -> Tile:

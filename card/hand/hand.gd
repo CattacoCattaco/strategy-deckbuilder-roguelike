@@ -15,6 +15,8 @@ var cards: Array[Card]
 
 var player: TileObject
 
+var card_currently_playing: Card
+
 
 func _ready() -> void:
 	mouse_entered.connect(_hovered_over)
@@ -44,10 +46,20 @@ func _pass() -> void:
 	if not tile_grid.round_manager.is_player_turn:
 		return
 	
+	if card_currently_playing:
+		stop_playing_card()
+	
 	draw_card()
 	
 	var no_targets: Array[Vector2i] = []
 	card_played.emit(CardData.new([], 0, 0), no_targets)
+
+
+func stop_playing_card() -> void:
+	card_currently_playing.cancelled = true
+	
+	while card_currently_playing and card_currently_playing.needs_targets:
+		tile_grid.tile_targeted.emit(Vector2i(0, 0))
 
 
 func set_bottom_offset(offset: int) -> void:
