@@ -28,13 +28,13 @@ font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
 atlas = ExtResource("16_6mnwf")
 region = Rect2(0, 0, 48, 20)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8yilv"]
-atlas = ExtResource("16_6mnwf")
-region = Rect2(0, 20, 48, 20)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_yps0e"]
 atlas = ExtResource("16_6mnwf")
 region = Rect2(0, 40, 48, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8yilv"]
+atlas = ExtResource("16_6mnwf")
+region = Rect2(0, 20, 48, 20)
 
 [node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label")]
 script = ExtResource("1_slx1t")
@@ -127,6 +127,6 @@ offset_top = 10.0
 offset_right = 58.0
 offset_bottom = 30.0
 texture_normal = SubResource("AtlasTexture_jp86b")
-texture_pressed = SubResource("AtlasTexture_8yilv")
-texture_hover = SubResource("AtlasTexture_yps0e")
+texture_pressed = SubResource("AtlasTexture_yps0e")
+texture_hover = SubResource("AtlasTexture_8yilv")
 texture_click_mask = ExtResource("17_eoot7")

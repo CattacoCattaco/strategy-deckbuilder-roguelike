@@ -20,6 +20,8 @@ static var player_distances: Array[Array] = []
 
 
 static func recalc_distances(tile_grid: TileGrid) -> void:
+	player_distances = []
+	
 	for x in range(tile_grid.size.x):
 		var column: Array[int] = []
 		for y in range(tile_grid.size.y):
@@ -100,11 +102,9 @@ func generate_next_action(object: TileObject) -> void:
 	var player_distance: int = get_player_distance_from_vec(pos)
 	
 	if randf() < aggressiveness:
-		print("Agressiveness: ", player_distance)
 		if player_distance <= attack_range:
 			next_action = CardData.new([Modifier.Attack.new()], attack_range, attack_damage)
 			next_action_targets = [object.tile_grid.hand.player.pos]
-			print("Attacked")
 			return
 		
 		var closest_distance: int = get_player_distance_from_vec(object.pos)
@@ -119,10 +119,6 @@ func generate_next_action(object: TileObject) -> void:
 		
 		next_action = CardData.new([Modifier.Move.new()], move_range, 0)
 		next_action_targets = [closest_pos]
-		
-		print("Moved Closer")
-		print(closest_distance)
-		print(closest_pos)
 		return
 	
 	if randf() < fearfulness:
@@ -138,10 +134,6 @@ func generate_next_action(object: TileObject) -> void:
 		
 		next_action = CardData.new([Modifier.Move.new()], move_range, 0)
 		next_action_targets = [furthest_pos]
-		
-		print("Moved Further")
-		print(furthest_distance)
-		print(furthest_pos)
 		return
 	
 	next_action = CardData.new([Modifier.Move.new()], move_range, 0)

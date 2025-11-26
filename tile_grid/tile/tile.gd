@@ -12,10 +12,13 @@ enum ActionMarker {
 
 @export var bg: Sprite2D
 @export var action_markers: Array[Sprite2D]
+@export var inspect_button: Button
 @export var target_button: Button
 
 var tile_grid: TileGrid
 var pos: Vector2i
+
+var inspected: bool = false
 
 var object: TileObject
 
@@ -24,8 +27,82 @@ func _ready() -> void:
 	for i in len(action_markers):
 		hide_action_marker(i)
 	
+	inspect_button.mouse_entered.connect(_inspect)
+	inspect_button.mouse_exited.connect(_uninspect)
+	
+	target_button.mouse_entered.connect(_inspect)
+	target_button.mouse_exited.connect(_uninspect)
 	target_button.hide()
 	target_button.pressed.connect(_targeted)
+
+
+func _inspect() -> void:
+	if not object:
+		return
+	
+	var action_source: ActionSource = object.data.action_source
+	
+	if not action_source.preview_actions:
+		return
+	
+	inspected = true
+	
+	var effects: Array[Effect] = action_source.next_action.get_effects()
+	for i in len(effects):
+		var effect: Effect = effects[i]
+		var target: Vector2i = action_source.next_action_targets[i]
+		
+		var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
+		
+		var marker_type: ActionMarker
+		
+		if effect.base_action is Modifier.Attack:
+			marker_type = ActionMarker.ATTACK
+		elif effect.base_action is Modifier.Poison:
+			marker_type = ActionMarker.POISON
+		elif effect.base_action is Modifier.Move:
+			marker_type = ActionMarker.MOVE
+		elif effect.base_action is Modifier.Heal:
+			marker_type = ActionMarker.HEAL
+		
+		target_tile.show_action_marker(marker_type)
+
+
+func _uninspect() -> void:
+	if not object:
+		return
+	
+	var action_source: ActionSource = object.data.action_source
+	
+	if not action_source.preview_actions:
+		return
+	
+	inspected = false
+	
+	var effects: Array[Effect] = action_source.next_action.get_effects()
+	for i in len(effects):
+		var effect: Effect = effects[i]
+		var target: Vector2i = action_source.next_action_targets[i]
+		
+		var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
+		
+		var marker_type: ActionMarker
+		
+		if effect.base_action is Modifier.Attack:
+			marker_type = ActionMarker.ATTACK
+		elif effect.base_action is Modifier.Poison:
+			marker_type = ActionMarker.POISON
+		elif effect.base_action is Modifier.Move:
+			marker_type = ActionMarker.MOVE
+		elif effect.base_action is Modifier.Heal:
+			marker_type = ActionMarker.HEAL
+		
+		target_tile.hide_action_marker(marker_type)
+
+
+func _targeted() -> void:
+	become_untargetable()
+	tile_grid.tile_targeted.emit(pos)
 
 
 func add_object(data: TileObjectData) -> void:
@@ -49,11 +126,6 @@ func delete_object() -> void:
 	
 	object.queue_free()
 	object = null
-
-
-func _targeted() -> void:
-	become_untargetable()
-	tile_grid.tile_targeted.emit(pos)
 
 
 func show_action_marker(marker: ActionMarker) -> void:

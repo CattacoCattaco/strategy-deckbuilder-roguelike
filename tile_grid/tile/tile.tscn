@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bpsyv3nuyvf5d"]
+[gd_scene load_steps=9 format=3 uid="uid://bpsyv3nuyvf5d"]
 
 [ext_resource type="Script" uid="uid://dlktcg44c12sb" path="res://tile_grid/tile/tile.gd" id="1_btt4l"]
 [ext_resource type="Texture2D" uid="uid://ylwdu1kes44o" path="res://tile_grid/tile/tile.png" id="1_su6p1"]
@@ -7,36 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://ba7yj3f6jnd13" path="res://tile_grid/tile/action_markers/poison_marker.png" id="5_2s4jd"]
 [ext_resource type="Texture2D" uid="uid://56uyg7dx75c8" path="res://tile_grid/tile/action_markers/move_marker.png" id="6_a0n5t"]
 [ext_resource type="Texture2D" uid="uid://bd4uby3twrmrp" path="res://tile_grid/tile/action_markers/heal_marker.png" id="7_a3ykk"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_2s4jd"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m4xch"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0)
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2s4jd"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.47058824)
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a0n5t"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.23529412)
-corner_detail = 5
-
-[node name="Tile" type="Node2D" node_paths=PackedStringArray("bg", "action_markers", "target_button")]
+[node name="Tile" type="Node2D" node_paths=PackedStringArray("bg", "action_markers", "inspect_button", "target_button")]
 script = ExtResource("1_btt4l")
 tile_object_scene = ExtResource("2_exanw")
 bg = NodePath("Sprite")
 action_markers = [NodePath("AttackMarker"), NodePath("PoisonMarker"), NodePath("MoveMarker"), NodePath("HealMarker")]
+inspect_button = NodePath("InspectButton")
 target_button = NodePath("TargetButton")
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -59,12 +37,20 @@ centered = false
 texture = ExtResource("7_a3ykk")
 centered = false
 
+[node name="InspectButton" type="Button" parent="."]
+z_index = 2
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("8_2s4jd")
+button_mask = 2
+
 [node name="TargetButton" type="Button" parent="."]
 z_index = 2
 offset_right = 32.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_m4xch")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_2s4jd")
-theme_override_styles/hover = SubResource("StyleBoxFlat_a0n5t")
+mouse_filter = 1
+theme = ExtResource("8_2s4jd")
