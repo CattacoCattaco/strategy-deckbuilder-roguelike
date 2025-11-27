@@ -6,6 +6,10 @@ enum ActionMarker {
 	POISON,
 	MOVE,
 	HEAL,
+	ENEMY_ATTACK,
+	ENEMY_POISON,
+	ENEMY_MOVE,
+	ENEMY_HEAL,
 }
 
 @export var tile_object_scene: PackedScene
@@ -57,13 +61,13 @@ func _inspect() -> void:
 		var marker_type: ActionMarker
 		
 		if effect.base_action is Modifier.Attack:
-			marker_type = ActionMarker.ATTACK
+			marker_type = ActionMarker.ENEMY_ATTACK
 		elif effect.base_action is Modifier.Poison:
-			marker_type = ActionMarker.POISON
+			marker_type = ActionMarker.ENEMY_POISON
 		elif effect.base_action is Modifier.Move:
-			marker_type = ActionMarker.MOVE
+			marker_type = ActionMarker.ENEMY_MOVE
 		elif effect.base_action is Modifier.Heal:
-			marker_type = ActionMarker.HEAL
+			marker_type = ActionMarker.ENEMY_HEAL
 		
 		target_tile.show_action_marker(marker_type)
 
@@ -89,13 +93,13 @@ func _uninspect() -> void:
 		var marker_type: ActionMarker
 		
 		if effect.base_action is Modifier.Attack:
-			marker_type = ActionMarker.ATTACK
+			marker_type = ActionMarker.ENEMY_ATTACK
 		elif effect.base_action is Modifier.Poison:
-			marker_type = ActionMarker.POISON
+			marker_type = ActionMarker.ENEMY_POISON
 		elif effect.base_action is Modifier.Move:
-			marker_type = ActionMarker.MOVE
+			marker_type = ActionMarker.ENEMY_MOVE
 		elif effect.base_action is Modifier.Heal:
-			marker_type = ActionMarker.HEAL
+			marker_type = ActionMarker.ENEMY_HEAL
 		
 		target_tile.hide_action_marker(marker_type)
 

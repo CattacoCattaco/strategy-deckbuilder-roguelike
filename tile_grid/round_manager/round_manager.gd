@@ -50,9 +50,6 @@ func do_turn() -> void:
 		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
 		action_source.generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
-		
-		if current_object.tile.inspected:
-			current_object.tile._inspect()
 	else:
 		@warning_ignore("redundant_await")
 		await action_source.generate_next_action(current_object)

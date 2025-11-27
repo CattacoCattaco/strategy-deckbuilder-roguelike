@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bpsyv3nuyvf5d"]
+[gd_scene load_steps=13 format=3 uid="uid://bpsyv3nuyvf5d"]
 
 [ext_resource type="Script" uid="uid://dlktcg44c12sb" path="res://tile_grid/tile/tile.gd" id="1_btt4l"]
 [ext_resource type="Texture2D" uid="uid://ylwdu1kes44o" path="res://tile_grid/tile/tile.png" id="1_su6p1"]
@@ -8,12 +8,16 @@
 [ext_resource type="Texture2D" uid="uid://56uyg7dx75c8" path="res://tile_grid/tile/action_markers/move_marker.png" id="6_a0n5t"]
 [ext_resource type="Texture2D" uid="uid://bd4uby3twrmrp" path="res://tile_grid/tile/action_markers/heal_marker.png" id="7_a3ykk"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_2s4jd"]
+[ext_resource type="Texture2D" uid="uid://dmsh45m347832" path="res://tile_grid/tile/action_markers/enemy_attack_marker.png" id="8_28gbb"]
+[ext_resource type="Texture2D" uid="uid://ddnbnu7kpus7i" path="res://tile_grid/tile/action_markers/enemy_poison_marker.png" id="9_o2a2l"]
+[ext_resource type="Texture2D" uid="uid://cmh6up588q5q4" path="res://tile_grid/tile/action_markers/enemy_move_marker.png" id="10_qlsys"]
+[ext_resource type="Texture2D" uid="uid://bipjtxwadh7q3" path="res://tile_grid/tile/action_markers/enemy_heal_marker.png" id="11_y3ccy"]
 
 [node name="Tile" type="Node2D" node_paths=PackedStringArray("bg", "action_markers", "inspect_button", "target_button")]
 script = ExtResource("1_btt4l")
 tile_object_scene = ExtResource("2_exanw")
 bg = NodePath("Sprite")
-action_markers = [NodePath("AttackMarker"), NodePath("PoisonMarker"), NodePath("MoveMarker"), NodePath("HealMarker")]
+action_markers = [NodePath("AttackMarker"), NodePath("PoisonMarker"), NodePath("MoveMarker"), NodePath("HealMarker"), NodePath("EnemyAttackMarker"), NodePath("EnemyPoisonMarker"), NodePath("EnemyMoveMarker"), NodePath("EnemyHealMarker")]
 inspect_button = NodePath("InspectButton")
 target_button = NodePath("TargetButton")
 
@@ -35,6 +39,22 @@ centered = false
 
 [node name="HealMarker" type="Sprite2D" parent="."]
 texture = ExtResource("7_a3ykk")
+centered = false
+
+[node name="EnemyAttackMarker" type="Sprite2D" parent="."]
+texture = ExtResource("8_28gbb")
+centered = false
+
+[node name="EnemyPoisonMarker" type="Sprite2D" parent="."]
+texture = ExtResource("9_o2a2l")
+centered = false
+
+[node name="EnemyMoveMarker" type="Sprite2D" parent="."]
+texture = ExtResource("10_qlsys")
+centered = false
+
+[node name="EnemyHealMarker" type="Sprite2D" parent="."]
+texture = ExtResource("11_y3ccy")
 centered = false
 
 [node name="InspectButton" type="Button" parent="."]
