@@ -32,7 +32,7 @@ func start_rounds() -> void:
 		var action_source: ActionSource = object.data.action_source
 		
 		if action_source.preview_actions:
-			action_source.generate_next_action(object)
+			action_source._generate_next_action(object)
 			object.display_action_thought_bubble(action_source.next_action)
 	
 	do_turn()
@@ -48,11 +48,11 @@ func do_turn() -> void:
 			current_object.tile.inspected = true
 		
 		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
-		action_source.generate_next_action(current_object)
+		action_source._generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
 	else:
 		@warning_ignore("redundant_await")
-		await action_source.generate_next_action(current_object)
+		await action_source._generate_next_action(current_object)
 		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
 	
 	current_turn_index += 1

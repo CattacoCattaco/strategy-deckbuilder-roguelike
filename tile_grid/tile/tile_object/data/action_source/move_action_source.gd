@@ -6,7 +6,7 @@ func _init(p_speed: int = 0, p_preview_actions: bool = true) -> void:
 	super(p_speed, p_preview_actions)
 
 
-func generate_next_action(object: TileObject) -> void:
+func _generate_next_action(object: TileObject) -> void:
 	var pos: Vector2i = object.pos
 	var empty_neighbors: Array[Vector2i]
 	

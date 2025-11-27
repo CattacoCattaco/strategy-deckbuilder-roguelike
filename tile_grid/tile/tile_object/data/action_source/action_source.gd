@@ -20,4 +20,4 @@ func _init(p_speed: int = 0, p_preview_actions: bool = true) -> void:
 	preview_actions = p_preview_actions
 
 
-@abstract func generate_next_action(object: TileObject) -> void
+@abstract func _generate_next_action(object: TileObject) -> void
