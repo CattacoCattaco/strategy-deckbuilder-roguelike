@@ -4,7 +4,11 @@ extends Node2D
 @export var tile_scene: PackedScene
 @export var size := Vector2i(15, 15)
 
+@export var player: Sprite2D
+
 var tiles: Array[Array]
+
+var player_pos: Vector2i
 
 
 func _ready() -> void:
@@ -31,6 +35,9 @@ func _ready() -> void:
 	var tile: WorldMapTile = get_tile_from_vec(pos)
 	tile.set_as_path()
 	tile.add_entrance()
+	
+	player_pos = pos
+	player.position = tile.position
 	
 	var desired_end := Vector2i(pos.x, 1)
 	var reached_end: bool = false
@@ -88,6 +95,32 @@ func _ready() -> void:
 			tile.add_positive_event()
 		
 		is_challenge = not is_challenge
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_action_pressed("up"):
+			try_move_player_in_dir(Vector2i(0, -1))
+		elif event.is_action_pressed("left"):
+			try_move_player_in_dir(Vector2i(-1, 0))
+		elif event.is_action_pressed("down"):
+			try_move_player_in_dir(Vector2i(0, 1))
+		elif event.is_action_pressed("right"):
+			try_move_player_in_dir(Vector2i(1, 0))
+
+
+func try_move_player_in_dir(dir: Vector2i) -> void:
+	var neighbor_pos: Vector2i = player_pos + dir
+	
+	if not has_tile_at_vec(neighbor_pos):
+		return
+	
+	var tile: WorldMapTile = get_tile_from_vec(neighbor_pos)
+	if not tile.has_path:
+		return
+	
+	player_pos = neighbor_pos
+	player.position = tile.position
 
 
 func has_tile_at_vec(pos: Vector2i) -> bool:
