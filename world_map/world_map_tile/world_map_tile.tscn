@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://o3lj7nga2sha"]
+
+[ext_resource type="Texture2D" uid="uid://c0kh264k25bl7" path="res://world_map/world_map_tile/tile.png" id="1_e38f7"]
+[ext_resource type="Script" uid="uid://dn4pctsylctss" path="res://world_map/world_map_tile/world_map_tile.gd" id="1_pu1pf"]
+[ext_resource type="Texture2D" uid="uid://dkjev352djs5j" path="res://world_map/world_map_tile/path.png" id="2_pu1pf"]
+[ext_resource type="Texture2D" uid="uid://u3r8ed00cvdn" path="res://world_map/world_map_tile/encounter.png" id="3_f3g2t"]
+[ext_resource type="Texture2D" uid="uid://ds6sg8lqoq37j" path="res://world_map/world_map_tile/entrance.png" id="4_1cgjn"]
+[ext_resource type="Texture2D" uid="uid://cuiixjcrchtot" path="res://world_map/world_map_tile/merge.png" id="4_n6qic"]
+[ext_resource type="Texture2D" uid="uid://cx5rhkesmm4v7" path="res://world_map/world_map_tile/exit.png" id="5_odmgf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cgjn"]
+resource_local_to_scene = true
+atlas = ExtResource("2_pu1pf")
+region = Rect2(64, 64, 32, 32)
+
+[node name="WorldMapTile" type="Node2D" node_paths=PackedStringArray("bg", "path", "entrance_sign", "exit_sign", "encounter_sign", "merge_sign")]
+script = ExtResource("1_pu1pf")
+bg = NodePath("Tile")
+path = NodePath("Path")
+entrance_sign = NodePath("Entrance")
+exit_sign = NodePath("Exit")
+encounter_sign = NodePath("Encounter")
+merge_sign = NodePath("Merge")
+
+[node name="Tile" type="Sprite2D" parent="."]
+texture = ExtResource("1_e38f7")
+centered = false
+
+[node name="Path" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_1cgjn")
+centered = false
+
+[node name="Entrance" type="Sprite2D" parent="."]
+texture = ExtResource("4_1cgjn")
+centered = false
+
+[node name="Exit" type="Sprite2D" parent="."]
+texture = ExtResource("5_odmgf")
+centered = false
+
+[node name="Encounter" type="Sprite2D" parent="."]
+texture = ExtResource("3_f3g2t")
+centered = false
+
+[node name="Merge" type="Sprite2D" parent="."]
+texture = ExtResource("4_n6qic")
+centered = false

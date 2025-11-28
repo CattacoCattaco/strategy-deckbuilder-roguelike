@@ -11,5 +11,6 @@ metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
 [resource]
 script = ExtResource("2_xs63t")
 texture = ExtResource("3_4y00a")
+texture_type = 1
 action_source = SubResource("Resource_p0noj")
 metadata/_custom_type_script = "uid://g0hmwqu3bxiu"

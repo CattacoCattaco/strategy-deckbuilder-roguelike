@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://4gq17h5jwwyb"]
+
+[ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="1_088kp"]
+[ext_resource type="Script" uid="uid://djskdjsrgxvnu" path="res://world_map/world_map.gd" id="1_yw1td"]
+[ext_resource type="PackedScene" uid="uid://o3lj7nga2sha" path="res://world_map/world_map_tile/world_map_tile.tscn" id="2_wrpkp"]
+
+[node name="WorldMap" type="Node2D"]
+script = ExtResource("1_yw1td")
+tile_scene = ExtResource("2_wrpkp")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("1_088kp")
