@@ -1,6 +1,13 @@
 class_name WorldMapTile
 extends Node2D
 
+enum EventType {
+	ENTRANCE,
+	EXIT,
+	ENCOUNTER,
+	MERGE,
+}
+
 @export var bg: Sprite2D
 @export var path: Sprite2D
 @export var entrance_sign: Sprite2D
@@ -12,7 +19,10 @@ var pos: Vector2i
 var world_map: WorldMap
 
 var has_path: bool = false
-var has_event: bool = false
+
+var is_positive: bool = false
+var event_type: EventType
+
 var _path_atlas: AtlasTexture
 
 
@@ -76,19 +86,23 @@ func update_path_sprite(update_neighbors: bool = false) -> void:
 
 func add_entrance() -> void:
 	entrance_sign.show()
-	has_event = true
+	event_type = EventType.ENTRANCE
+	is_positive = true
 
 
 func add_exit() -> void:
 	exit_sign.show()
-	has_event = true
+	is_positive = true
+	event_type = EventType.EXIT
 
 
 func add_encounter() -> void:
 	encounter_sign.show()
-	has_event = true
+	is_positive = false
+	event_type = EventType.ENCOUNTER
 
 
-func add_positive_event() -> void:
+func add_reward_event() -> void:
 	merge_sign.show()
-	has_event = true
+	is_positive = true
+	event_type = EventType.MERGE

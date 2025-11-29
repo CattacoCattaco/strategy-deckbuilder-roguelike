@@ -2,17 +2,25 @@ class_name DraggableCamera
 extends Camera2D
 
 @export var tile_grid: TileGrid
+@export var world_map: WorldMap
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-			var scale_factor: Vector2 = tile_grid.scale
+			var scale_factor: Vector2
+			
+			if tile_grid:
+				scale_factor = tile_grid.scale
+			elif world_map:
+				scale_factor = world_map.scale
 			
 			position -= event.relative / scale_factor
 			
 			if tile_grid:
 				fit_pos_to_bounds(tile_grid.get_camera_bounds())
+			elif world_map:
+				fit_pos_to_bounds(world_map.get_camera_bounds())
 
 
 func fit_pos_to_bounds(bounds: Rect2) -> void:

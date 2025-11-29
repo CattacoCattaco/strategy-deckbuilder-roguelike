@@ -2,9 +2,15 @@ class_name WorldMap
 extends Node2D
 
 @export var tile_scene: PackedScene
-@export var size := Vector2i(15, 15)
 
 @export var player: Sprite2D
+@export var camera: DraggableCamera
+
+@export var used_size: int = 7
+
+@export var camera_padding := Vector2i(64, 64)
+
+@onready var board_length: int = used_size * 2 + 1
 
 var tiles: Array[Array]
 
@@ -12,13 +18,13 @@ var player_pos: Vector2i
 
 
 func _ready() -> void:
-	var pixel_size: Vector2 = size * 32
+	var pixel_size := Vector2(board_length * 32, board_length * 32)
 	var offset := -Vector2(pixel_size) / 2
 	
-	for x in range(size.x):
+	for x in range(board_length):
 		var column: Array[WorldMapTile] = []
 		
-		for y in range(size.y):
+		for y in range(board_length):
 			var tile: WorldMapTile = tile_scene.instantiate()
 			
 			tile.world_map = self
@@ -31,7 +37,7 @@ func _ready() -> void:
 		
 		tiles.append(column)
 	
-	var pos := Vector2i((size.x - 1) >> 1, size.y - 2)
+	var pos := Vector2i(1, board_length - 2)
 	var tile: WorldMapTile = get_tile_from_vec(pos)
 	tile.set_as_path()
 	tile.add_entrance()
@@ -39,38 +45,41 @@ func _ready() -> void:
 	player_pos = pos
 	player.position = tile.position
 	
-	var desired_end := Vector2i(pos.x, 1)
-	var reached_end: bool = false
+	var desired_end := Vector2i(board_length - 2, 1)
 	
 	# If true, the next event should be a challenge
 	# If false, the next event should be a reward
 	var is_challenge: bool = true
 	
-	for i in range(100):
+	var backtrackable_path: Array[Vector2i] = [pos]
+	
+	while len(backtrackable_path) > 0:
 		var valid_dirs: Array[Vector2i] = []
 		
 		for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
 			if not has_tile_at_vec(pos + (dir * 2)):
 				continue
 			
-			var weight: int = 1
+			if get_tile_from_vec(pos + (dir * 2)).has_path:
+				continue
 			
-			if not reached_end:
-				var end_direction: Vector2i = desired_end - pos
-				
-				if end_direction.x > 0 and dir.x > 0:
-					weight += 2
-				elif end_direction.x < 0 and dir.x < 0:
-					weight += 2
-				
-				if end_direction.y > 0 and dir.y > 0:
-					weight += 4
+			valid_dirs.append(dir)
+		
+		if len(valid_dirs) == 0:
+			print(backtrackable_path)
 			
-			if not get_tile_from_vec(pos + (dir * 2)).has_path:
-				weight += 1
+			backtrackable_path.pop_back()
 			
-			for j in range(weight):
-				valid_dirs.append(dir)
+			if len(backtrackable_path) == 0:
+				break
+			
+			pos = backtrackable_path[len(backtrackable_path) - 1]
+			
+			tile = get_tile_from_vec(pos)
+			
+			is_challenge = tile.is_positive
+			
+			continue
 		
 		var dir: Vector2i = valid_dirs.pick_random()
 		
@@ -78,23 +87,22 @@ func _ready() -> void:
 			pos += dir
 			get_tile_from_vec(pos).set_as_path()
 		
+		backtrackable_path.append(pos)
+		
 		tile = get_tile_from_vec(pos)
 		
-		if pos == desired_end and not reached_end:
-			reached_end = true
-			tile.add_exit()
-			continue
-		
-		if tile.has_event:
+		if randf() < 0.2:
 			is_challenge = not is_challenge
-			continue
 		
-		if is_challenge:
+		if pos == desired_end:
+			tile.add_exit()
+			is_challenge = true
+		elif is_challenge:
 			tile.add_encounter()
+			is_challenge = false
 		else:
-			tile.add_positive_event()
-		
-		is_challenge = not is_challenge
+			tile.add_reward_event()
+			is_challenge = true
 
 
 func _input(event: InputEvent) -> void:
@@ -107,6 +115,18 @@ func _input(event: InputEvent) -> void:
 			try_move_player_in_dir(Vector2i(0, 1))
 		elif event.is_action_pressed("right"):
 			try_move_player_in_dir(Vector2i(1, 0))
+		elif event.is_action_pressed("do_event"):
+			try_do_event()
+		elif event.is_action_pressed("zoom"):
+			if scale == Vector2(1, 1):
+				camera.position *= 2
+				# Set camera scale to reciprocal of self scale so UI doesn't get scaled
+				camera.scale = Vector2(0.5, 0.5)
+				scale = Vector2(2, 2)
+			else:
+				camera.position /= 2
+				camera.scale = Vector2(1, 1)
+				scale = Vector2(1, 1)
 
 
 func try_move_player_in_dir(dir: Vector2i) -> void:
@@ -123,12 +143,16 @@ func try_move_player_in_dir(dir: Vector2i) -> void:
 	player.position = tile.position
 
 
+func try_do_event() -> void:
+	var tile: WorldMapTile = get_tile_from_vec(player_pos)
+
+
 func has_tile_at_vec(pos: Vector2i) -> bool:
 	return has_tile(pos.x, pos.y)
 
 
 func has_tile(x: int, y: int) -> bool:
-	return x < size.x and y < size.y and x >= 0 and y >= 0
+	return x < board_length and y < board_length and x >= 0 and y >= 0
 
 
 func get_tile_from_vec(pos: Vector2i) -> WorldMapTile:
@@ -137,3 +161,14 @@ func get_tile_from_vec(pos: Vector2i) -> WorldMapTile:
 
 func get_tile(x: int, y: int) -> WorldMapTile:
 	return tiles[x][y]
+
+
+func get_camera_bounds() -> Rect2:
+	var bottom_right_coord: int = board_length * 16
+	var top_left_coord: int = -bottom_right_coord
+	
+	var bounds := Rect2()
+	bounds.position = top_left_coord * scale - Vector2(camera_padding)
+	bounds.size = Vector2(board_length * 32 * Vector2i(scale) + camera_padding * 2)
+	
+	return bounds
