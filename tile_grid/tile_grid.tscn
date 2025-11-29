@@ -50,7 +50,6 @@ size = Vector2i(10, 10)
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
-density = 3
 player_data = ExtResource("4_kqtwp")
 movement_region_object_data = ExtResource("4_0vku6")
 clump_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
@@ -87,7 +86,7 @@ offset_bottom = 40.0
 script = ExtResource("13_3s7rm")
 tile_grid = NodePath("../../..")
 
-[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("tile_grid", "deck", "pass_button")]
+[node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("deck", "tile_grid", "pass_button")]
 custom_minimum_size = Vector2(600, 0)
 layout_mode = 1
 anchors_preset = -1
@@ -98,11 +97,12 @@ anchor_bottom = 1.0
 offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 0
 alignment = 1
 script = ExtResource("11_pawdl")
 card_scene = ExtResource("11_d6b8m")
-tile_grid = NodePath("../../..")
 deck = NodePath("../Deck")
+tile_grid = NodePath("../../..")
 pass_button = NodePath("../PassButton")
 
 [node name="YourTurnLabel" type="Label" parent="DraggableCamera/UI"]
