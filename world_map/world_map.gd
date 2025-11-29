@@ -199,6 +199,7 @@ func try_do_event() -> void:
 				var deck_manipulation_screen: DeckManipulationScreen 
 				deck_manipulation_screen = deck_manipulation_scene.instantiate()
 				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.ADD_SYMBOL)
 				deck_manipulation_screen.world_map = self
 				
 				get_tree().root.add_child(deck_manipulation_screen)

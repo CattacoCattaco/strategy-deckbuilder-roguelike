@@ -36,7 +36,7 @@ func _gui_input(event: InputEvent) -> void:
 				elif hand.deck_manipulation_screen:
 					var parent: Control = get_parent_control()
 					if parent is Hand:
-						hand.deck_manipulation_screen.slot_set.add_card(self)
+						hand.deck_manipulation_screen.current_slot_set.add_card(self)
 					elif parent is CardSlot:
 						if parent.input:
 							parent.remove_card()

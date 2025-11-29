@@ -36,6 +36,9 @@ func remove_card() -> void:
 	hand.update_gap_size()
 	
 	card = null
+	
+	if slot_set.output_slot.card:
+		slot_set.output_slot.delete_card()
 
 
 func create_card(data: CardData) -> void:

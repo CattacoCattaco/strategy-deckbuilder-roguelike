@@ -1,11 +1,20 @@
 class_name SlotSet
 extends Control
 
+enum Type {
+	MERGE,
+	ADD_SYMBOL,
+}
+
 @export var hand: Hand
 @export var deck_manipulation_screen: DeckManipulationScreen
 
 @export var input_slots: Array[CardSlot]
 @export var output_slot: CardSlot
+
+@export var type: Type
+
+var modifier: Modifier
 
 
 func _ready() -> void:
@@ -17,6 +26,14 @@ func _ready() -> void:
 	output_slot.deck_manipulation_screen = deck_manipulation_screen
 	output_slot.hand = hand
 	output_slot.slot_set = self
+	
+	if type == Type.ADD_SYMBOL:
+		modifier = [
+			Modifier.Attack.new(),
+			Modifier.Heal.new(),
+			Modifier.Move.new(),
+			Modifier.Poison.new(),
+		].pick_random()
 
 
 func add_card(card: Card) -> void:
@@ -36,6 +53,16 @@ func add_card(card: Card) -> void:
 
 
 func calculate_output() -> CardData:
+	match type:
+		Type.MERGE:
+			return calculate_output_merge()
+		Type.ADD_SYMBOL:
+			return calculate_output_add_symbol()
+	
+	return CardData.new([], 0, 0)
+
+
+func calculate_output_merge() -> CardData:
 	var result := CardData.new([], 0, 0)
 	
 	var input_data: Array[CardData] = [
@@ -58,5 +85,16 @@ func calculate_output() -> CardData:
 	
 	for modifier in input_data[1].modifiers:
 		result.modifiers.append(modifier)
+	
+	return result
+
+
+func calculate_output_add_symbol() -> CardData:
+	var input_data: CardData = input_slots[0].card.card_data
+	
+	var result := CardData.new(input_data.modifiers.duplicate(), input_data.effect_range,
+			input_data.effect_size)
+	
+	result.modifiers.append(modifier)
 	
 	return result
