@@ -18,7 +18,7 @@ level_scene = ExtResource("3_fsjge")
 deck_manipulation_scene = ExtResource("4_nirhn")
 player = NodePath("Player")
 camera = NodePath("Camera2D")
-used_size = 3
+used_size = 5
 
 [node name="Player" type="Sprite2D" parent="."]
 z_index = 5
