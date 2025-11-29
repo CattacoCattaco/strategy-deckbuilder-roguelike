@@ -30,18 +30,30 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
-				if hand.tile_grid.round_manager.is_player_turn:
-					try_play()
+				if hand.tile_grid:
+					if hand.tile_grid.round_manager.is_player_turn:
+						try_play()
+				elif hand.deck_manipulation_screen:
+					var parent: Control = get_parent_control()
+					if parent is Hand:
+						hand.deck_manipulation_screen.slot_set.add_card(self)
+					elif parent is CardSlot:
+						if parent.input:
+							parent.remove_card()
+						else:
+							parent.take_card()
 
 
 func _hover() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(card_frame, "position", Vector2(0, -65), 0.5)
+	if get_parent() is Hand:
+		var tween: Tween = create_tween()
+		tween.tween_property(card_frame, "position", Vector2(0, -65), 0.5)
 
 
 func _unhover() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(card_frame, "position", Vector2(0, 0), 0.5)
+	if get_parent() is Hand:
+		var tween: Tween = create_tween()
+		tween.tween_property(card_frame, "position", Vector2(0, 0), 0.5)
 
 
 func load_data() -> void:

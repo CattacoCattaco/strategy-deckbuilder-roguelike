@@ -10,16 +10,20 @@ signal tile_targeted(pos: Vector2i)
 @export var camera: Camera2D
 @export var hand: Hand
 @export var your_turn_label: Label
+@export var lose_screen: ColorRect
 
 @export var camera_padding := Vector2i(64, 64)
 
 @export var size := Vector2i(15, 15)
+
+var world_map: WorldMap
 
 var tiles: Array[Array] = []
 
 
 func _ready() -> void:
 	your_turn_label.hide()
+	lose_screen.hide()
 	
 	var pixel_size: Vector2 = size * 32
 	var offset := -Vector2(pixel_size) / 2
@@ -56,6 +60,16 @@ func _input(event: InputEvent) -> void:
 				camera.position /= 2
 				camera.scale = Vector2(1, 1)
 				scale = Vector2(1, 1)
+
+
+func win() -> void:
+	world_map.levels_beat += 1
+	get_tree().root.add_child(world_map)
+	queue_free()
+
+
+func lose() -> void:
+	lose_screen.show()
 
 
 func has_tile(x: int, y: int) -> bool:

@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://cjom4bor5y3ap"]
+
+[ext_resource type="Texture2D" uid="uid://7bd40vw4klmn" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot.png" id="1_8kchn"]
+[ext_resource type="Script" uid="uid://d1re1sxk0crh3" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot.gd" id="1_sn8a1"]
+[ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="2_5l73e"]
+[ext_resource type="Texture2D" uid="uid://2d5g0asmsxfs" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot_full.png" id="2_sn8a1"]
+
+[node name="CardSlot" type="Control" node_paths=PackedStringArray("empty_sprite", "full_sprite")]
+custom_minimum_size = Vector2(119, 192)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_sn8a1")
+card_scene = ExtResource("2_5l73e")
+empty_sprite = NodePath("Empty")
+full_sprite = NodePath("Full")
+
+[node name="Empty" type="Sprite2D" parent="."]
+texture = ExtResource("1_8kchn")
+centered = false
+
+[node name="Full" type="Sprite2D" parent="."]
+texture = ExtResource("2_sn8a1")
+centered = false

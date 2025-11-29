@@ -23,6 +23,7 @@ var tile_grid: TileGrid
 var pos: Vector2i
 
 var inspected: bool = false
+var inspect_marks: Dictionary[Tile, Array]
 
 var object: TileObject
 
@@ -49,6 +50,8 @@ func _inspect() -> void:
 	if not action_source.preview_actions:
 		return
 	
+	inspect_marks = {}
+	
 	inspected = true
 	
 	var effects: Array[Effect] = action_source.next_action.get_effects()
@@ -70,38 +73,20 @@ func _inspect() -> void:
 			marker_type = ActionMarker.ENEMY_HEAL
 		
 		target_tile.show_action_marker(marker_type)
+		
+		if target_tile in inspect_marks:
+			inspect_marks[target_tile].append(marker_type)
+		else:
+			inspect_marks[target_tile] = [marker_type]
 
 
 func _uninspect() -> void:
-	if not object:
+	if not inspected:
 		return
 	
-	var action_source: ActionSource = object.data.action_source
-	
-	if not action_source.preview_actions:
-		return
-	
-	inspected = false
-	
-	var effects: Array[Effect] = action_source.next_action.get_effects()
-	for i in len(effects):
-		var effect: Effect = effects[i]
-		var target: Vector2i = action_source.next_action_targets[i]
-		
-		var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
-		
-		var marker_type: ActionMarker
-		
-		if effect.base_action is Modifier.Attack:
-			marker_type = ActionMarker.ENEMY_ATTACK
-		elif effect.base_action is Modifier.Poison:
-			marker_type = ActionMarker.ENEMY_POISON
-		elif effect.base_action is Modifier.Move:
-			marker_type = ActionMarker.ENEMY_MOVE
-		elif effect.base_action is Modifier.Heal:
-			marker_type = ActionMarker.ENEMY_HEAL
-		
-		target_tile.hide_action_marker(marker_type)
+	for tile in inspect_marks:
+		for marker: ActionMarker in inspect_marks[tile]:
+			tile.hide_action_marker(marker)
 
 
 func _targeted() -> void:
@@ -125,8 +110,15 @@ func delete_object() -> void:
 	if object in tile_grid.round_manager.turn_order:
 		tile_grid.round_manager.turn_order.erase(object)
 	
+	if object in tile_grid.round_manager.enemies:
+		tile_grid.round_manager.enemies.erase(object)
+		
+		if len(tile_grid.round_manager.enemies) == 0:
+			tile_grid.win()
+	
 	if object == tile_grid.hand.player:
 		tile_grid.hand.player = null
+		tile_grid.lose()
 	
 	object.queue_free()
 	object = null

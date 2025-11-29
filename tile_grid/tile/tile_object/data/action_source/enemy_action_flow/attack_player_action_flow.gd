@@ -14,6 +14,9 @@ func _init(p_attack_range: int = 1, p_attack_damage: int = 1) -> void:
 
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
+	if not object.tile_grid.hand.player:
+		return
+	
 	var player_pos: Vector2i = object.tile_grid.hand.player.pos
 	
 	action_source.next_action = CardData.new([Modifier.Attack.new()], attack_range, attack_damage)

@@ -36,7 +36,7 @@ region = Rect2(0, 40, 48, 20)
 atlas = ExtResource("16_6mnwf")
 region = Rect2(0, 20, 48, 20)
 
-[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label")]
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "lose_screen")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 level_builder = NodePath("LevelBuilder")
@@ -44,6 +44,7 @@ round_manager = NodePath("RoundManager")
 camera = NodePath("DraggableCamera")
 hand = NodePath("DraggableCamera/UI/Hand")
 your_turn_label = NodePath("DraggableCamera/UI/YourTurnLabel")
+lose_screen = NodePath("DraggableCamera/UI/YouLoseScreen")
 size = Vector2i(10, 10)
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
@@ -79,13 +80,15 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Deck" type="Control" parent="DraggableCamera/UI"]
+[node name="Deck" type="Control" parent="DraggableCamera/UI" node_paths=PackedStringArray("tile_grid")]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("13_3s7rm")
+tile_grid = NodePath("../../..")
 
 [node name="Hand" type="HBoxContainer" parent="DraggableCamera/UI" node_paths=PackedStringArray("tile_grid", "deck", "pass_button")]
+custom_minimum_size = Vector2(600, 0)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -95,6 +98,7 @@ anchor_bottom = 1.0
 offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 0
+alignment = 1
 script = ExtResource("11_pawdl")
 card_scene = ExtResource("11_d6b8m")
 tile_grid = NodePath("../../..")
@@ -130,3 +134,31 @@ texture_normal = SubResource("AtlasTexture_jp86b")
 texture_pressed = SubResource("AtlasTexture_yps0e")
 texture_hover = SubResource("AtlasTexture_8yilv")
 texture_click_mask = ExtResource("17_eoot7")
+
+[node name="YouLoseScreen" type="ColorRect" parent="DraggableCamera/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 0.4745098)
+
+[node name="YouLoseLabel" type="Label" parent="DraggableCamera/UI/YouLoseScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -236.0
+offset_top = -32.0
+offset_right = 236.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You Lose :("
+label_settings = SubResource("LabelSettings_kqtwp")
+horizontal_alignment = 1
+vertical_alignment = 1

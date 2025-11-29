@@ -10,9 +10,6 @@ enum ObjectDensity {
 
 @export var tile_grid: TileGrid
 
-@export var enemy_count: int = 3
-@export var density: ObjectDensity
-
 @export var player_data: TileObjectData
 @export var movement_region_object_data: TileObjectData
 @export var clump_obstacles: Array[TileObjectData]
@@ -22,10 +19,23 @@ enum ObjectDensity {
 @export var enemies: Array[TileObjectData]
 @export var enemy_weights: Array[int]
 
+var density: ObjectDensity
+
 var untouched_cells: Array[Vector2i]
 
 
 func place_objects() -> void:
+	var world_map: WorldMap = tile_grid.world_map
+	
+	if world_map.levels_beat < 7:
+		density = ObjectDensity.DENSE
+	elif world_map.levels_beat < 16:
+		density = ObjectDensity.FEATUREFUL
+	elif world_map.levels_beat < 30:
+		density = ObjectDensity.MILD
+	else:
+		density = ObjectDensity.SPARSE
+	
 	var tile_count: int = tile_grid.size.x * tile_grid.size.y
 	
 	untouched_cells = []
@@ -54,10 +64,6 @@ func place_objects() -> void:
 	while len(designated_movement_region) < movement_region_size:
 		walk(movement_region_origin, designated_movement_region, movement_region_size, 
 				[Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)].pick_random())
-	
-	#for pos in designated_movement_region:
-		#var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
-		#tile.add_object(movement_region_object_data)
 	
 	designated_movement_region.erase(movement_region_origin)
 	var origin_tile: Tile = tile_grid.get_tile(movement_region_origin.x, movement_region_origin.y)
@@ -137,6 +143,7 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
 	
+	var enemy_count: int = world_map.levels_beat + 2 * world_map.world_num + 1
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
 		var pos: Vector2i = designated_movement_region[pos_index]

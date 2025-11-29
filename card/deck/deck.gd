@@ -1,27 +1,22 @@
 class_name Deck
 extends Control
 
-var all_cards: Array[CardData] = [
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Heal.new()], 1, 1),
-	CardData.new([Modifier.Heal.new()], 1, 1),
-]
+@export var tile_grid: TileGrid
+
+@export var deck_manipulation_screen: DeckManipulationScreen
 
 var remaining_cards: Array[CardData] = []
 var used_cards: Array[CardData] = []
 
 
 func _ready() -> void:
-	for card in all_cards:
+	var starting_deck: Array[CardData]
+	if tile_grid:
+		starting_deck = tile_grid.world_map.player_deck
+	elif deck_manipulation_screen:
+		starting_deck = deck_manipulation_screen.world_map.player_deck
+	
+	for card in starting_deck:
 		remaining_cards.append(card)
 	
 	remaining_cards.shuffle()

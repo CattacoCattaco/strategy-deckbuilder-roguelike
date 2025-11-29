@@ -43,26 +43,6 @@ func get_mod_type() -> Type:
 		return Type.GLOBAL_MOD
 
 
-class Move extends Modifier:
-	func _get_name() -> String:
-		return "Move"
-	
-	
-	func _get_image() -> Texture2D:
-		return preload("res://card/modifier/arrow.png")
-	
-	
-	func _get_sort_order() -> int:
-		return 0
-	
-	
-	func _get_text(effect_range: int, _effect_size: int) -> String:
-		if effect_range == 1:
-			return "Move 1 space"
-		
-		return "Move up to %d spaces" % effect_range
-
-
 class Attack extends Modifier:
 	func _get_name() -> String:
 		return "Attack"
@@ -73,7 +53,7 @@ class Attack extends Modifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 1
+		return 0
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
@@ -90,7 +70,7 @@ class Heal extends Modifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 2
+		return 1
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
@@ -107,11 +87,31 @@ class Poison extends Modifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 3
+		return 2
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
 		return "Apply %d poison to a target in range %d" % [effect_size, effect_range]
+
+
+class Move extends Modifier:
+	func _get_name() -> String:
+		return "Move"
+	
+	
+	func _get_image() -> Texture2D:
+		return preload("res://card/modifier/arrow.png")
+	
+	
+	func _get_sort_order() -> int:
+		return 3
+	
+	
+	func _get_text(effect_range: int, _effect_size: int) -> String:
+		if effect_range == 1:
+			return "Move 1 space"
+		
+		return "Move up to %d spaces" % effect_range
 
 
 @abstract

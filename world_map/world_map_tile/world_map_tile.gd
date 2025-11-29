@@ -2,6 +2,7 @@ class_name WorldMapTile
 extends Node2D
 
 enum EventType {
+	NONE,
 	ENTRANCE,
 	EXIT,
 	ENCOUNTER,
@@ -22,6 +23,7 @@ var has_path: bool = false
 
 var is_positive: bool = false
 var event_type: EventType
+var completed: bool = false
 
 var _path_atlas: AtlasTexture
 
@@ -86,23 +88,27 @@ func update_path_sprite(update_neighbors: bool = false) -> void:
 
 func add_entrance() -> void:
 	entrance_sign.show()
-	event_type = EventType.ENTRANCE
 	is_positive = true
+	event_type = EventType.ENTRANCE
+	completed = true
 
 
 func add_exit() -> void:
 	exit_sign.show()
 	is_positive = true
 	event_type = EventType.EXIT
+	completed = true
 
 
 func add_encounter() -> void:
 	encounter_sign.show()
 	is_positive = false
 	event_type = EventType.ENCOUNTER
+	completed = false
 
 
 func add_reward_event() -> void:
 	merge_sign.show()
 	is_positive = true
 	event_type = EventType.MERGE
+	completed = false

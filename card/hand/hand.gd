@@ -5,16 +5,18 @@ signal card_played(card: CardData, targets: Array[Vector2i])
 
 @export var card_scene: PackedScene
 
-@export var tile_grid: TileGrid
 @export var deck: Deck
+
+@export var tile_grid: TileGrid
 @export var pass_button: TextureButton
+
+@export var deck_manipulation_screen: DeckManipulationScreen
 
 @export var hand_size: int = 5
 
 var cards: Array[Card]
 
 var player: TileObject
-
 var card_currently_playing: Card
 
 
@@ -22,15 +24,17 @@ func _ready() -> void:
 	mouse_entered.connect(_hovered_over)
 	mouse_exited.connect(_check_unhovered)
 	
-	pass_button.pressed.connect(_pass)
+	if tile_grid:
+		pass_button.pressed.connect(_pass)
 	
 	for i in range(hand_size):
 		draw_card()
 
 
 func _hovered_over() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_method(set_bottom_offset, get_bottom_offset(), 65, 0.5)
+	if tile_grid:
+		var tween: Tween = create_tween()
+		tween.tween_method(set_bottom_offset, get_bottom_offset(), 65, 0.5)
 
 
 func _check_unhovered() -> void:
@@ -38,8 +42,9 @@ func _check_unhovered() -> void:
 		# Hovered over card, didn't actually leave
 		return
 	
-	var tween: Tween = create_tween()
-	tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
+	if tile_grid:
+		var tween: Tween = create_tween()
+		tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
 
 
 func _pass() -> void:
@@ -78,6 +83,8 @@ func draw_card() -> void:
 	
 	cards.append(card)
 	add_child(card)
+	
+	update_gap_size()
 
 
 func discard(card: Card) -> void:
@@ -85,3 +92,15 @@ func discard(card: Card) -> void:
 	
 	cards.erase(card)
 	card.queue_free()
+	
+	update_gap_size()
+
+
+func update_gap_size() -> void:
+	var card_width: int = len(cards) * 107
+	var desired_width: int = roundi(custom_minimum_size.x)
+	var gap_size: int = floori((desired_width - card_width) as float / (len(cards) - 1) / 2) * 2
+	if gap_size > 4:
+		gap_size = 4
+	
+	add_theme_constant_override("separation", gap_size)
