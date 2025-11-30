@@ -27,15 +27,6 @@ var untouched_cells: Array[Vector2i]
 func place_objects() -> void:
 	var world_map: WorldMap = tile_grid.world_map
 	
-	if world_map.levels_beat < 7:
-		density = ObjectDensity.DENSE
-	elif world_map.levels_beat < 16:
-		density = ObjectDensity.FEATUREFUL
-	elif world_map.levels_beat < 30:
-		density = ObjectDensity.MILD
-	else:
-		density = ObjectDensity.SPARSE
-	
 	var tile_count: int = tile_grid.size.x * tile_grid.size.y
 	
 	untouched_cells = []

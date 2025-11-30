@@ -72,6 +72,9 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 
 
 func move_to(new_pos: Vector2i) -> void:
+	if not tile_grid.has_tile(new_pos.x, new_pos.y):
+		return
+	
 	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
 		return
 	
@@ -87,6 +90,9 @@ func move_to(new_pos: Vector2i) -> void:
 
 
 func damage(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.has_tile(target_pos.x, target_pos.y):
+		return
+	
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -100,6 +106,9 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 
 
 func heal(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.has_tile(target_pos.x, target_pos.y):
+		return
+	
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	

@@ -25,6 +25,43 @@ func _ready() -> void:
 	your_turn_label.hide()
 	lose_screen.hide()
 	
+	if world_map.levels_beat < 2:
+		size = Vector2i(3, 3)
+		level_builder.density = LevelBuilder.ObjectDensity.SPARSE
+	elif world_map.levels_beat < 3:
+		size = Vector2i(5, 5)
+		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	elif world_map.levels_beat < 5:
+		size = Vector2i(5, 5)
+		level_builder.density = LevelBuilder.ObjectDensity.SPARSE
+	elif world_map.levels_beat < 7:
+		size = Vector2i(7, 7)
+		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	elif world_map.levels_beat < 11:
+		size = Vector2i(7, 7)
+		level_builder.density = LevelBuilder.ObjectDensity.SPARSE
+	elif world_map.levels_beat < 13:
+		size = Vector2i(11, 11)
+		level_builder.density = LevelBuilder.ObjectDensity.FEATUREFUL
+	elif world_map.levels_beat < 17:
+		size = Vector2i(11, 11)
+		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	elif world_map.levels_beat < 19:
+		size = Vector2i(13, 13)
+		level_builder.density = LevelBuilder.ObjectDensity.DENSE
+	elif world_map.levels_beat < 23:
+		size = Vector2i(13, 13)
+		level_builder.density = LevelBuilder.ObjectDensity.FEATUREFUL
+	elif world_map.levels_beat < 29:
+		size = Vector2i(13, 13)
+		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	elif world_map.levels_beat < 31:
+		size = Vector2i(17, 17)
+		level_builder.density = LevelBuilder.ObjectDensity.DENSE
+	else:
+		size = Vector2i(17, 17)
+		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	
 	var pixel_size: Vector2 = size * 32
 	var offset := -Vector2(pixel_size) / 2
 	
@@ -60,6 +97,8 @@ func _input(event: InputEvent) -> void:
 				camera.position /= 2
 				camera.scale = Vector2(1, 1)
 				scale = Vector2(1, 1)
+		elif event.is_action_pressed("skip_target"):
+			tile_targeted.emit(Vector2(-1, -1))
 
 
 func win() -> void:
