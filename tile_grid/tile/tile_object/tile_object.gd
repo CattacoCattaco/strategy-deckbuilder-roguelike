@@ -21,6 +21,7 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 ]
 
 @export var sprite: AnimatedSprite2D
+@export var poisoned_sprite: AnimatedSprite2D
 @export var thought_bubble: Sprite2D
 
 @export var data: TileObjectData:
@@ -32,9 +33,13 @@ var tile_grid: TileGrid
 var tile: Tile
 var pos: Vector2i
 var health: int
+var poison_level: int = 0
 
 
 func _ready() -> void:
+	poisoned_sprite.play("default")
+	poisoned_sprite.hide()
+	
 	hide_thought_bubble()
 
 
@@ -61,20 +66,25 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 		var effect: Effect = effects[i]
 		var target: Vector2i = targets[i]
 		
+		if not tile_grid.has_tile(target.x, target.y):
+			continue
+		
 		if effect.base_action is Modifier.Move:
+			if target == pos:
+				continue
+			
 			move_to(target)
 		elif effect.base_action is Modifier.Attack:
 			damage(target, effect.effect_size)
 		elif effect.base_action is Modifier.Heal:
 			heal(target, effect.effect_size)
+		elif effect.base_action is Modifier.Poison:
+			poison(target, effect.effect_size)
 		
 		await get_tree().create_timer(0.8).timeout
 
 
 func move_to(new_pos: Vector2i) -> void:
-	if not tile_grid.has_tile(new_pos.x, new_pos.y):
-		return
-	
 	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
 		return
 	
@@ -90,9 +100,6 @@ func move_to(new_pos: Vector2i) -> void:
 
 
 func damage(target_pos: Vector2i, amount: int) -> void:
-	if not tile_grid.has_tile(target_pos.x, target_pos.y):
-		return
-	
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -106,9 +113,6 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 
 
 func heal(target_pos: Vector2i, amount: int) -> void:
-	if not tile_grid.has_tile(target_pos.x, target_pos.y):
-		return
-	
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -120,6 +124,32 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 		target.health = target.data.max_health
 	
 	target.show_health()
+
+
+func poison(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
+		return
+	
+	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	target.poison_level += amount
+	
+	target.poisoned_sprite.show()
+
+
+func do_poison() -> void:
+	health -= poison_level
+	
+	poison_level -= 1
+	
+	if poison_level == 0:
+		poisoned_sprite.hide()
+	
+	show_health()
+	
+	if health <= 0:
+		print("deleted")
+		tile.delete_object()
 
 
 func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool) -> Array[Tile]:

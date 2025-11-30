@@ -21,7 +21,6 @@ enum ActionMarker {
 
 var tile_grid: TileGrid
 var pos: Vector2i
-
 var inspected: bool = false
 var inspect_marks: Dictionary[Tile, Array]
 

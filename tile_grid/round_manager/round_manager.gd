@@ -61,6 +61,13 @@ func do_turn() -> void:
 		await action_source._generate_next_action(current_object)
 		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
 	
+	if current_object.poison_level > 0:
+		current_object.do_poison()
+		
+		await get_tree().create_timer(0.8).timeout
+		
+		print("done with poison")
+	
 	current_turn_index += 1
 	
 	if current_turn_index >= len(turn_order):

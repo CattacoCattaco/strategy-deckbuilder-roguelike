@@ -1,9 +1,21 @@
-[gd_scene load_steps=10 format=3 uid="uid://iwl66mv6hxcn"]
+[gd_scene load_steps=19 format=3 uid="uid://iwl66mv6hxcn"]
 
 [ext_resource type="Script" uid="uid://8jj7we008eup" path="res://tile_grid/tile/tile_object/tile_object.gd" id="1_634g3"]
-[ext_resource type="Resource" uid="uid://dq2vskswinh63" path="res://tile_grid/tile/tile_object/data/objects/acid.tres" id="2_5k012"]
+[ext_resource type="Script" uid="uid://c2nkdbuc7i2gr" path="res://tile_grid/tile/tile_object/data/action_source/null_action_source.gd" id="2_2i68v"]
 [ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile_grid/tile/tile_object/textures/acid.png" id="2_634g3"]
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="3_cmywa"]
 [ext_resource type="Texture2D" uid="uid://ci3bqqtsxhfnu" path="res://tile_grid/tile/tile_object/thought_bubble/thought_bubble.png" id="4_vv2ea"]
+[ext_resource type="Texture2D" uid="uid://00dpgd6fkw8o" path="res://tile_grid/tile/poison.png" id="5_2n5c3"]
+
+[sub_resource type="Resource" id="Resource_ffs1b"]
+script = ExtResource("2_2i68v")
+metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
+
+[sub_resource type="Resource" id="Resource_kro7k"]
+script = ExtResource("3_cmywa")
+texture = ExtResource("2_634g3")
+action_source = SubResource("Resource_ffs1b")
+metadata/_custom_type_script = "uid://g0hmwqu3bxiu"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
 atlas = ExtResource("2_634g3")
@@ -41,11 +53,48 @@ animations = [{
 "speed": 1.25
 }]
 
-[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite", "thought_bubble")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlsys"]
+atlas = ExtResource("5_2n5c3")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y3ccy"]
+atlas = ExtResource("5_2n5c3")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnvad"]
+atlas = ExtResource("5_2n5c3")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tppog"]
+atlas = ExtResource("5_2n5c3")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nfi5s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlsys")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y3ccy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnvad")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tppog")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.25
+}]
+
+[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite", "poisoned_sprite", "thought_bubble")]
 script = ExtResource("1_634g3")
 sprite = NodePath("Sprite")
+poisoned_sprite = NodePath("Poison")
 thought_bubble = NodePath("ThoughtBubble")
-data = ExtResource("2_5k012")
+data = SubResource("Resource_kro7k")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sf4dn")
@@ -53,6 +102,11 @@ autoplay = "default"
 frame_progress = 0.6501309
 centered = false
 
+[node name="Poison" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_nfi5s")
+centered = false
+
 [node name="ThoughtBubble" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("4_vv2ea")
 centered = false
