@@ -4,6 +4,8 @@ extends Control
 enum Type {
 	MERGE,
 	ADD_SYMBOL,
+	PLUS_RANGE,
+	PLUS_EFFECT_SIZE,
 }
 
 @export var hand: Hand
@@ -58,6 +60,10 @@ func calculate_output() -> CardData:
 			return calculate_output_merge()
 		Type.ADD_SYMBOL:
 			return calculate_output_add_symbol()
+		Type.PLUS_RANGE:
+			return calculate_output_plus_range()
+		Type.PLUS_EFFECT_SIZE:
+			return calculate_output_plus_effect_size()
 	
 	return CardData.new([], 0, 0)
 
@@ -80,21 +86,34 @@ func calculate_output_merge() -> CardData:
 	else:
 		result.effect_range = input_data[1].effect_range
 	
-	for modifier in input_data[0].modifiers:
-		result.modifiers.append(modifier)
+	for input_modifier in input_data[0].modifiers:
+		result.modifiers.append(input_modifier)
 	
-	for modifier in input_data[1].modifiers:
-		result.modifiers.append(modifier)
+	for input_modifier in input_data[1].modifiers:
+		result.modifiers.append(input_modifier)
 	
 	return result
 
 
 func calculate_output_add_symbol() -> CardData:
-	var input_data: CardData = input_slots[0].card.card_data
-	
-	var result := CardData.new(input_data.modifiers.duplicate(), input_data.effect_range,
-			input_data.effect_size)
+	var result: CardData = input_slots[0].card.card_data.duplicate()
 	
 	result.modifiers.append(modifier)
+	
+	return result
+
+
+func calculate_output_plus_range() -> CardData:
+	var result: CardData = input_slots[0].card.card_data.duplicate()
+	
+	result.effect_range += 1
+	
+	return result
+
+
+func calculate_output_plus_effect_size() -> CardData:
+	var result: CardData = input_slots[0].card.card_data.duplicate()
+	
+	result.effect_size += 1
 	
 	return result

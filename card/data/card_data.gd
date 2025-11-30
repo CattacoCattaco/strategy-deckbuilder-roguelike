@@ -6,10 +6,15 @@ var effect_range: int
 var effect_size: int
 
 
-func _init(p_modifiers: Array[Modifier], p_effect_range: int, p_effect_size: int) -> void:
+func _init(p_modifiers: Array[Modifier] = [], p_effect_range: int = 0,
+		p_effect_size: int = 0) -> void:
 	modifiers = p_modifiers
 	effect_range = p_effect_range
 	effect_size = p_effect_size
+
+
+func duplicate() -> CardData:
+	return CardData.new(modifiers.duplicate(), effect_range, effect_size)
 
 
 func get_effects() -> Array[Effect]:

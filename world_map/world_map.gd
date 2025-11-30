@@ -199,7 +199,37 @@ func try_do_event() -> void:
 				var deck_manipulation_screen: DeckManipulationScreen 
 				deck_manipulation_screen = deck_manipulation_scene.instantiate()
 				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.MERGE)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.ADD_SYMBOL:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
 				deck_manipulation_screen.set_slot_set(SlotSet.Type.ADD_SYMBOL)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.PLUS_RANGE:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.PLUS_RANGE)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.PLUS_EFFECT_SIZE:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.PLUS_EFFECT_SIZE)
 				deck_manipulation_screen.world_map = self
 				
 				get_tree().root.add_child(deck_manipulation_screen)

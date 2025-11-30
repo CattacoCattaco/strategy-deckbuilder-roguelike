@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://o3lj7nga2sha"]
+[gd_scene load_steps=12 format=3 uid="uid://o3lj7nga2sha"]
 
 [ext_resource type="Texture2D" uid="uid://c0kh264k25bl7" path="res://world_map/world_map_tile/tile.png" id="1_e38f7"]
 [ext_resource type="Script" uid="uid://dn4pctsylctss" path="res://world_map/world_map_tile/world_map_tile.gd" id="1_pu1pf"]
@@ -7,20 +7,20 @@
 [ext_resource type="Texture2D" uid="uid://ds6sg8lqoq37j" path="res://world_map/world_map_tile/entrance.png" id="4_1cgjn"]
 [ext_resource type="Texture2D" uid="uid://cuiixjcrchtot" path="res://world_map/world_map_tile/merge.png" id="4_n6qic"]
 [ext_resource type="Texture2D" uid="uid://cx5rhkesmm4v7" path="res://world_map/world_map_tile/exit.png" id="5_odmgf"]
+[ext_resource type="Texture2D" uid="uid://cqiq3bbfh16nj" path="res://world_map/world_map_tile/add_symbol.png" id="8_1cgjn"]
+[ext_resource type="Texture2D" uid="uid://ubwp4tsce5us" path="res://world_map/world_map_tile/plus_range.png" id="9_e2toq"]
+[ext_resource type="Texture2D" uid="uid://bfol081qvty6a" path="res://world_map/world_map_tile/plus_effect_size.png" id="10_pt4fo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1cgjn"]
 resource_local_to_scene = true
 atlas = ExtResource("2_pu1pf")
 region = Rect2(64, 64, 32, 32)
 
-[node name="WorldMapTile" type="Node2D" node_paths=PackedStringArray("bg", "path", "entrance_sign", "exit_sign", "encounter_sign", "merge_sign")]
+[node name="WorldMapTile" type="Node2D" node_paths=PackedStringArray("bg", "path", "event_signs")]
 script = ExtResource("1_pu1pf")
 bg = NodePath("Tile")
 path = NodePath("Path")
-entrance_sign = NodePath("Entrance")
-exit_sign = NodePath("Exit")
-encounter_sign = NodePath("Encounter")
-merge_sign = NodePath("Merge")
+event_signs = [NodePath("Entrance"), NodePath("Exit"), NodePath("Encounter"), NodePath("Merge"), NodePath("AddSymbol"), NodePath("PlusRange"), NodePath("PlusEffectSize")]
 
 [node name="Tile" type="Sprite2D" parent="."]
 texture = ExtResource("1_e38f7")
@@ -44,4 +44,16 @@ centered = false
 
 [node name="Merge" type="Sprite2D" parent="."]
 texture = ExtResource("4_n6qic")
+centered = false
+
+[node name="AddSymbol" type="Sprite2D" parent="."]
+texture = ExtResource("8_1cgjn")
+centered = false
+
+[node name="PlusRange" type="Sprite2D" parent="."]
+texture = ExtResource("9_e2toq")
+centered = false
+
+[node name="PlusEffectSize" type="Sprite2D" parent="."]
+texture = ExtResource("10_pt4fo")
 centered = false

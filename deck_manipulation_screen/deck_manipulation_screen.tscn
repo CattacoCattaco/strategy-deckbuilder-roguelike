@@ -17,7 +17,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h76y5")
-slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet")]
+slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet"), NodePath("SlotRegion/PlusRangeSlotSet"), NodePath("SlotRegion/PlusEffectSizeSlotSet")]
 
 [node name="SlotRegion" type="Control" parent="."]
 layout_mode = 1
@@ -169,6 +169,130 @@ texture = ExtResource("4_ya4dx")
 centered = false
 
 [node name="OutputSlot" parent="SlotRegion/AddSymbolSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.625
+anchor_top = 0.5
+anchor_right = 0.625
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="PlusRangeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_g0t5s")
+hand = NodePath("../../Hand")
+deck_manipulation_screen = NodePath("../..")
+input_slots = [NodePath("InputSlot1")]
+output_slot = NodePath("OutputSlot")
+type = 2
+
+[node name="InputSlot1" parent="SlotRegion/PlusRangeSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.375
+anchor_top = 0.5
+anchor_right = 0.375
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymbolArrow" type="Control" parent="SlotRegion/PlusRangeSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arrow" type="Sprite2D" parent="SlotRegion/PlusRangeSlotSet/SymbolArrow"]
+texture = ExtResource("4_ya4dx")
+centered = false
+
+[node name="OutputSlot" parent="SlotRegion/PlusRangeSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.625
+anchor_top = 0.5
+anchor_right = 0.625
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="PlusEffectSizeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_g0t5s")
+hand = NodePath("../../Hand")
+deck_manipulation_screen = NodePath("../..")
+input_slots = [NodePath("InputSlot1")]
+output_slot = NodePath("OutputSlot")
+type = 3
+
+[node name="InputSlot1" parent="SlotRegion/PlusEffectSizeSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.375
+anchor_top = 0.5
+anchor_right = 0.375
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymbolArrow" type="Control" parent="SlotRegion/PlusEffectSizeSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arrow" type="Sprite2D" parent="SlotRegion/PlusEffectSizeSlotSet/SymbolArrow"]
+texture = ExtResource("4_ya4dx")
+centered = false
+
+[node name="OutputSlot" parent="SlotRegion/PlusEffectSizeSlotSet" instance=ExtResource("2_4o6wb")]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.625

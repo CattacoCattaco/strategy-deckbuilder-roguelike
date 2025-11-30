@@ -2,19 +2,26 @@ class_name WorldMapTile
 extends Node2D
 
 enum EventType {
-	NONE,
 	ENTRANCE,
 	EXIT,
 	ENCOUNTER,
 	MERGE,
+	ADD_SYMBOL,
+	PLUS_RANGE,
+	PLUS_EFFECT_SIZE,
+	NONE,
 }
+
+const POSITIVE_EVENTS: Array[EventType] = [
+	EventType.MERGE,
+	EventType.ADD_SYMBOL,
+	EventType.PLUS_RANGE,
+	EventType.PLUS_EFFECT_SIZE,
+]
 
 @export var bg: Sprite2D
 @export var path: Sprite2D
-@export var entrance_sign: Sprite2D
-@export var exit_sign: Sprite2D
-@export var encounter_sign: Sprite2D
-@export var merge_sign: Sprite2D
+@export var event_signs: Array[Sprite2D]
 
 var pos: Vector2i
 var world_map: WorldMap
@@ -22,7 +29,7 @@ var world_map: WorldMap
 var has_path: bool = false
 
 var is_positive: bool = false
-var event_type: EventType
+var event_type: EventType = EventType.NONE
 var completed: bool = false
 
 var _path_atlas: AtlasTexture
@@ -32,10 +39,8 @@ func _ready() -> void:
 	_path_atlas = path.texture
 	
 	path.hide()
-	entrance_sign.hide()
-	exit_sign.hide()
-	encounter_sign.hide()
-	merge_sign.hide()
+	for event_sign in event_signs:
+		event_sign.hide()
 
 
 func set_as_path() -> void:
@@ -87,28 +92,28 @@ func update_path_sprite(update_neighbors: bool = false) -> void:
 
 
 func add_entrance() -> void:
-	entrance_sign.show()
+	event_signs[EventType.ENTRANCE].show()
 	is_positive = true
 	event_type = EventType.ENTRANCE
 	completed = true
 
 
 func add_exit() -> void:
-	exit_sign.show()
+	event_signs[EventType.EXIT].show()
 	is_positive = true
 	event_type = EventType.EXIT
 	completed = true
 
 
 func add_encounter() -> void:
-	encounter_sign.show()
+	event_signs[EventType.ENCOUNTER].show()
 	is_positive = false
 	event_type = EventType.ENCOUNTER
 	completed = false
 
 
 func add_reward_event() -> void:
-	merge_sign.show()
+	event_type = POSITIVE_EVENTS.pick_random()
+	event_signs[event_type].show()
 	is_positive = true
-	event_type = EventType.MERGE
 	completed = false
