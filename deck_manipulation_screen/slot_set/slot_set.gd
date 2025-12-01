@@ -35,6 +35,9 @@ func _ready() -> void:
 			Modifier.Heal.new(),
 			Modifier.Move.new(),
 			Modifier.Poison.new(),
+			Modifier.Split2.new(),
+			Modifier.Split3.new(),
+			Modifier.Jump.new(),
 		].pick_random()
 
 

@@ -62,26 +62,44 @@ func load_sprite_anim() -> void:
 func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 	var effects: Array[Effect] = action.get_effects()
 	
+	var current_target_index: int = 0
+	
 	for i in len(effects):
 		var effect: Effect = effects[i]
-		var target: Vector2i = targets[i]
 		
-		if not tile_grid.has_tile(target.x, target.y):
-			continue
+		var rep_count: int = 1
 		
-		if effect.base_action is Modifier.Move:
-			if target == pos:
+		for local_mod in effect.local_modifiers:
+			if local_mod is Modifier.Split2:
+				rep_count *= 2
+			elif local_mod is Modifier.Split3:
+				rep_count *= 3
+		
+		for global_mod in effect.global_modifiers:
+			if global_mod is Modifier.Jump:
+				# Jumping should already be accounted for
+				pass
+		
+		for j in range(rep_count):
+			var target: Vector2i = targets[current_target_index]
+			current_target_index += 1
+			
+			if not tile_grid.has_tile(target.x, target.y):
 				continue
 			
-			move_to(target)
-		elif effect.base_action is Modifier.Attack:
-			damage(target, effect.effect_size)
-		elif effect.base_action is Modifier.Heal:
-			heal(target, effect.effect_size)
-		elif effect.base_action is Modifier.Poison:
-			poison(target, effect.effect_size)
-		
-		await get_tree().create_timer(0.8).timeout
+			if effect.base_action is Modifier.Move:
+				if target == pos:
+					continue
+				
+				move_to(target)
+			elif effect.base_action is Modifier.Attack:
+				damage(target, effect.effect_size)
+			elif effect.base_action is Modifier.Heal:
+				heal(target, effect.effect_size)
+			elif effect.base_action is Modifier.Poison:
+				poison(target, effect.effect_size)
+			
+			await get_tree().create_timer(0.8).timeout
 
 
 func move_to(new_pos: Vector2i) -> void:

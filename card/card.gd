@@ -88,12 +88,25 @@ func try_play() -> void:
 	for effect: Effect in effects:
 		var player: TileObject = hand.player
 		
+		var rep_count: int = 1
+		var can_jump: bool = false
+		
+		for local_mod in effect.local_modifiers:
+			if local_mod is Modifier.Split2:
+				rep_count *= 2
+			elif local_mod is Modifier.Split3:
+				rep_count *= 3
+		
+		for global_mod in effect.global_modifiers:
+			if global_mod is Modifier.Jump:
+				can_jump = true
+		
 		var targetable_tiles: Array[Tile]
 		
 		if effect.base_action is Modifier.Move:
-			targetable_tiles = player.get_tiles_in_range(effect.effect_range, false, false)
+			targetable_tiles = player.get_tiles_in_range(effect.effect_range, can_jump, false)
 		else:
-			targetable_tiles = player.get_tiles_in_range(effect.effect_range, false, true)
+			targetable_tiles = player.get_tiles_in_range(effect.effect_range, can_jump, true)
 		
 		var action_marker: Tile.ActionMarker
 		
@@ -106,17 +119,21 @@ func try_play() -> void:
 		elif effect.base_action is Modifier.Poison:
 			action_marker = Tile.ActionMarker.POISON
 		
-		for tile in targetable_tiles:
-			tile.show_action_marker(action_marker)
-			tile.become_targetable()
-		
-		var target: Vector2i = await hand.tile_grid.tile_targeted
-		
-		targets.append(target)
-		
-		for tile in targetable_tiles:
-			tile.hide_action_marker(action_marker)
-			tile.become_untargetable()
+		for i in range(rep_count):
+			if i > 0:
+				await get_tree().create_timer(0.2).timeout
+			
+			for tile in targetable_tiles:
+				tile.show_action_marker(action_marker)
+				tile.become_targetable()
+			
+			var target: Vector2i = await hand.tile_grid.tile_targeted
+			
+			targets.append(target)
+			
+			for tile in targetable_tiles:
+				tile.hide_action_marker(action_marker)
+				tile.become_untargetable()
 	
 	needs_targets = false
 	

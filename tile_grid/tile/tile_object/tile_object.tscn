@@ -7,14 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://ci3bqqtsxhfnu" path="res://tile_grid/tile/tile_object/thought_bubble/thought_bubble.png" id="4_vv2ea"]
 [ext_resource type="Texture2D" uid="uid://00dpgd6fkw8o" path="res://tile_grid/tile/poison.png" id="5_2n5c3"]
 
-[sub_resource type="Resource" id="Resource_ffs1b"]
+[sub_resource type="Resource" id="Resource_2i68v"]
 script = ExtResource("2_2i68v")
 metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
 
-[sub_resource type="Resource" id="Resource_kro7k"]
+[sub_resource type="Resource" id="Resource_cmywa"]
 script = ExtResource("3_cmywa")
 texture = ExtResource("2_634g3")
-action_source = SubResource("Resource_ffs1b")
+action_source = SubResource("Resource_2i68v")
 metadata/_custom_type_script = "uid://g0hmwqu3bxiu"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
@@ -94,7 +94,7 @@ script = ExtResource("1_634g3")
 sprite = NodePath("Sprite")
 poisoned_sprite = NodePath("Poison")
 thought_bubble = NodePath("ThoughtBubble")
-data = SubResource("Resource_kro7k")
+data = SubResource("Resource_cmywa")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sf4dn")
@@ -103,7 +103,9 @@ frame_progress = 0.6501309
 centered = false
 
 [node name="Poison" type="AnimatedSprite2D" parent="."]
+visible = false
 sprite_frames = SubResource("SpriteFrames_nfi5s")
+frame_progress = 0.79473305
 centered = false
 
 [node name="ThoughtBubble" type="Sprite2D" parent="."]
