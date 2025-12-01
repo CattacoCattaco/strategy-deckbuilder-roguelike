@@ -160,10 +160,6 @@ func generate_map() -> void:
 func try_move_player_in_dir(dir: Vector2i) -> void:
 	var current_tile: WorldMapTile = get_tile_from_vec(player_pos)
 	
-	if not current_tile.completed:
-		if current_tile.event_type != WorldMapTile.EventType.NONE:
-			return
-	
 	var neighbor_pos: Vector2i = player_pos + dir
 	
 	if not has_tile_at_vec(neighbor_pos):
@@ -172,6 +168,13 @@ func try_move_player_in_dir(dir: Vector2i) -> void:
 	var neighbor_tile: WorldMapTile = get_tile_from_vec(neighbor_pos)
 	if not neighbor_tile.has_path:
 		return
+	
+	if not current_tile.completed:
+		if current_tile.event_type != WorldMapTile.EventType.NONE:
+			var going_to: Vector2i = player_pos + 2 * dir
+			var going_to_tile: WorldMapTile = get_tile_from_vec(going_to)
+			if not going_to_tile.completed:
+				return
 	
 	player_pos = neighbor_pos
 	player.position = neighbor_tile.position

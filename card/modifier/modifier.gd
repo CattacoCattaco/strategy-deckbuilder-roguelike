@@ -13,6 +13,16 @@ static func sort(modifiers: Array[Modifier]) -> void:
 	modifiers.sort_custom(a_before_b)
 
 
+static func remove_duplicates(modifiers: Array[Modifier]) -> void:
+	for i in len(modifiers):
+		var modifier: Modifier = modifiers[i]
+		var sort_value: int = modifier._get_sort_order()
+		
+		for j in range(i):
+			if modifiers[j]._get_sort_order() == sort_value:
+				modifiers.remove_at(i)
+
+
 static func a_before_b(a: Modifier, b: Modifier) -> bool:
 	return a._get_sort_order() < b._get_sort_order()
 

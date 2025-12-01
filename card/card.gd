@@ -58,6 +58,10 @@ func _unhover() -> void:
 
 func load_data() -> void:
 	Modifier.sort(card_data.modifiers)
+	Modifier.remove_duplicates(card_data.modifiers)
+	
+	while len(card_data.modifiers) > 5:
+		card_data.modifiers.pop_back()
 	
 	for i in range(5):
 		if i < len(card_data.modifiers):
