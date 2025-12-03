@@ -44,8 +44,11 @@ func _gui_input(event: InputEvent) -> void:
 						else:
 							parent.take_card()
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				if get_parent() == hand and hand.tile_grid:
+				var parent: Control = get_parent_control()
+				if parent == hand and hand.tile_grid:
 					hand.tile_grid.focus(card_data)
+				elif (parent == hand or parent is CardSlot) and hand.deck_manipulation_screen:
+					hand.deck_manipulation_screen.focus(card_data)
 
 
 func _hover() -> void:

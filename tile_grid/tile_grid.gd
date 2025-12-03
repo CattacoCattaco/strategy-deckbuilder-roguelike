@@ -5,6 +5,8 @@ extends Node2D
 signal tile_targeted(pos: Vector2i)
 
 @export var tile_scene: PackedScene
+@export var deck_view_scene: PackedScene
+
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
 @export var camera: Camera2D
@@ -107,6 +109,12 @@ func _input(event: InputEvent) -> void:
 				scale = Vector2(1, 1)
 		elif event.is_action_pressed("skip_target"):
 			tile_targeted.emit(Vector2(-1, -1))
+		elif event.is_action_pressed("view_deck"):
+			var deck_view: DeckView = deck_view_scene.instantiate()
+			add_child(deck_view)
+			deck_view.set_anchors_preset(Control.PRESET_CENTER)
+			deck_view.world_map = world_map
+			deck_view.show_deck()
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:

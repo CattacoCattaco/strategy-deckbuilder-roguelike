@@ -19,6 +19,10 @@ var cards: Array[Card]
 var player: TileObject
 var card_currently_playing: Card
 
+var zoom_tween: Tween
+var hovering: bool = false
+var unhovering: bool = false
+
 
 func _ready() -> void:
 	mouse_entered.connect(_hovered_over)
@@ -32,19 +36,47 @@ func _ready() -> void:
 
 
 func _hovered_over() -> void:
+	if hovering:
+		return
+	
 	if tile_grid:
-		var tween: Tween = create_tween()
-		tween.tween_method(set_bottom_offset, get_bottom_offset(), 65, 0.5)
+		if zoom_tween:
+			zoom_tween.stop()
+			unhovering = false
+		
+		hovering = true
+		
+		zoom_tween = create_tween()
+		zoom_tween.tween_method(set_bottom_offset, get_bottom_offset(), 65, 0.5)
+		zoom_tween.tween_callback(set_not_hovering)
 
 
 func _check_unhovered() -> void:
+	if unhovering:
+		return
+	
 	if Rect2(Vector2.ZERO, size).has_point(get_local_mouse_position()):
 		# Hovered over card, didn't actually leave
 		return
 	
 	if tile_grid:
-		var tween: Tween = create_tween()
-		tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
+		if zoom_tween:
+			zoom_tween.stop()
+			hovering = false
+		
+		unhovering = true
+		
+		zoom_tween = create_tween()
+		zoom_tween.tween_method(set_bottom_offset, get_bottom_offset(), 120, 0.5)
+		zoom_tween.tween_callback(set_not_unhovering)
+
+
+func set_not_hovering() -> void:
+	hovering = true
+
+
+func set_not_unhovering() -> void:
+	unhovering = false
 
 
 func _pass() -> void:

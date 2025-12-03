@@ -1,15 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://kjvs4xvvrmvc"]
+[gd_scene load_steps=10 format=3 uid="uid://kjvs4xvvrmvc"]
 
 [ext_resource type="Script" uid="uid://bqxweyi1r8t5d" path="res://deck_manipulation_screen/deck_manipulation_screen.gd" id="1_h76y5"]
 [ext_resource type="PackedScene" uid="uid://cjom4bor5y3ap" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot.tscn" id="2_4o6wb"]
 [ext_resource type="Script" uid="uid://ctbryeqoij1nf" path="res://card/deck/deck.gd" id="2_dawdr"]
 [ext_resource type="Script" uid="uid://bibu4hvcj4j3e" path="res://deck_manipulation_screen/slot_set/slot_set.gd" id="2_g0t5s"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="2_wl2k6"]
+[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_ya4dx"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="3_dawdr"]
 [ext_resource type="Texture2D" uid="uid://cxl0d084p7fa3" path="res://deck_manipulation_screen/slot_set/plus.png" id="3_g0t5s"]
 [ext_resource type="Texture2D" uid="uid://bmwc7v524qmfj" path="res://deck_manipulation_screen/slot_set/arrow.png" id="4_ya4dx"]
 
-[node name="DeckManipulationScreen" type="Control" node_paths=PackedStringArray("slot_sets")]
+[node name="DeckManipulationScreen" type="Control" node_paths=PackedStringArray("slot_sets", "hand", "focus_card_holder", "focus_card")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +18,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h76y5")
+deck_view_scene = ExtResource("2_ya4dx")
 slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet"), NodePath("SlotRegion/PlusRangeSlotSet"), NodePath("SlotRegion/PlusEffectSizeSlotSet")]
+hand = NodePath("Hand")
+focus_card_holder = NodePath("FocusCardHolder")
+focus_card = NodePath("FocusCardHolder/FocusCard")
 
 [node name="SlotRegion" type="Control" parent="."]
 layout_mode = 1
@@ -333,3 +338,26 @@ script = ExtResource("2_wl2k6")
 card_scene = ExtResource("3_dawdr")
 deck = NodePath("../Deck")
 deck_manipulation_screen = NodePath("..")
+
+[node name="FocusCardHolder" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5, 0.5, 0.5, 0.4117647)
+
+[node name="FocusCard" parent="FocusCardHolder" instance=ExtResource("3_dawdr")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.0
+offset_top = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)

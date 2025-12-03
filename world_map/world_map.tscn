@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://4gq17h5jwwyb"]
+[gd_scene load_steps=9 format=3 uid="uid://4gq17h5jwwyb"]
 
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="1_088kp"]
 [ext_resource type="Script" uid="uid://djskdjsrgxvnu" path="res://world_map/world_map.gd" id="1_yw1td"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://b3li581ttt0ou" path="res://tile_grid/tile_grid.tscn" id="3_fsjge"]
 [ext_resource type="Texture2D" uid="uid://b3jwdtrjlyjor" path="res://tile_grid/tile/tile_object/textures/player.png" id="3_g238a"]
 [ext_resource type="PackedScene" uid="uid://kjvs4xvvrmvc" path="res://deck_manipulation_screen/deck_manipulation_screen.tscn" id="4_nirhn"]
+[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="5_yqyfv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fsjge"]
 atlas = ExtResource("3_g238a")
@@ -16,6 +17,7 @@ script = ExtResource("1_yw1td")
 tile_scene = ExtResource("2_wrpkp")
 level_scene = ExtResource("3_fsjge")
 deck_manipulation_scene = ExtResource("4_nirhn")
+deck_view_scene = ExtResource("5_yqyfv")
 player = NodePath("Player")
 camera = NodePath("Camera2D")
 used_size = 5

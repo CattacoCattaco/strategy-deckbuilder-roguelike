@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=25 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
+[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="3_8yilv"]
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="3_gjkwh"]
 [ext_resource type="Script" uid="uid://cvaphaq5sg73r" path="res://tile_grid/level_builder/level_builder.gd" id="3_tunm5"]
 [ext_resource type="Resource" uid="uid://dy6mxnqsycfeo" path="res://tile_grid/tile/tile_object/data/objects/red_tile.tres" id="4_0vku6"]
@@ -40,6 +41,7 @@ region = Rect2(0, 20, 48, 20)
 [node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "focus_card_holder", "focus_card", "lose_screen")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
+deck_view_scene = ExtResource("3_8yilv")
 level_builder = NodePath("LevelBuilder")
 round_manager = NodePath("RoundManager")
 camera = NodePath("DraggableCamera")

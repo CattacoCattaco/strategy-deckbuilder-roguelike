@@ -4,6 +4,7 @@ extends Node2D
 @export var tile_scene: PackedScene
 @export var level_scene: PackedScene
 @export var deck_manipulation_scene: PackedScene
+@export var deck_view_scene: PackedScene
 
 @export var player: Sprite2D
 @export var camera: DraggableCamera
@@ -63,6 +64,12 @@ func _input(event: InputEvent) -> void:
 				camera.position /= 2
 				camera.scale = Vector2(1, 1)
 				scale = Vector2(1, 1)
+		elif event.is_action_pressed("view_deck"):
+			var deck_view: DeckView = deck_view_scene.instantiate()
+			add_child(deck_view)
+			deck_view.set_anchors_preset(Control.PRESET_CENTER)
+			deck_view.world_map = self
+			deck_view.show_deck()
 
 
 func generate_map() -> void:
