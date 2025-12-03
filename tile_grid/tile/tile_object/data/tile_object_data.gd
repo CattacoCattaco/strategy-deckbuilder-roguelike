@@ -15,12 +15,14 @@ enum TextureType {
 
 ## What type of object is this?
 enum ObjectType {
-	## Doesn't move
+	## Doesn't do things
 	STATIC,
 	## Player
 	PLAYER,
 	## Enemy
 	ENEMY,
+	## Needs to be protected
+	DEFENDABLE,
 }
 
 ## The fps of all animations

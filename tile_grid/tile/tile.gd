@@ -115,6 +115,10 @@ func delete_object() -> void:
 		if len(tile_grid.round_manager.enemies) == 0:
 			tile_grid.win()
 	
+	if object in EnemyActionSource.defendables:
+		EnemyActionSource.defendables.erase(object)
+		tile_grid.lose()
+	
 	if object == tile_grid.hand.player:
 		tile_grid.hand.player = null
 		tile_grid.lose()

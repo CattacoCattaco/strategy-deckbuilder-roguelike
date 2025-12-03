@@ -16,6 +16,7 @@ enum ObjectDensity {
 @export var clump_obstacle_weights: Array[int]
 @export var single_obstacles: Array[TileObjectData]
 @export var single_obstacle_weights: Array[int]
+@export var defendable: TileObjectData
 @export var enemies: Array[TileObjectData]
 @export var enemy_weights: Array[int]
 
@@ -134,7 +135,24 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
 	
+	EnemyActionSource.defendables = []
+	
 	var enemy_count: int = world_map.levels_beat + 2 * world_map.world_num + 1
+	
+	if tile_grid.is_mission:
+		enemy_count = ceili(enemy_count / 4.0)
+		
+		var defendable_count: int = ceili((world_map.levels_beat + 1) / 7.0)
+		
+		for i in range(defendable_count):
+			var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
+			var pos: Vector2i = designated_movement_region[pos_index]
+			designated_movement_region.remove_at(pos_index)
+			
+			var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
+			tile.add_object(defendable)
+			EnemyActionSource.defendables.append(tile.object)
+	
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
 		var pos: Vector2i = designated_movement_region[pos_index]

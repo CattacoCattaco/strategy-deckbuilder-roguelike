@@ -197,6 +197,14 @@ func try_do_event() -> void:
 				
 				get_tree().root.add_child(level)
 				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.MISSION:
+			if not tile.completed:
+				var level: TileGrid = level_scene.instantiate()
+				level.world_map = self
+				level.is_mission = true
+				
+				get_tree().root.add_child(level)
+				get_tree().root.remove_child(self)
 		WorldMapTile.EventType.MERGE:
 			if not tile.completed:
 				var deck_manipulation_screen: DeckManipulationScreen 

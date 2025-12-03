@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=24 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -11,6 +11,7 @@
 [ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="6_pf1a3"]
 [ext_resource type="Script" uid="uid://drke1av0c1b7k" path="res://tile_grid/round_manager/round_manager.gd" id="8_5axyk"]
 [ext_resource type="Resource" uid="uid://c6m158xb2ol3q" path="res://tile_grid/tile/tile_object/data/objects/aggressive_bot.tres" id="9_eoot7"]
+[ext_resource type="Resource" uid="uid://c8jcqn23xsyua" path="res://tile_grid/tile/tile_object/data/objects/building.tres" id="9_jp86b"]
 [ext_resource type="Resource" uid="uid://cfdfyqpbcdxpb" path="res://tile_grid/tile/tile_object/data/objects/fear_bot.tres" id="10_jp86b"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
@@ -36,7 +37,7 @@ region = Rect2(0, 40, 48, 20)
 atlas = ExtResource("16_6mnwf")
 region = Rect2(0, 20, 48, 20)
 
-[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "lose_screen")]
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "focus_card_holder", "focus_card", "lose_screen")]
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 level_builder = NodePath("LevelBuilder")
@@ -44,6 +45,8 @@ round_manager = NodePath("RoundManager")
 camera = NodePath("DraggableCamera")
 hand = NodePath("DraggableCamera/UI/Hand")
 your_turn_label = NodePath("DraggableCamera/UI/YourTurnLabel")
+focus_card_holder = NodePath("DraggableCamera/UI/FocusCardHolder")
+focus_card = NodePath("DraggableCamera/UI/FocusCardHolder/FocusCard")
 lose_screen = NodePath("DraggableCamera/UI/YouLoseScreen")
 size = Vector2i(10, 10)
 
@@ -56,6 +59,7 @@ clump_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
 clump_obstacle_weights = Array[int]([1])
 single_obstacles = Array[ExtResource("4_t02f7")]([ExtResource("5_pf1a3"), ExtResource("6_pf1a3")])
 single_obstacle_weights = Array[int]([1, 2])
+defendable = ExtResource("9_jp86b")
 enemies = Array[ExtResource("4_t02f7")]([ExtResource("9_eoot7"), ExtResource("10_jp86b")])
 enemy_weights = Array[int]([1, 1])
 
@@ -134,6 +138,29 @@ texture_normal = SubResource("AtlasTexture_jp86b")
 texture_pressed = SubResource("AtlasTexture_yps0e")
 texture_hover = SubResource("AtlasTexture_8yilv")
 texture_click_mask = ExtResource("17_eoot7")
+
+[node name="FocusCardHolder" type="ColorRect" parent="DraggableCamera/UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5, 0.5, 0.5, 0.4117647)
+
+[node name="FocusCard" parent="DraggableCamera/UI/FocusCardHolder" instance=ExtResource("11_d6b8m")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -107.0
+offset_top = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
 
 [node name="YouLoseScreen" type="ColorRect" parent="DraggableCamera/UI"]
 visible = false

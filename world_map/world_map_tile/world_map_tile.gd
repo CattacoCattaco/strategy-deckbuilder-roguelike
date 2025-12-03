@@ -5,6 +5,7 @@ enum EventType {
 	ENTRANCE,
 	EXIT,
 	ENCOUNTER,
+	MISSION,
 	MERGE,
 	ADD_SYMBOL,
 	PLUS_RANGE,
@@ -106,9 +107,13 @@ func add_exit() -> void:
 
 
 func add_encounter() -> void:
-	event_signs[EventType.ENCOUNTER].show()
+	if randf() < 0.8:
+		event_type = EventType.ENCOUNTER
+	else:
+		event_type = EventType.MISSION
+	
+	event_signs[event_type].show()
 	is_positive = false
-	event_type = EventType.ENCOUNTER
 	completed = false
 
 

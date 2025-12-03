@@ -16,7 +16,8 @@ var cancelled: bool = false
 
 
 func _ready() -> void:
-	load_data()
+	if card_data:
+		load_data()
 	
 	if hand:
 		mouse_entered.connect(hand._hovered_over)
@@ -42,6 +43,9 @@ func _gui_input(event: InputEvent) -> void:
 							parent.remove_card()
 						else:
 							parent.take_card()
+			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				if get_parent() == hand and hand.tile_grid:
+					hand.tile_grid.focus(card_data)
 
 
 func _hover() -> void:

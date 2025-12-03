@@ -65,8 +65,6 @@ func do_turn() -> void:
 		current_object.do_poison()
 		
 		await get_tree().create_timer(0.8).timeout
-		
-		print("done with poison")
 	
 	current_turn_index += 1
 	

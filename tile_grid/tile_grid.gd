@@ -10,6 +10,8 @@ signal tile_targeted(pos: Vector2i)
 @export var camera: Camera2D
 @export var hand: Hand
 @export var your_turn_label: Label
+@export var focus_card_holder: ColorRect
+@export var focus_card: Card
 @export var lose_screen: ColorRect
 
 @export var camera_padding := Vector2i(64, 64)
@@ -17,13 +19,19 @@ signal tile_targeted(pos: Vector2i)
 @export var size := Vector2i(15, 15)
 
 var world_map: WorldMap
+var is_mission: bool = false
 
 var tiles: Array[Array] = []
 
 
 func _ready() -> void:
 	your_turn_label.hide()
+	focus_card_holder.hide()
 	lose_screen.hide()
+
+	focus_card_holder.gui_input.connect(_focus_holder_gui_input)
+	
+	focus_card.hand = hand
 	
 	if world_map.levels_beat < 2:
 		size = Vector2i(3, 3)
@@ -99,6 +107,22 @@ func _input(event: InputEvent) -> void:
 				scale = Vector2(1, 1)
 		elif event.is_action_pressed("skip_target"):
 			tile_targeted.emit(Vector2(-1, -1))
+
+
+func _focus_holder_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			unfocus_card()
+
+
+func focus(card_data: CardData) -> void:
+	focus_card_holder.show()
+	focus_card.card_data = card_data
+	focus_card.load_data()
+
+
+func unfocus_card() -> void:
+	focus_card_holder.hide()
 
 
 func win() -> void:

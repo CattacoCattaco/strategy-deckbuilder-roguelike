@@ -14,13 +14,15 @@ static func sort(modifiers: Array[Modifier]) -> void:
 
 
 static func remove_duplicates(modifiers: Array[Modifier]) -> void:
-	for i in len(modifiers):
-		var modifier: Modifier = modifiers[i]
+	var old_modifiers: Array[Modifier] = modifiers.duplicate()
+	for i in len(old_modifiers):
+		var modifier: Modifier = old_modifiers[i]
 		var sort_value: int = modifier._get_sort_order()
 		
 		for j in range(i):
-			if modifiers[j]._get_sort_order() == sort_value:
+			if old_modifiers[j]._get_sort_order() == sort_value:
 				modifiers.remove_at(i)
+				break
 
 
 static func a_before_b(a: Modifier, b: Modifier) -> bool:
@@ -84,7 +86,7 @@ class Heal extends Modifier:
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
-		return "Heal %d damage from a target in range %d" % [effect_size, effect_range]
+		return "Heal a target in range %d by %d" % [effect_range, effect_size]
 
 
 class Poison extends Modifier:

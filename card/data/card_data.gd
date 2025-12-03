@@ -25,7 +25,6 @@ func get_effects() -> Array[Effect]:
 	var global_mods: Array[Modifier.ModifierModifier] = []
 	
 	for modifier in modifiers:
-		print("Modifier: %d, Type: %d" % [modifier._get_sort_order(), modifier.get_mod_type()])
 		match modifier.get_mod_type():
 			Modifier.Type.BASE_ACTION:
 				base_actions.append(modifier)
@@ -61,9 +60,6 @@ func get_effects_text() -> String:
 		effect_text += effect.get_text()
 	
 	for global_mod in effects[0].global_modifiers:
-		print("g")
-		print(effect_text)
 		effect_text += global_mod._get_text(effect_range, effect_size)
 	
-	print(effect_text)
 	return effect_text

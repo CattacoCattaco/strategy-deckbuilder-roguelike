@@ -166,7 +166,6 @@ func do_poison() -> void:
 	show_health()
 	
 	if health <= 0:
-		print("deleted")
 		tile.delete_object()
 
 
