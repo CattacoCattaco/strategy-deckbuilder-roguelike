@@ -33,6 +33,7 @@ func _ready() -> void:
 	
 	inspect_button.mouse_entered.connect(_inspect)
 	inspect_button.mouse_exited.connect(_uninspect)
+	inspect_button.pressed.connect(_show_card)
 	
 	target_button.mouse_entered.connect(_inspect)
 	target_button.mouse_exited.connect(_uninspect)
@@ -86,6 +87,13 @@ func _uninspect() -> void:
 	for tile in inspect_marks:
 		for marker: ActionMarker in inspect_marks[tile]:
 			tile.hide_action_marker(marker)
+
+
+func _show_card() -> void:
+	if not object:
+		return
+	
+	tile_grid.focus(object.data.action_source.next_action)
 
 
 func _targeted() -> void:
