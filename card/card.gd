@@ -31,6 +31,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
+				if not hand:
+					return
 				if hand.tile_grid:
 					if hand.tile_grid.round_manager.is_player_turn:
 						try_play()
@@ -44,6 +46,8 @@ func _gui_input(event: InputEvent) -> void:
 						else:
 							parent.take_card()
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
+				if not hand:
+					return
 				var parent: Control = get_parent_control()
 				if parent == hand and hand.tile_grid:
 					hand.tile_grid.focus(card_data)

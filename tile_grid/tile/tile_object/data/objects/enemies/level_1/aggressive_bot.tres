@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="TileObjectData" load_steps=12 format=3 uid="uid://ut6behyv5072"]
+
+[ext_resource type="Script" uid="uid://cxprmuxsp2kc6" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/move_closer_further_action_flow.gd" id="1_vllxb"]
+[ext_resource type="Script" uid="uid://kdjaev6b8cb4" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/attack_action_flow.gd" id="2_uvmsg"]
+[ext_resource type="Script" uid="uid://cmofqse45s2xp" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/distance_check_action_flow.gd" id="3_g7bs6"]
+[ext_resource type="Script" uid="uid://qcayqubqp7nh" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_source.gd" id="4_p8428"]
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="5_ri3he"]
+[ext_resource type="Texture2D" uid="uid://diebfv156uten" path="res://tile_grid/tile/tile_object/textures/evilbot.png" id="6_1qxr2"]
+
+[sub_resource type="Resource" id="Resource_lpb1f"]
+script = ExtResource("1_vllxb")
+move_range = 2
+metadata/_custom_type_script = "uid://cxprmuxsp2kc6"
+
+[sub_resource type="Resource" id="Resource_cersr"]
+script = ExtResource("2_uvmsg")
+attack_damage = 2
+metadata/_custom_type_script = "uid://kdjaev6b8cb4"
+
+[sub_resource type="Resource" id="Resource_s6fpx"]
+script = ExtResource("2_uvmsg")
+attack_damage = 2
+metadata/_custom_type_script = "uid://kdjaev6b8cb4"
+
+[sub_resource type="Resource" id="Resource_pdae1"]
+script = ExtResource("3_g7bs6")
+below = SubResource("Resource_s6fpx")
+at = SubResource("Resource_cersr")
+above = SubResource("Resource_lpb1f")
+metadata/_custom_type_script = "uid://cmofqse45s2xp"
+
+[sub_resource type="Resource" id="Resource_4mu6k"]
+script = ExtResource("4_p8428")
+action_flow = SubResource("Resource_pdae1")
+speed = 6
+preview_actions = true
+metadata/_custom_type_script = "uid://qcayqubqp7nh"
+
+[resource]
+script = ExtResource("5_ri3he")
+texture = ExtResource("6_1qxr2")
+texture_type = 2
+object_type = 2
+max_health = 2
+action_source = SubResource("Resource_4mu6k")
+metadata/_custom_type_script = "uid://g0hmwqu3bxiu"

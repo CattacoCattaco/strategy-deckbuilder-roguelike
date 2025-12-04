@@ -12,13 +12,11 @@ enum ObjectDensity {
 
 @export var player_data: TileObjectData
 @export var movement_region_object_data: TileObjectData
-@export var clump_obstacles: Array[TileObjectData]
-@export var clump_obstacle_weights: Array[int]
-@export var single_obstacles: Array[TileObjectData]
-@export var single_obstacle_weights: Array[int]
+@export var clump_obstacles: WeightedObjectList
+@export var single_obstacles: WeightedObjectList
 @export var defendable: TileObjectData
-@export var enemies: Array[TileObjectData]
-@export var enemy_weights: Array[int]
+@export var enemies_by_level: Array[WeightedObjectList]
+@export var mission_enemies_by_level: Array[WeightedObjectList]
 
 var density: ObjectDensity
 
@@ -73,12 +71,14 @@ func place_objects() -> void:
 		ObjectDensity.DENSE:
 			clump_count = floori(randf_range(tile_count * 0.06, tile_count * 0.1))
 	
+	if clump_count < 1:
+		clump_count = 1
+	
 	for i in range(clump_count):
 		if len(untouched_cells) == 0:
 			break
 		
-		var clump_object: TileObjectData = (
-				pick_random_weighted(clump_obstacles, clump_obstacle_weights))
+		var clump_object: TileObjectData = clump_obstacles.get_random_object()
 		
 		var start_pos_index: int = randi_range(0, len(untouched_cells) - 1)
 		var pos: Vector2i = untouched_cells[start_pos_index]
@@ -124,6 +124,9 @@ func place_objects() -> void:
 		ObjectDensity.DENSE:
 			single_obstacle_count = floori(randf_range(tile_count * 0.15, tile_count * 0.2))
 	
+	if single_obstacle_count < 1:
+		single_obstacle_count = 1
+	
 	for i in range(single_obstacle_count):
 		if len(untouched_cells) == 0:
 			break
@@ -133,7 +136,7 @@ func place_objects() -> void:
 		untouched_cells.remove_at(pos_index)
 		
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
-		tile.add_object(pick_random_weighted(single_obstacles, single_obstacle_weights))
+		tile.add_object(single_obstacles.get_random_object())
 	
 	EnemyActionSource.defendables = []
 	
@@ -153,13 +156,19 @@ func place_objects() -> void:
 			tile.add_object(defendable)
 			EnemyActionSource.defendables.append(tile.object)
 	
+	var current_enemies: WeightedObjectList
+	if tile_grid.is_mission:
+		current_enemies = mission_enemies_by_level[world_map.world_num]
+	else:
+		current_enemies = enemies_by_level[world_map.world_num]
+	
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
 		var pos: Vector2i = designated_movement_region[pos_index]
 		designated_movement_region.remove_at(pos_index)
 		
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
-		tile.add_object(pick_random_weighted(enemies, enemy_weights))
+		tile.add_object(current_enemies.get_random_object())
 	
 	EnemyActionSource.recalc_distances(tile_grid)
 
@@ -209,13 +218,3 @@ func walk(current_pos: Vector2i, region: Array[Vector2i], goal_size: int, from: 
 			
 			# We shouldn't make too many branches here
 			continue
-
-
-func pick_random_weighted(data_list: Array[TileObjectData], weights: Array[int]) -> TileObjectData:
-	var weighted_list: Array[TileObjectData] = []
-	
-	for i in range(len(data_list)):
-		for j in range(weights[i]):
-			weighted_list.append(data_list[i])
-	
-	return weighted_list.pick_random()
