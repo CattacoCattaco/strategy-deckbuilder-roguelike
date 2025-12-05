@@ -8,6 +8,7 @@ extends Control
 @export var effect_size_label: Label
 
 var hand: Hand
+var deck_view: DeckView
 
 var card_data: CardData
 
@@ -46,10 +47,14 @@ func _gui_input(event: InputEvent) -> void:
 						else:
 							parent.take_card()
 			elif event.button_index == MOUSE_BUTTON_RIGHT:
-				if not hand:
+				if not (hand or deck_view):
 					return
 				var parent: Control = get_parent_control()
-				if parent == hand and hand.tile_grid:
+				if parent is GridContainer and deck_view:
+					deck_view.focus(card_data)
+				elif deck_view:
+					return
+				elif parent == hand and hand.tile_grid:
 					hand.tile_grid.focus(card_data)
 				elif (parent == hand or parent is CardSlot) and hand.deck_manipulation_screen:
 					hand.deck_manipulation_screen.focus(card_data)
