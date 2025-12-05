@@ -49,7 +49,11 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 				
 				var neighbor_tile: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
 				if neighbor_tile.object:
-					if neighbor_tile.object.data.object_type == TileObjectData.ObjectType.STATIC:
+					var neighbor_type: TileObjectData.ObjectType
+					neighbor_type = neighbor_tile.object.data.object_type
+					
+					if neighbor_type in [TileObjectData.ObjectType.STATIC,
+							TileObjectData.ObjectType.DEFENDABLE]:
 						continue
 				
 				new_positions.append(neighbor_pos)

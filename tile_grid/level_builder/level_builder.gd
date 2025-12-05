@@ -143,18 +143,28 @@ func place_objects() -> void:
 	var enemy_count: int = world_map.levels_beat + 2 * world_map.world_num + 1
 	
 	if tile_grid.is_mission:
-		enemy_count = ceili(enemy_count / 4.0)
+		enemy_count = (enemy_count >> 2) + 1
 		
-		var defendable_count: int = ceili((world_map.levels_beat + 1) / 7.0)
+		var defendable_count: int = floori(world_map.levels_beat / 7.0) + 1
 		
 		for i in range(defendable_count):
 			var pos_index: int = randi_range(0, len(designated_movement_region) - 1)
 			var pos: Vector2i = designated_movement_region[pos_index]
+			while tile_grid.get_dist_with_jumps(pos, tile_grid.hand.player.pos) <= 1:
+				pos_index = randi_range(0, len(designated_movement_region) - 1)
+				pos = designated_movement_region[pos_index]
+			
 			designated_movement_region.remove_at(pos_index)
 			
 			var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 			tile.add_object(defendable)
 			EnemyActionSource.defendables.append(tile.object)
+		
+		EnemyActionSource.recalc_distances(tile_grid)
+		
+		for pos in designated_movement_region:
+			if EnemyActionSource.get_player_distance_from_vec(pos):
+				designated_movement_region.erase(pos)
 	
 	var current_enemies: WeightedObjectList
 	if tile_grid.is_mission:

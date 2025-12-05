@@ -143,6 +143,10 @@ func lose() -> void:
 	lose_screen.show()
 
 
+func get_dist_with_jumps(a: Vector2i, b: Vector2i) -> int:
+	return abs(a.x - b.x) + abs(a.y - b.y)
+
+
 func has_tile(x: int, y: int) -> bool:
 	return x < size.x and y < size.y and x >= 0 and y >= 0
 
