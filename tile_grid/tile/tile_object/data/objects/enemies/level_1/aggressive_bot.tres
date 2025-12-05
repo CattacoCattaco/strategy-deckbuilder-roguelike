@@ -9,7 +9,6 @@
 
 [sub_resource type="Resource" id="Resource_lpb1f"]
 script = ExtResource("1_vllxb")
-move_range = 2
 metadata/_custom_type_script = "uid://cxprmuxsp2kc6"
 
 [sub_resource type="Resource" id="Resource_cersr"]

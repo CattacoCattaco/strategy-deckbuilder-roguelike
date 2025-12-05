@@ -67,6 +67,19 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 	for i in len(effects):
 		var effect: Effect = effects[i]
 		
+		var targets_objects: bool
+		
+		if effect.base_action is Modifier.Move:
+			targets_objects = false
+		elif effect.base_action is Modifier.Attack:
+			targets_objects = true
+		elif effect.base_action is Modifier.Heal:
+			targets_objects = true
+		elif effect.base_action is Modifier.Poison:
+			targets_objects = true
+		
+		print(targets_objects)
+		
 		var rep_count: int = 1
 		
 		for local_mod in effect.local_modifiers:
@@ -75,16 +88,25 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 			elif local_mod is Modifier.Split3:
 				rep_count *= 3
 		
+		var can_jump: bool = false
+		
 		for global_mod in effect.global_modifiers:
 			if global_mod is Modifier.Jump:
-				# Jumping should already be accounted for
-				pass
+				can_jump = true
 		
 		for j in range(rep_count):
 			var target: Vector2i = targets[current_target_index]
 			current_target_index += 1
 			
 			if not tile_grid.has_tile(target.x, target.y):
+				continue
+			
+			var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
+			
+			var still_valid_tiles: Array[Tile]
+			still_valid_tiles = get_tiles_in_range(effect.effect_range, can_jump, targets_objects)
+			
+			if target_tile not in still_valid_tiles:
 				continue
 			
 			if effect.base_action is Modifier.Move:
