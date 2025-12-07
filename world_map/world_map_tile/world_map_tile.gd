@@ -118,14 +118,14 @@ func add_encounter() -> void:
 	else:
 		event_type = EventType.MISSION
 	
-	event_type = EventType.DESTROY_CARD
+	#event_type = EventType.DESTROY_CARD
 	event_signs[event_type].show()
 	is_positive = false
 	completed = false
 
 
 func add_reward_event() -> void:
-	event_type = EventType.DESTROY_CARD#POSITIVE_EVENTS.pick_random()
+	event_type = POSITIVE_EVENTS.pick_random()
 	event_signs[event_type].show()
 	is_positive = true
 	completed = false

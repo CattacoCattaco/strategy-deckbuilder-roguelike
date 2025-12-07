@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://4gq17h5jwwyb"]
+[gd_scene load_steps=13 format=3 uid="uid://4gq17h5jwwyb"]
 
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="1_088kp"]
 [ext_resource type="Script" uid="uid://djskdjsrgxvnu" path="res://world_map/world_map.gd" id="1_yw1td"]
@@ -8,9 +8,41 @@
 [ext_resource type="PackedScene" uid="uid://kjvs4xvvrmvc" path="res://deck_manipulation_screen/deck_manipulation_screen.tscn" id="4_nirhn"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="5_yqyfv"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fsjge"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_yqyfv"]
 atlas = ExtResource("3_g238a")
 region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jlife"]
+atlas = ExtResource("3_g238a")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drcok"]
+atlas = ExtResource("3_g238a")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfu35"]
+atlas = ExtResource("3_g238a")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7qa00"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yqyfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jlife")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drcok")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfu35")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.25
+}]
 
 [node name="WorldMap" type="Node2D" node_paths=PackedStringArray("player", "camera")]
 script = ExtResource("1_yw1td")
@@ -22,9 +54,10 @@ player = NodePath("Player")
 camera = NodePath("Camera2D")
 used_size = 4
 
-[node name="Player" type="Sprite2D" parent="."]
+[node name="Player" type="AnimatedSprite2D" parent="."]
 z_index = 5
-texture = SubResource("AtlasTexture_fsjge")
+sprite_frames = SubResource("SpriteFrames_7qa00")
+frame_progress = 0.76094157
 centered = false
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("world_map")]

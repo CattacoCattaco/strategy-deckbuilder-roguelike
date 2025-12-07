@@ -6,7 +6,7 @@ extends Node2D
 @export var deck_manipulation_scene: PackedScene
 @export var deck_view_scene: PackedScene
 
-@export var player: Sprite2D
+@export var player: AnimatedSprite2D
 @export var camera: DraggableCamera
 
 @export var used_size: int = 7
@@ -39,6 +39,7 @@ var player_deck: Array[CardData] = [
 
 
 func _ready() -> void:
+	player.play("default")
 	generate_map()
 
 
