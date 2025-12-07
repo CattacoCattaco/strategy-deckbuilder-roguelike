@@ -23,16 +23,16 @@ var world_num: int = 0
 var levels_beat: int = 0
 
 var player_deck: Array[CardData] = [
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
+	CardData.new([Modifier.Move.new()], 2, 1),
+	CardData.new([Modifier.Move.new()], 2, 1),
+	CardData.new([Modifier.Move.new()], 2, 1),
+	CardData.new([Modifier.Move.new()], 2, 1),
+	CardData.new([Modifier.Move.new()], 2, 1),
+	CardData.new([Modifier.Attack.new()], 1, 2),
+	CardData.new([Modifier.Attack.new()], 1, 2),
+	CardData.new([Modifier.Attack.new()], 1, 2),
+	CardData.new([Modifier.Attack.new()], 1, 2),
+	CardData.new([Modifier.Attack.new()], 1, 2),
 	CardData.new([Modifier.Heal.new()], 1, 1),
 	CardData.new([Modifier.Heal.new()], 1, 1),
 ]
@@ -248,6 +248,36 @@ func try_do_event() -> void:
 				deck_manipulation_screen = deck_manipulation_scene.instantiate()
 				
 				deck_manipulation_screen.set_slot_set(SlotSet.Type.PLUS_EFFECT_SIZE)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.DESTROY_CARD:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.DESTROY_CARD)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.DRAFT:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.DRAFT_CARD)
+				deck_manipulation_screen.world_map = self
+				
+				get_tree().root.add_child(deck_manipulation_screen)
+				get_tree().root.remove_child(self)
+		WorldMapTile.EventType.STAT_SWAP:
+			if not tile.completed:
+				var deck_manipulation_screen: DeckManipulationScreen 
+				deck_manipulation_screen = deck_manipulation_scene.instantiate()
+				
+				deck_manipulation_screen.set_slot_set(SlotSet.Type.STAT_SWAP)
 				deck_manipulation_screen.world_map = self
 				
 				get_tree().root.add_child(deck_manipulation_screen)

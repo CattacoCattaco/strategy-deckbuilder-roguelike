@@ -6,15 +6,19 @@ enum Type {
 	ADD_SYMBOL,
 	PLUS_RANGE,
 	PLUS_EFFECT_SIZE,
+	DESTROY_CARD,
+	DRAFT_CARD,
+	STAT_SWAP,
 }
 
 @export var hand: Hand
 @export var deck_manipulation_screen: DeckManipulationScreen
 
 @export var input_slots: Array[CardSlot]
-@export var output_slot: CardSlot
+@export var output_slots: Array[CardSlot]
 
 @export var type: Type
+@export var show_hand: bool = true
 
 var modifier: Modifier
 
@@ -25,9 +29,13 @@ func _ready() -> void:
 		slot.hand = hand
 		slot.slot_set = self
 	
-	output_slot.deck_manipulation_screen = deck_manipulation_screen
-	output_slot.hand = hand
-	output_slot.slot_set = self
+	for slot in output_slots:
+		slot.deck_manipulation_screen = deck_manipulation_screen
+		slot.hand = hand
+		slot.slot_set = self
+		
+		if type == Type.DRAFT_CARD:
+			slot.create_card(get_draft_card())
 	
 	if type == Type.ADD_SYMBOL:
 		modifier = [
@@ -49,15 +57,19 @@ func add_card(card: Card) -> void:
 	
 	for slot in input_slots:
 		if not slot.card:
-			if output_slot.card:
-				output_slot.delete_card()
+			for output_slot in output_slots:
+				if output_slot.card:
+					output_slot.delete_card()
 			
 			return
 	
-	output_slot.create_card(calculate_output())
+	var output_cards: Array[CardData] = calculate_output()
+	for i in len(output_slots):
+		var output_slot: CardSlot = output_slots[i]
+		output_slot.create_card(output_cards[i])
 
 
-func calculate_output() -> CardData:
+func calculate_output() -> Array[CardData]:
 	match type:
 		Type.MERGE:
 			return calculate_output_merge()
@@ -67,17 +79,29 @@ func calculate_output() -> CardData:
 			return calculate_output_plus_range()
 		Type.PLUS_EFFECT_SIZE:
 			return calculate_output_plus_effect_size()
+		Type.DESTROY_CARD:
+			return calculate_output_destroy()
+		Type.STAT_SWAP:
+			return calculate_output_stat_swap()
 	
-	return CardData.new([], 0, 0)
+	return []
 
 
-func calculate_output_merge() -> CardData:
+func calculate_output_merge() -> Array[CardData]:
 	var result := CardData.new([], 0, 0)
 	
 	var input_data: Array[CardData] = [
 		input_slots[0].card.card_data,
 		input_slots[1].card.card_data,
 	]
+	
+	if (input_data[0].effect_size == input_data[1].effect_size
+			and input_data[0].effect_range == input_data[1].effect_range
+			and Modifier.lists_match(input_data[0].modifiers, input_data[1].modifiers)):
+		result.modifiers = input_data[0].modifiers.duplicate()
+		result.effect_size = input_data[0].effect_size * 2
+		result.effect_range = input_data[0].effect_range * 2
+		return [result]
 	
 	if input_data[0].effect_size >= input_data[1].effect_size:
 		result.effect_size = input_data[0].effect_size
@@ -95,28 +119,111 @@ func calculate_output_merge() -> CardData:
 	for input_modifier in input_data[1].modifiers:
 		result.modifiers.append(input_modifier)
 	
-	return result
+	return [result]
 
 
-func calculate_output_add_symbol() -> CardData:
+func calculate_output_add_symbol() -> Array[CardData]:
 	var result: CardData = input_slots[0].card.card_data.duplicate()
 	
 	result.modifiers.append(modifier)
 	
-	return result
+	return [result]
 
 
-func calculate_output_plus_range() -> CardData:
+func calculate_output_plus_range() -> Array[CardData]:
 	var result: CardData = input_slots[0].card.card_data.duplicate()
 	
 	result.effect_range += 1
 	
-	return result
+	return [result]
 
 
-func calculate_output_plus_effect_size() -> CardData:
+func calculate_output_plus_effect_size() -> Array[CardData]:
 	var result: CardData = input_slots[0].card.card_data.duplicate()
 	
 	result.effect_size += 1
 	
-	return result
+	return [result]
+
+
+func calculate_output_destroy() -> Array[CardData]:
+	return [CardData.new()]
+
+
+func calculate_output_stat_swap() -> Array[CardData]:
+	var input_data: Array[CardData] = [
+		input_slots[0].card.card_data,
+		input_slots[1].card.card_data,
+	]
+	
+	var result_a: CardData = CardData.new()
+	result_a.modifiers = input_data[0].modifiers.duplicate()
+	result_a.effect_range = input_data[1].effect_range
+	result_a.effect_size = input_data[1].effect_size
+	
+	var result_b: CardData = CardData.new()
+	result_b.modifiers = input_data[1].modifiers.duplicate()
+	result_b.effect_range = input_data[0].effect_range
+	result_b.effect_size = input_data[0].effect_size
+	
+	return [result_a, result_b]
+
+
+func get_draft_card() -> CardData:
+	var modifiers: Array[Modifier] = []
+	
+	var base_action_count: int = 1
+	var modifier_modifier_count: int = 0
+	var effect_range: int = 1
+	var effect_size: int = 1
+	
+	var specialness: int = floori(deck_manipulation_screen.world_map.levels_beat / 5.0) + 1
+	
+	for i in range(specialness):
+		var rand_value: float = randf()
+		
+		if base_action_count < 4 and rand_value < 0.35:
+			base_action_count += 1
+		elif modifier_modifier_count < 3 and rand_value < 0.25:
+			modifier_modifier_count += 1
+		else:
+			if randf() < 0.5:
+				effect_range += 1
+			else:
+				effect_size += 1
+	
+	for i in range(base_action_count):
+		var new_modifier: Modifier = [
+			Modifier.Move.new(),
+			Modifier.Attack.new(),
+			Modifier.Heal.new(),
+			Modifier.Poison.new(),
+		].pick_random()
+		
+		while new_modifier in modifiers:
+			new_modifier = [
+				Modifier.Move.new(),
+				Modifier.Attack.new(),
+				Modifier.Heal.new(),
+				Modifier.Poison.new(),
+			].pick_random()
+		
+		modifiers.append(new_modifier)
+	
+	for i in range(modifier_modifier_count):
+		var new_modifier: Modifier = [
+			Modifier.Split2.new(),
+			Modifier.Split3.new(),
+			Modifier.Jump.new(),
+		].pick_random()
+		
+		while new_modifier in modifiers:
+			new_modifier = [
+				Modifier.Split2.new(),
+				Modifier.Split3.new(),
+				Modifier.Jump.new(),
+			].pick_random()
+		
+		modifiers.append(new_modifier)
+	
+	return CardData.new(modifiers, effect_range, effect_size)

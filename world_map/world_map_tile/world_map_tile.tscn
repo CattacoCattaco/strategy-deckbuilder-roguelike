@@ -21,7 +21,7 @@ region = Rect2(64, 64, 32, 32)
 script = ExtResource("1_pu1pf")
 bg = NodePath("Tile")
 path = NodePath("Path")
-event_signs = [NodePath("Entrance"), NodePath("Exit"), NodePath("Encounter"), NodePath("Mission"), NodePath("Merge"), NodePath("AddSymbol"), NodePath("PlusRange"), NodePath("PlusEffectSize")]
+event_signs = [NodePath("Entrance"), NodePath("Exit"), NodePath("Encounter"), NodePath("Mission"), NodePath("Merge"), NodePath("AddSymbol"), NodePath("PlusRange"), NodePath("PlusEffectSize"), NodePath("DestroyCard"), NodePath("Draft"), NodePath("StatSwap")]
 
 [node name="Tile" type="Sprite2D" parent="."]
 texture = ExtResource("1_e38f7")
@@ -60,5 +60,17 @@ texture = ExtResource("9_e2toq")
 centered = false
 
 [node name="PlusEffectSize" type="Sprite2D" parent="."]
+texture = ExtResource("10_pt4fo")
+centered = false
+
+[node name="DestroyCard" type="Sprite2D" parent="."]
+texture = ExtResource("10_pt4fo")
+centered = false
+
+[node name="Draft" type="Sprite2D" parent="."]
+texture = ExtResource("10_pt4fo")
+centered = false
+
+[node name="StatSwap" type="Sprite2D" parent="."]
 texture = ExtResource("10_pt4fo")
 centered = false

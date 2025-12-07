@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h76y5")
 deck_view_scene = ExtResource("2_ya4dx")
-slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet"), NodePath("SlotRegion/PlusRangeSlotSet"), NodePath("SlotRegion/PlusEffectSizeSlotSet")]
+slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet"), NodePath("SlotRegion/PlusRangeSlotSet"), NodePath("SlotRegion/PlusEffectSizeSlotSet"), NodePath("SlotRegion/DestroyCardSlotSet"), NodePath("HandlessSlotRegion/DraftCardSlotSet"), NodePath("SlotRegion/StatSwapSlotSet")]
 hand = NodePath("Hand")
 focus_card_holder = NodePath("FocusCardHolder")
 focus_card = NodePath("FocusCardHolder/FocusCard")
@@ -33,7 +33,7 @@ offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MergeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+[node name="MergeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -45,7 +45,7 @@ script = ExtResource("2_g0t5s")
 hand = NodePath("../../Hand")
 deck_manipulation_screen = NodePath("../..")
 input_slots = [NodePath("InputSlot1"), NodePath("InputSlot2")]
-output_slot = NodePath("OutputSlot")
+output_slots = [NodePath("OutputSlot")]
 
 [node name="InputSlot1" parent="SlotRegion/MergeSlotSet" instance=ExtResource("2_4o6wb")]
 layout_mode = 1
@@ -126,7 +126,8 @@ grow_horizontal = 2
 grow_vertical = 2
 input = false
 
-[node name="AddSymbolSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+[node name="AddSymbolSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -137,7 +138,7 @@ script = ExtResource("2_g0t5s")
 hand = NodePath("../../Hand")
 deck_manipulation_screen = NodePath("../..")
 input_slots = [NodePath("InputSlot1")]
-output_slot = NodePath("OutputSlot")
+output_slots = [NodePath("OutputSlot")]
 type = 1
 
 [node name="InputSlot1" parent="SlotRegion/AddSymbolSlotSet" instance=ExtResource("2_4o6wb")]
@@ -188,7 +189,8 @@ grow_horizontal = 2
 grow_vertical = 2
 input = false
 
-[node name="PlusRangeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+[node name="PlusRangeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -199,7 +201,7 @@ script = ExtResource("2_g0t5s")
 hand = NodePath("../../Hand")
 deck_manipulation_screen = NodePath("../..")
 input_slots = [NodePath("InputSlot1")]
-output_slot = NodePath("OutputSlot")
+output_slots = [NodePath("OutputSlot")]
 type = 2
 
 [node name="InputSlot1" parent="SlotRegion/PlusRangeSlotSet" instance=ExtResource("2_4o6wb")]
@@ -250,7 +252,8 @@ grow_horizontal = 2
 grow_vertical = 2
 input = false
 
-[node name="PlusEffectSizeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slot")]
+[node name="PlusEffectSizeSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -261,7 +264,7 @@ script = ExtResource("2_g0t5s")
 hand = NodePath("../../Hand")
 deck_manipulation_screen = NodePath("../..")
 input_slots = [NodePath("InputSlot1")]
-output_slot = NodePath("OutputSlot")
+output_slots = [NodePath("OutputSlot")]
 type = 3
 
 [node name="InputSlot1" parent="SlotRegion/PlusEffectSizeSlotSet" instance=ExtResource("2_4o6wb")]
@@ -303,6 +306,265 @@ anchors_preset = -1
 anchor_left = 0.625
 anchor_top = 0.5
 anchor_right = 0.625
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="DestroyCardSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_g0t5s")
+hand = NodePath("../../Hand")
+deck_manipulation_screen = NodePath("../..")
+input_slots = [NodePath("InputSlot1")]
+output_slots = [NodePath("OutputSlot")]
+type = 4
+
+[node name="InputSlot1" parent="SlotRegion/DestroyCardSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.375
+anchor_top = 0.5
+anchor_right = 0.375
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymbolArrow" type="Control" parent="SlotRegion/DestroyCardSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arrow" type="Sprite2D" parent="SlotRegion/DestroyCardSlotSet/SymbolArrow"]
+texture = ExtResource("4_ya4dx")
+centered = false
+
+[node name="OutputSlot" parent="SlotRegion/DestroyCardSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.625
+anchor_top = 0.5
+anchor_right = 0.625
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="StatSwapSlotSet" type="Control" parent="SlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "input_slots", "output_slots")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_g0t5s")
+hand = NodePath("../../Hand")
+deck_manipulation_screen = NodePath("../..")
+input_slots = [NodePath("InputSlot1"), NodePath("InputSlot2")]
+output_slots = [NodePath("OutputSlot"), NodePath("OutputSlot2")]
+type = 6
+
+[node name="InputSlot1" parent="SlotRegion/StatSwapSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.5
+anchor_right = 0.15
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymbolPlus" type="Control" parent="SlotRegion/StatSwapSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchor_left = 0.263
+anchor_top = 0.5
+anchor_right = 0.263
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Plus" type="Sprite2D" parent="SlotRegion/StatSwapSlotSet/SymbolPlus"]
+texture = ExtResource("3_g0t5s")
+centered = false
+
+[node name="InputSlot2" parent="SlotRegion/StatSwapSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.375
+anchor_top = 0.5
+anchor_right = 0.375
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SymbolArrow" type="Control" parent="SlotRegion/StatSwapSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Arrow" type="Sprite2D" parent="SlotRegion/StatSwapSlotSet/SymbolArrow"]
+texture = ExtResource("4_ya4dx")
+centered = false
+
+[node name="OutputSlot" parent="SlotRegion/StatSwapSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.625
+anchor_top = 0.5
+anchor_right = 0.625
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="SymbolPlus2" type="Control" parent="SlotRegion/StatSwapSlotSet"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchor_left = 0.737
+anchor_top = 0.5
+anchor_right = 0.737
+anchor_bottom = 0.5
+offset_left = -22.5
+offset_top = -22.5
+offset_right = 22.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Plus" type="Sprite2D" parent="SlotRegion/StatSwapSlotSet/SymbolPlus2"]
+texture = ExtResource("3_g0t5s")
+centered = false
+
+[node name="OutputSlot2" parent="SlotRegion/StatSwapSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.85
+anchor_top = 0.5
+anchor_right = 0.85
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="HandlessSlotRegion" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DraftCardSlotSet" type="Control" parent="HandlessSlotRegion" node_paths=PackedStringArray("hand", "deck_manipulation_screen", "output_slots")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_g0t5s")
+hand = NodePath("../../Hand")
+deck_manipulation_screen = NodePath("../..")
+output_slots = [NodePath("OutputSlot1"), NodePath("OutputSlot2"), NodePath("OutputSlot3")]
+type = 5
+show_hand = false
+
+[node name="OutputSlot1" parent="HandlessSlotRegion/DraftCardSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.5
+anchor_right = 0.3
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="OutputSlot2" parent="HandlessSlotRegion/DraftCardSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.5
+offset_top = -96.0
+offset_right = 59.5
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+input = false
+
+[node name="OutputSlot3" parent="HandlessSlotRegion/DraftCardSlotSet" instance=ExtResource("2_4o6wb")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.5
+anchor_right = 0.7
 anchor_bottom = 0.5
 offset_left = -59.5
 offset_top = -96.0

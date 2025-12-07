@@ -23,6 +23,8 @@ func _ready() -> void:
 		if slot_set != current_slot_set:
 			slot_set.hide()
 		else:
+			if not slot_set.show_hand:
+				hand.hide()
 			slot_set.show()
 
 

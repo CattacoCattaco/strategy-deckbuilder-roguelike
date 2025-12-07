@@ -33,15 +33,19 @@ func _gui_input(event: InputEvent) -> void:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if not hand:
+					print("No hand")
 					return
 				if hand.tile_grid:
 					if hand.tile_grid.round_manager.is_player_turn:
 						try_play()
 				elif hand.deck_manipulation_screen:
+					print("Hi")
 					var parent: Control = get_parent_control()
 					if parent is Hand:
+						print("Parent is hand")
 						hand.deck_manipulation_screen.current_slot_set.add_card(self)
 					elif parent is CardSlot:
+						print("Parent is card slot")
 						if parent.input:
 							parent.remove_card()
 						else:

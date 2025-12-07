@@ -30,6 +30,7 @@ func add_card(new_card: Card) -> void:
 
 
 func remove_card() -> void:
+	print("removed")
 	card.reparent(hand)
 	
 	hand.cards.append(card)
@@ -37,8 +38,9 @@ func remove_card() -> void:
 	
 	card = null
 	
-	if slot_set.output_slot.card:
-		slot_set.output_slot.delete_card()
+	for output_slot in slot_set.output_slots:
+		if output_slot.card:
+			output_slot.delete_card()
 
 
 func create_card(data: CardData) -> void:
@@ -60,6 +62,7 @@ func take_card() -> void:
 	for input_slot in slot_set.input_slots:
 		deck.erase(input_slot.card.card_data)
 	
-	deck.append(card.card_data)
+	if slot_set.type != SlotSet.Type.DESTROY_CARD:
+		deck.append(card.card_data)
 	
 	deck_manipulation_screen.return_to_map()

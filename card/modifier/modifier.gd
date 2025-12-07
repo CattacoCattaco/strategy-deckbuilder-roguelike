@@ -9,8 +9,15 @@ enum Type {
 }
 
 
-static func sort(modifiers: Array[Modifier]) -> void:
-	modifiers.sort_custom(a_before_b)
+static func lists_match(a: Array[Modifier], b: Array[Modifier]) -> bool:
+	if len(a) != len(b):
+		return false
+	
+	for i in len(a):
+		if not a[i].matches(b[i]):
+			return false
+	
+	return true
 
 
 static func remove_duplicates(modifiers: Array[Modifier]) -> void:
@@ -23,6 +30,10 @@ static func remove_duplicates(modifiers: Array[Modifier]) -> void:
 			if old_modifiers[j]._get_sort_order() == sort_value:
 				modifiers.remove_at(i)
 				break
+
+
+static func sort(modifiers: Array[Modifier]) -> void:
+	modifiers.sort_custom(a_before_b)
 
 
 static func a_before_b(a: Modifier, b: Modifier) -> bool:
@@ -42,6 +53,10 @@ static func a_before_b(a: Modifier, b: Modifier) -> bool:
 ## For Local modifiers, the modification with no capitalization prefixed with a space
 ## For Global modifiers, a complete sentence of the change with a period prefixed with a space
 @abstract func _get_text(effect_range: int, effect_size: int) -> String
+
+
+func matches(other: Modifier) -> bool:
+	return other._get_sort_order() == _get_sort_order()
 
 
 func get_mod_type() -> Type:

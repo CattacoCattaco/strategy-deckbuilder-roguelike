@@ -10,6 +10,9 @@ enum EventType {
 	ADD_SYMBOL,
 	PLUS_RANGE,
 	PLUS_EFFECT_SIZE,
+	DESTROY_CARD,
+	DRAFT,
+	STAT_SWAP,
 	NONE,
 }
 
@@ -18,6 +21,9 @@ const POSITIVE_EVENTS: Array[EventType] = [
 	EventType.ADD_SYMBOL,
 	EventType.PLUS_RANGE,
 	EventType.PLUS_EFFECT_SIZE,
+	EventType.DESTROY_CARD,
+	EventType.DRAFT,
+	EventType.STAT_SWAP,
 ]
 
 @export var bg: Sprite2D
@@ -112,13 +118,14 @@ func add_encounter() -> void:
 	else:
 		event_type = EventType.MISSION
 	
+	event_type = EventType.DESTROY_CARD
 	event_signs[event_type].show()
 	is_positive = false
 	completed = false
 
 
 func add_reward_event() -> void:
-	event_type = POSITIVE_EVENTS.pick_random()
+	event_type = EventType.DESTROY_CARD#POSITIVE_EVENTS.pick_random()
 	event_signs[event_type].show()
 	is_positive = true
 	completed = false
