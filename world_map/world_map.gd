@@ -33,13 +33,9 @@ var player_deck: Array[CardData] = [
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
 	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Heal.new()], 1, 1),
-	CardData.new([Modifier.Heal.new()], 1, 1),
+	CardData.new([Modifier.Defend.new()], 1, 1),
+	CardData.new([Modifier.Defend.new()], 1, 1),
+	CardData.new([Modifier.Defend.new()], 1, 1),
 ]
 
 

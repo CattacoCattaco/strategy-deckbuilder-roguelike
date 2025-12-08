@@ -45,8 +45,7 @@ static func a_before_b(a: Modifier, b: Modifier) -> bool:
 ## Returns the sprite associated with this modifier
 @abstract func _get_image() -> Texture2D
 ## Lower numbers go to the left of higher numbers
-## 0-18: Base actions
-## 19: Move (Last base action)
+## 0-19: Base actions
 ## 20-39: Local modifiers
 ## 40-59: Global modifiers
 @abstract func _get_sort_order() -> int
@@ -149,6 +148,30 @@ class Poison extends BaseAction:
 		return tile.object.data.max_health != -1
 
 
+class Defend extends BaseAction:
+	func _get_name() -> String:
+		return "Defend"
+	
+	
+	func _get_image() -> Texture2D:
+		return preload("res://card/modifier/push.png")
+	
+	
+	func _get_sort_order() -> int:
+		return 3
+	
+	
+	func _get_text(effect_range: int, effect_size: int) -> String:
+		return "Give a target in range %d %d shield" % [effect_range, effect_size]
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if not tile.object:
+			return false
+		
+		return tile.object.data.max_health != -1
+
+
 class Push extends BaseAction:
 	func _get_name() -> String:
 		return "Push"
@@ -159,7 +182,7 @@ class Push extends BaseAction:
 	
 	
 	func _get_sort_order() -> int:
-		return 3
+		return 18
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:

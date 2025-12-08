@@ -63,6 +63,7 @@ func take_card() -> void:
 		deck.erase(input_slot.card.card_data)
 	
 	if slot_set.type != SlotSet.Type.DESTROY_CARD:
-		deck.append(card.card_data)
+		for output_slot in slot_set.output_slots:
+			deck.append(output_slot.card.card_data)
 	
 	deck_manipulation_screen.return_to_map()

@@ -34,6 +34,7 @@ var tile: Tile
 var pos: Vector2i
 var health: int
 var poison_level: int = 0
+var shield_level: int = 0
 
 
 func _ready() -> void:
@@ -96,39 +97,26 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 			if target_tile not in still_valid_tiles:
 				continue
 			
-			if effect.base_action is Modifier.Move:
-				if target == pos:
-					continue
-				
-				move_to(target)
-			elif effect.base_action is Modifier.Attack:
+			if effect.base_action is Modifier.Attack:
 				damage(target, effect.effect_size)
 			elif effect.base_action is Modifier.Heal:
 				heal(target, effect.effect_size)
 			elif effect.base_action is Modifier.Poison:
 				poison(target, effect.effect_size)
+			elif effect.base_action is Modifier.Defend:
+				defend(target, effect.effect_size)
 			elif effect.base_action is Modifier.Push:
 				if target == pos:
 					continue
 				
 				push(target, effect.effect_size)
+			elif effect.base_action is Modifier.Move:
+				if target == pos:
+					continue
+				
+				move_to(target)
 			
 			await get_tree().create_timer(0.8).timeout
-
-
-func move_to(new_pos: Vector2i) -> void:
-	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
-		return
-	
-	tile.object = null
-	
-	pos = new_pos
-	tile = tile_grid.get_tile(pos.x, pos.y)
-	reparent(tile, false)
-	tile.object = self
-	
-	if data.action_source is PlayerActionSource:
-		EnemyActionSource.recalc_distances(tile_grid)
 
 
 func damage(target_pos: Vector2i, amount: int) -> void:
@@ -136,6 +124,10 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 		return
 	
 	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	if target.shield_level > 0:
+		target.shield_level -= 1
+		return
 	
 	target.health -= amount
 	target.show_health()
@@ -167,6 +159,15 @@ func poison(target_pos: Vector2i, amount: int) -> void:
 	target.poison_level += amount
 	
 	target.poisoned_sprite.show()
+
+
+func defend(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
+		return
+	
+	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	target.shield_level += amount
 
 
 func push(target_pos: Vector2i, amount: int) -> void:
@@ -222,6 +223,21 @@ func push(target_pos: Vector2i, amount: int) -> void:
 		pushed_pos = new_pushed_pos
 	
 	target.move_to(pushed_pos)
+
+
+func move_to(new_pos: Vector2i) -> void:
+	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
+		return
+	
+	tile.object = null
+	
+	pos = new_pos
+	tile = tile_grid.get_tile(pos.x, pos.y)
+	reparent(tile, false)
+	tile.object = self
+	
+	if data.action_source is PlayerActionSource:
+		EnemyActionSource.recalc_distances(tile_grid)
 
 
 func do_poison() -> void:

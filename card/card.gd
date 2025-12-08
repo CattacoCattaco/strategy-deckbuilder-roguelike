@@ -136,6 +136,8 @@ func try_play() -> void:
 			action_marker = Tile.ActionMarker.MOVE
 		elif effect.base_action is Modifier.Poison:
 			action_marker = Tile.ActionMarker.POISON
+		elif effect.base_action is Modifier.Defend:
+			action_marker = Tile.ActionMarker.PUSH
 		elif effect.base_action is Modifier.Push:
 			action_marker = Tile.ActionMarker.PUSH
 		
