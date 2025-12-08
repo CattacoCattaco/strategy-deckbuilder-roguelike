@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=37 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://c6m158xb2ol3q" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/aggressive_bot.tres" id="9_eoot7"]
 [ext_resource type="Resource" uid="uid://c8jcqn23xsyua" path="res://tile_grid/tile/tile_object/data/objects/building.tres" id="9_jp86b"]
 [ext_resource type="Resource" uid="uid://cfdfyqpbcdxpb" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/fear_bot.tres" id="10_jp86b"]
+[ext_resource type="Resource" uid="uid://dhssapgu2clte" path="res://tile_grid/tile/tile_object/data/objects/box.tres" id="11_1w5d2"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 [ext_resource type="Resource" uid="uid://ci1rdaaph8hyq" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/destruction_bot.tres" id="11_tuu3s"]
@@ -28,14 +29,14 @@
 
 [sub_resource type="Resource" id="Resource_ycykd"]
 script = ExtResource("8_dnmic")
-objects = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3")])
-weights = Array[int]([1])
+objects = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3"), ExtResource("11_1w5d2")])
+weights = Array[int]([1, 20])
 metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
 
 [sub_resource type="Resource" id="Resource_1w5d2"]
 script = ExtResource("8_dnmic")
-objects = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3"), ExtResource("5_pf1a3")])
-weights = Array[int]([2, 1])
+objects = Array[ExtResource("4_t02f7")]([ExtResource("6_pf1a3"), ExtResource("5_pf1a3"), ExtResource("11_1w5d2")])
+weights = Array[int]([2, 1, 1000])
 metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
 
 [sub_resource type="Resource" id="Resource_s8kfo"]

@@ -62,7 +62,9 @@ func take_card() -> void:
 	for input_slot in slot_set.input_slots:
 		deck.erase(input_slot.card.card_data)
 	
-	if slot_set.type != SlotSet.Type.DESTROY_CARD:
+	if slot_set.type == SlotSet.Type.DRAFT_CARD:
+		deck.append(card.card_data)
+	elif slot_set.type != SlotSet.Type.DESTROY_CARD:
 		for output_slot in slot_set.output_slots:
 			deck.append(output_slot.card.card_data)
 	
