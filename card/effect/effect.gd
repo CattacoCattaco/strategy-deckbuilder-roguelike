@@ -1,14 +1,15 @@
 class_name Effect
 extends RefCounted
 
-var base_action: Modifier
+var base_action: Modifier.BaseAction
 var local_modifiers: Array[Modifier.ModifierModifier]
 var global_modifiers: Array[Modifier.ModifierModifier]
 var effect_range: int
 var effect_size: int
 
 
-static func create(p_base_action: Modifier, p_local_modifiers: Array[Modifier.ModifierModifier], 
+static func create(p_base_action: Modifier.BaseAction,
+		p_local_modifiers: Array[Modifier.ModifierModifier],
 		p_global_modifiers: Array[Modifier.ModifierModifier], p_effect_range: int,
 		p_effect_size: int) -> Effect:
 	

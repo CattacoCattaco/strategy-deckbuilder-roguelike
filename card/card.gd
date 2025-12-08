@@ -33,19 +33,15 @@ func _gui_input(event: InputEvent) -> void:
 		if event.pressed:
 			if event.button_index == MOUSE_BUTTON_LEFT:
 				if not hand:
-					print("No hand")
 					return
 				if hand.tile_grid:
 					if hand.tile_grid.round_manager.is_player_turn:
 						try_play()
 				elif hand.deck_manipulation_screen:
-					print("Hi")
 					var parent: Control = get_parent_control()
 					if parent is Hand:
-						print("Parent is hand")
 						hand.deck_manipulation_screen.current_slot_set.add_card(self)
 					elif parent is CardSlot:
-						print("Parent is card slot")
 						if parent.input:
 							parent.remove_card()
 						else:
@@ -127,10 +123,8 @@ func try_play() -> void:
 		
 		var targetable_tiles: Array[Tile]
 		
-		if effect.base_action is Modifier.Move:
-			targetable_tiles = player.get_tiles_in_range(effect.effect_range, can_jump, false)
-		else:
-			targetable_tiles = player.get_tiles_in_range(effect.effect_range, can_jump, true)
+		targetable_tiles = player.get_tiles_in_range(effect.effect_range, can_jump,
+				effect.base_action)
 		
 		var action_marker: Tile.ActionMarker
 		
@@ -142,6 +136,8 @@ func try_play() -> void:
 			action_marker = Tile.ActionMarker.MOVE
 		elif effect.base_action is Modifier.Poison:
 			action_marker = Tile.ActionMarker.POISON
+		elif effect.base_action is Modifier.Push:
+			action_marker = Tile.ActionMarker.PUSH
 		
 		for i in range(rep_count):
 			if i > 0:

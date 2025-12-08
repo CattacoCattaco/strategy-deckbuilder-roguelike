@@ -38,17 +38,20 @@ static var fps: float = 1.25
 ## The maximum health that this object can be at [br][br]
 ## If [param max_health] is -1, this object will not use health and can't be targeted
 @export var max_health: int = -1
+## Can this object be pushed?
+@export var pushable: bool = false
 ## What does this object do?
 @export var action_source: ActionSource
 
 
 func _init(p_texture: Texture2D = null, p_texture_type: TextureType = TextureType.ANIMATED, 
 		p_object_type: ObjectType = ObjectType.STATIC, p_max_health: int = -1,
-		p_action_source: ActionSource = NullActionSource.new()) -> void:
+		p_pushable: bool = false, p_action_source: ActionSource = NullActionSource.new()) -> void:
 	texture = p_texture
 	texture_type = p_texture_type
 	object_type = p_object_type
 	max_health = p_max_health
+	pushable = p_pushable
 	action_source = p_action_source
 
 

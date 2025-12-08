@@ -57,7 +57,7 @@ used_size = 4
 [node name="Player" type="AnimatedSprite2D" parent="."]
 z_index = 5
 sprite_frames = SubResource("SpriteFrames_7qa00")
-frame_progress = 0.76094157
+frame_progress = 0.9810554
 centered = false
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("world_map")]

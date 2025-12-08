@@ -28,7 +28,7 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var best_distance: int = EnemyActionSource.get_distance_from_vec(object.pos, distance_type)
 	var best_pos: Vector2i = object.pos
 	
-	for tile: Tile in object.get_tiles_in_range(move_range, can_jump, false):
+	for tile: Tile in object.get_tiles_in_range(move_range, can_jump, Modifier.Move.new()):
 		var distance: int =  EnemyActionSource.get_distance_from_vec(tile.pos, distance_type)
 		
 		if (distance < best_distance and closer) or (distance > best_distance and not closer):

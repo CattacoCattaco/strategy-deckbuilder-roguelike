@@ -45,9 +45,10 @@ static func a_before_b(a: Modifier, b: Modifier) -> bool:
 ## Returns the sprite associated with this modifier
 @abstract func _get_image() -> Texture2D
 ## Lower numbers go to the left of higher numbers
-## 0-9: Base actions
-## 10-19: Local modifiers
-## 20-29: Global modifiers
+## 0-18: Base actions
+## 19: Move (Last base action)
+## 20-39: Local modifiers
+## 40-59: Global modifiers
 @abstract func _get_sort_order() -> int
 ## For base actions, the description of the effect with the first word capitalized
 ## For Local modifiers, the modification with no capitalization prefixed with a space
@@ -62,15 +63,21 @@ func matches(other: Modifier) -> bool:
 func get_mod_type() -> Type:
 	var sort_order: int = _get_sort_order()
 	
-	if sort_order < 10:
+	if sort_order < 20:
 		return Type.BASE_ACTION
-	elif sort_order < 20:
+	elif sort_order < 40:
 		return Type.LOCAL_MOD
 	else:
 		return Type.GLOBAL_MOD
 
 
-class Attack extends Modifier:
+@abstract
+class BaseAction extends Modifier:
+	## Check if the object at a tile can be targetted by this effect
+	@abstract func _can_target(tile: Tile) -> bool
+
+
+class Attack extends BaseAction:
 	func _get_name() -> String:
 		return "Attack"
 	
@@ -85,9 +92,16 @@ class Attack extends Modifier:
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
 		return "Deal %d damage to a target in range %d" % [effect_size, effect_range]
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if not tile.object:
+			return false
+		
+		return tile.object.data.max_health != -1
 
 
-class Heal extends Modifier:
+class Heal extends BaseAction:
 	func _get_name() -> String:
 		return "Heal"
 	
@@ -102,9 +116,16 @@ class Heal extends Modifier:
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
 		return "Heal a target in range %d by %d" % [effect_range, effect_size]
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if not tile.object:
+			return false
+		
+		return tile.object.data.max_health != -1
 
 
-class Poison extends Modifier:
+class Poison extends BaseAction:
 	func _get_name() -> String:
 		return "Poison"
 	
@@ -119,9 +140,40 @@ class Poison extends Modifier:
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
 		return "Apply %d poison to a target in range %d" % [effect_size, effect_range]
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if not tile.object:
+			return false
+		
+		return tile.object.data.max_health != -1
 
 
-class Move extends Modifier:
+class Push extends BaseAction:
+	func _get_name() -> String:
+		return "Push"
+	
+	
+	func _get_image() -> Texture2D:
+		return preload("res://card/modifier/push.png")
+	
+	
+	func _get_sort_order() -> int:
+		return 3
+	
+	
+	func _get_text(effect_range: int, effect_size: int) -> String:
+		return "Push a target in range %d %d spaces" % [effect_range, effect_size]
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if not tile.object:
+			return false
+		
+		return tile.object.data.pushable
+
+
+class Move extends BaseAction:
 	func _get_name() -> String:
 		return "Move"
 	
@@ -131,7 +183,7 @@ class Move extends Modifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 3
+		return 19
 	
 	
 	func _get_text(effect_range: int, _effect_size: int) -> String:
@@ -139,11 +191,16 @@ class Move extends Modifier:
 			return "Move 1 space"
 		
 		return "Move up to %d spaces" % effect_range
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		return not tile.object
 
 
 @abstract
 class ModifierModifier extends Modifier:
-	@abstract func applies_to(modifier: Modifier) -> bool
+	## Can this modifier apply to a given base action
+	@abstract func applies_to(modifier: BaseAction) -> bool
 
 
 class Split2 extends ModifierModifier:
@@ -156,7 +213,7 @@ class Split2 extends ModifierModifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 10
+		return 20
 	
 	
 	func applies_to(modifier: Modifier) -> bool:
@@ -177,7 +234,7 @@ class Split3 extends ModifierModifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 11
+		return 21
 	
 	
 	func applies_to(modifier: Modifier) -> bool:
@@ -198,7 +255,7 @@ class Jump extends ModifierModifier:
 	
 	
 	func _get_sort_order() -> int:
-		return 20
+		return 40
 	
 	
 	func applies_to(_modifier: Modifier) -> bool:

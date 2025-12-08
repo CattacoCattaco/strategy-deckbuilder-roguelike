@@ -16,5 +16,6 @@ texture = ExtResource("3_peimw")
 texture_type = 2
 object_type = 2
 max_health = 2
+pushable = true
 action_source = SubResource("Resource_dy3dk")
 metadata/_custom_type_script = "uid://g0hmwqu3bxiu"

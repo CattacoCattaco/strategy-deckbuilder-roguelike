@@ -67,19 +67,6 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 	for i in len(effects):
 		var effect: Effect = effects[i]
 		
-		var targets_objects: bool
-		
-		if effect.base_action is Modifier.Move:
-			targets_objects = false
-		elif effect.base_action is Modifier.Attack:
-			targets_objects = true
-		elif effect.base_action is Modifier.Heal:
-			targets_objects = true
-		elif effect.base_action is Modifier.Poison:
-			targets_objects = true
-		
-		print(targets_objects)
-		
 		var rep_count: int = 1
 		
 		for local_mod in effect.local_modifiers:
@@ -103,8 +90,8 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 			
 			var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
 			
-			var still_valid_tiles: Array[Tile]
-			still_valid_tiles = get_tiles_in_range(effect.effect_range, can_jump, targets_objects)
+			var still_valid_tiles: Array[Tile] = get_tiles_in_range(effect.effect_range, can_jump,
+					effect.base_action)
 			
 			if target_tile not in still_valid_tiles:
 				continue
@@ -120,6 +107,11 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 				heal(target, effect.effect_size)
 			elif effect.base_action is Modifier.Poison:
 				poison(target, effect.effect_size)
+			elif effect.base_action is Modifier.Push:
+				if target == pos:
+					continue
+				
+				push(target, effect.effect_size)
 			
 			await get_tree().create_timer(0.8).timeout
 
@@ -177,6 +169,61 @@ func poison(target_pos: Vector2i, amount: int) -> void:
 	target.poisoned_sprite.show()
 
 
+func push(target_pos: Vector2i, amount: int) -> void:
+	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
+		return
+	
+	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
+	
+	var target_dir: Vector2i = target_pos - pos
+	
+	var push_dir: Vector2i
+	
+	if target_dir.x == 0:
+		push_dir = Vector2i(0, signi(target_dir.y))
+	elif target_dir.y == 0:
+		push_dir = Vector2i(signi(target_dir.x), 0)
+	else:
+		var target_dir_signs: Vector2i = target_dir.sign()
+		var abs_target_dir: Vector2i = target_dir.abs()
+		
+		var horizontal_dir: Vector2i = Vector2i(target_dir_signs.x, 0)
+		var vertical_dir: Vector2i = Vector2i(0, target_dir_signs.y)
+		
+		if abs_target_dir.x >= abs_target_dir.y:
+			var horizontal_neighbor: Vector2i = target_pos + horizontal_dir
+			if not tile_grid.has_tile(horizontal_neighbor.x, horizontal_neighbor.y):
+				push_dir = vertical_dir
+			elif tile_grid.get_tile(horizontal_neighbor.x, horizontal_neighbor.y).object:
+				push_dir = vertical_dir
+			else:
+				push_dir = horizontal_dir
+		else:
+			var vertical_neighbor: Vector2i = target_pos + horizontal_dir
+			if not tile_grid.has_tile(vertical_neighbor.x, vertical_neighbor.y):
+				push_dir = horizontal_dir
+			elif tile_grid.get_tile(vertical_neighbor.x, vertical_neighbor.y).object:
+				push_dir = horizontal_dir
+			else:
+				push_dir = vertical_dir
+	
+	var pushed_pos: Vector2i = target_pos
+	for i in range(amount):
+		var new_pushed_pos: Vector2i = pushed_pos + push_dir
+		
+		if not tile_grid.has_tile(new_pushed_pos.x, new_pushed_pos.y):
+			break
+		
+		var pushed_tile: Tile = tile_grid.get_tile(new_pushed_pos.x, new_pushed_pos.y)
+		
+		if pushed_tile.object:
+			break
+		
+		pushed_pos = new_pushed_pos
+	
+	target.move_to(pushed_pos)
+
+
 func do_poison() -> void:
 	health -= poison_level
 	
@@ -191,14 +238,14 @@ func do_poison() -> void:
 		tile.delete_object()
 
 
-func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool) -> Array[Tile]:
+func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.BaseAction
+		) -> Array[Tile]:
 	var tiles: Array[Tile] = []
 	var positions: Array[Vector2i] = [pos]
 	var prev_layer: Array[Vector2i] = [pos]
 	
-	if target_characters:
-		if data.object_type != TileObjectData.ObjectType.STATIC:
-			tiles.append(tile)
+	if base_effect._can_target(tile):
+		tiles.append(tile)
 	
 	for distance in range(1, range_size + 1):
 		var new_layer: Array[Vector2i]
@@ -216,21 +263,12 @@ func get_tiles_in_range(range_size: int, can_jump: bool, target_characters: bool
 				
 				var neighbor: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
 				
-				if not neighbor.object:
-					new_layer.append(neighbor_pos)
-					positions.append(neighbor_pos)
-					
-					if not target_characters:
-						tiles.append(neighbor)
-					
-					continue
-				
 				positions.append(neighbor_pos)
 				
-				if can_jump:
+				if not neighbor.object or can_jump:
 					new_layer.append(neighbor_pos)
-				
-				if target_characters and neighbor.object.data.max_health >= 0:
+					
+				if base_effect._can_target(neighbor):
 					tiles.append(neighbor)
 		
 		prev_layer = new_layer

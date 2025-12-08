@@ -24,7 +24,7 @@ func _init(p_player_weight: float = 1.0, p_attack_range: int = 1, p_can_jump: bo
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var attackable_player: TileObject
 	var attackable_defendables: Array[TileObject] = []
-	for tile in object.get_tiles_in_range(attack_range, can_jump, true):
+	for tile in object.get_tiles_in_range(attack_range, can_jump, Modifier.Attack.new()):
 		match tile.object.data.object_type:
 			TileObjectData.ObjectType.PLAYER:
 				attackable_player = tile.object

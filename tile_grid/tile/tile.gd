@@ -2,10 +2,12 @@ class_name Tile
 extends Node2D
 
 enum ActionMarker {
+	PUSH,
 	ATTACK,
 	POISON,
 	MOVE,
 	HEAL,
+	ENEMY_PUSH,
 	ENEMY_ATTACK,
 	ENEMY_POISON,
 	ENEMY_MOVE,
@@ -63,7 +65,9 @@ func _inspect() -> void:
 		
 		var marker_type: ActionMarker
 		
-		if effect.base_action is Modifier.Attack:
+		if effect.base_action is Modifier.Push:
+			marker_type = ActionMarker.ENEMY_PUSH
+		elif effect.base_action is Modifier.Attack:
 			marker_type = ActionMarker.ENEMY_ATTACK
 		elif effect.base_action is Modifier.Poison:
 			marker_type = ActionMarker.ENEMY_POISON
