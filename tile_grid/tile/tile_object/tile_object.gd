@@ -23,6 +23,7 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 @export var sprite: AnimatedSprite2D
 @export var poisoned_sprite: AnimatedSprite2D
 @export var thought_bubble: Sprite2D
+@export var defense_label: Label
 
 @export var data: TileObjectData:
 	set(value):
@@ -40,6 +41,8 @@ var shield_level: int = 0
 func _ready() -> void:
 	poisoned_sprite.play("default")
 	poisoned_sprite.hide()
+	
+	defense_label.hide()
 	
 	hide_thought_bubble()
 
@@ -127,6 +130,12 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 	
 	if target.shield_level > 0:
 		target.shield_level -= 1
+		
+		target.defense_label.text = str(target.shield_level)
+		
+		if target.shield_level == 0:
+			target.defense_label.hide()
+		
 		return
 	
 	target.health -= amount
@@ -168,6 +177,9 @@ func defend(target_pos: Vector2i, amount: int) -> void:
 	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
 	
 	target.shield_level += amount
+	
+	target.defense_label.show()
+	target.defense_label.text = str(target.shield_level)
 
 
 func push(target_pos: Vector2i, amount: int) -> void:
