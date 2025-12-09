@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=35 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -14,6 +14,7 @@
 [ext_resource type="Resource" uid="uid://btpqeim1ctjv0" path="res://tile_grid/level_builder/environments/dead_forest.tres" id="8_ycykd"]
 [ext_resource type="Resource" uid="uid://c6m158xb2ol3q" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/aggressive_bot.tres" id="9_eoot7"]
 [ext_resource type="Resource" uid="uid://ciripi3faevkx" path="res://tile_grid/level_builder/environments/acid_pools.tres" id="9_ycykd"]
+[ext_resource type="Resource" uid="uid://cfypegtdnudxk" path="res://tile_grid/level_builder/environments/boxes.tres" id="10_1w5d2"]
 [ext_resource type="Resource" uid="uid://cfdfyqpbcdxpb" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/fear_bot.tres" id="10_jp86b"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="11_d6b8m"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
@@ -86,7 +87,7 @@ script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
 player_data = ExtResource("4_kqtwp")
 movement_region_object_data = ExtResource("4_0vku6")
-environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResource("8_ycykd")])
+environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResource("8_ycykd"), ExtResource("10_1w5d2")])
 enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_s8kfo"), SubResource("Resource_2yo27")])
 mission_enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_h5v0e"), SubResource("Resource_gsi5n")])
 

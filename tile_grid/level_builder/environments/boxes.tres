@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="LevelEnvironment" load_steps=10 format=3 uid="uid://cfypegtdnudxk"]
+
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="1_lqesm"]
+[ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="2_khd1q"]
+[ext_resource type="Resource" uid="uid://dhssapgu2clte" path="res://tile_grid/tile/tile_object/data/objects/box.tres" id="3_khd1q"]
+[ext_resource type="Script" uid="uid://bmvmi6iqabq4g" path="res://tile_grid/level_builder/weighted_object_list.gd" id="3_u3fs3"]
+[ext_resource type="Resource" uid="uid://c8jcqn23xsyua" path="res://tile_grid/tile/tile_object/data/objects/building.tres" id="4_345ls"]
+[ext_resource type="Script" uid="uid://l1wi31t0k3hd" path="res://tile_grid/level_builder/environment.gd" id="5_2nswt"]
+
+[sub_resource type="Resource" id="Resource_ht0hp"]
+script = ExtResource("3_u3fs3")
+objects = Array[ExtResource("1_lqesm")]([ExtResource("2_khd1q"), ExtResource("3_khd1q")])
+weights = Array[int]([1, 5])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[sub_resource type="Resource" id="Resource_cxy6f"]
+script = ExtResource("3_u3fs3")
+objects = Array[ExtResource("1_lqesm")]([ExtResource("4_345ls")])
+weights = Array[int]([1])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[sub_resource type="Resource" id="Resource_5oshj"]
+script = ExtResource("3_u3fs3")
+objects = Array[ExtResource("1_lqesm")]([ExtResource("3_khd1q")])
+weights = Array[int]([1])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[resource]
+script = ExtResource("5_2nswt")
+clump_obstacles = SubResource("Resource_ht0hp")
+single_obstacles = SubResource("Resource_5oshj")
+defendables = SubResource("Resource_cxy6f")
+min_clump_count = 0.03
+max_clump_count = 0.5
+min_clump_size = 8
+max_clump_size = 22
+metadata/_custom_type_script = "uid://l1wi31t0k3hd"

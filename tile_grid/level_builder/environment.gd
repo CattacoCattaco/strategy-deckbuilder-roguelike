@@ -21,10 +21,20 @@ extends Resource
 
 func _init(p_clump_obstacles: WeightedObjectList = WeightedObjectList.new(),
 		p_single_obstacles: WeightedObjectList = WeightedObjectList.new(),
-		p_defendables: WeightedObjectList = WeightedObjectList.new()) -> void:
+		p_defendables: WeightedObjectList = WeightedObjectList.new(),
+		p_min_clump_count: float = 0.06, p_max_clump_count: float = 0.1, p_min_clump_size: int = 4,
+		p_max_clump_size: int = 11, p_min_single_count: float = 0.15,
+		p_max_single_count: float = 0.2) -> void:
 	clump_obstacles = p_clump_obstacles
 	single_obstacles = p_single_obstacles
 	defendables = p_defendables
+	
+	min_clump_count = p_min_clump_count
+	max_clump_count = p_max_clump_count
+	min_clump_size = p_min_clump_size
+	max_clump_size = p_max_clump_size
+	min_single_count = p_min_single_count
+	max_single_count = p_max_single_count
 
 
 func get_clump_count(density: LevelBuilder.ObjectDensity, area: int) -> int:
