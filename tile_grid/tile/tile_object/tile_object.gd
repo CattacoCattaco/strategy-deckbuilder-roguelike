@@ -151,6 +151,15 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 	
 	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
 	
+	if target.poison_level > 0:
+		target.poison_level -= amount
+		
+		if target.poison_level <= 0:
+			target.poison_level = 0
+			target.poisoned_sprite.hide()
+		
+		return
+	
 	target.health += amount
 	
 	if target.health > target.data.max_health:
@@ -253,6 +262,16 @@ func move_to(new_pos: Vector2i) -> void:
 
 
 func do_poison() -> void:
+	if shield_level > 0:
+		shield_level -= 1
+		
+		defense_label.text = str(shield_level)
+		
+		if shield_level == 0:
+			defense_label.hide()
+		
+		return
+	
 	health -= poison_level
 	
 	poison_level -= 1
