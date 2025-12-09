@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LevelEnvironment" load_steps=9 format=3 uid="uid://btpqeim1ctjv0"]
+
+[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="1_bckdj"]
+[ext_resource type="Resource" uid="uid://ccciw1ve4yhmy" path="res://tile_grid/tile/tile_object/data/objects/tree.tres" id="2_jhjst"]
+[ext_resource type="Script" uid="uid://bmvmi6iqabq4g" path="res://tile_grid/level_builder/weighted_object_list.gd" id="3_4g8mc"]
+[ext_resource type="Resource" uid="uid://c8jcqn23xsyua" path="res://tile_grid/tile/tile_object/data/objects/building.tres" id="4_yypcg"]
+[ext_resource type="Script" uid="uid://l1wi31t0k3hd" path="res://tile_grid/level_builder/environment.gd" id="5_hbybo"]
+
+[sub_resource type="Resource" id="Resource_ht0hp"]
+script = ExtResource("3_4g8mc")
+objects = Array[ExtResource("1_bckdj")]([ExtResource("2_jhjst")])
+weights = Array[int]([1])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[sub_resource type="Resource" id="Resource_cxy6f"]
+script = ExtResource("3_4g8mc")
+objects = Array[ExtResource("1_bckdj")]([ExtResource("4_yypcg")])
+weights = Array[int]([1])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[sub_resource type="Resource" id="Resource_5oshj"]
+script = ExtResource("3_4g8mc")
+objects = Array[ExtResource("1_bckdj")]([ExtResource("2_jhjst")])
+weights = Array[int]([1])
+metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
+
+[resource]
+script = ExtResource("5_hbybo")
+clump_obstacles = SubResource("Resource_ht0hp")
+single_obstacles = SubResource("Resource_5oshj")
+defendables = SubResource("Resource_cxy6f")
+metadata/_custom_type_script = "uid://l1wi31t0k3hd"

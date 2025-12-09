@@ -12,9 +12,7 @@ enum ObjectDensity {
 
 @export var player_data: TileObjectData
 @export var movement_region_object_data: TileObjectData
-@export var clump_obstacles: WeightedObjectList
-@export var single_obstacles: WeightedObjectList
-@export var defendable: TileObjectData
+@export var environments: Array[LevelEnvironment]
 @export var enemies_by_level: Array[WeightedObjectList]
 @export var mission_enemies_by_level: Array[WeightedObjectList]
 
@@ -27,6 +25,8 @@ func place_objects() -> void:
 	var world_map: WorldMap = tile_grid.world_map
 	
 	var tile_count: int = tile_grid.size.x * tile_grid.size.y
+	
+	var environment: LevelEnvironment = environments.pick_random()
 	
 	untouched_cells = []
 	
@@ -60,25 +60,13 @@ func place_objects() -> void:
 	origin_tile.add_object(player_data)
 	tile_grid.hand.player = origin_tile.object
 	
-	var clump_count: int
-	match density:
-		ObjectDensity.SPARSE:
-			clump_count = floori(randf_range(tile_count * 0.01, tile_count * 0.02))
-		ObjectDensity.MILD:
-			clump_count = floori(randf_range(tile_count * 0.02, tile_count * 0.04))
-		ObjectDensity.FEATUREFUL:
-			clump_count = floori(randf_range(tile_count * 0.04, tile_count * 0.06))
-		ObjectDensity.DENSE:
-			clump_count = floori(randf_range(tile_count * 0.06, tile_count * 0.1))
-	
-	if clump_count < 1:
-		clump_count = 1
+	var clump_count: int = environment.get_clump_count(density, tile_count)
 	
 	for i in range(clump_count):
 		if len(untouched_cells) == 0:
 			break
 		
-		var clump_object: TileObjectData = clump_obstacles.get_random_object()
+		var clump_object: TileObjectData = environment.clump_obstacles.get_random_object()
 		
 		var start_pos_index: int = randi_range(0, len(untouched_cells) - 1)
 		var pos: Vector2i = untouched_cells[start_pos_index]
@@ -87,16 +75,7 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(clump_object)
 		
-		var clump_size: int
-		match density:
-			ObjectDensity.SPARSE:
-				clump_size = randi_range(1, 3)
-			ObjectDensity.MILD:
-				clump_size = randi_range(2, 5)
-			ObjectDensity.FEATUREFUL:
-				clump_size = randi_range(3, 7)
-			ObjectDensity.DENSE:
-				clump_size = randi_range(4, 10)
+		var clump_size: int = environment.get_clump_size(density)
 		
 		for j in range(clump_size):
 			var empty_neighbors: Array[Vector2i] = []
@@ -113,19 +92,7 @@ func place_objects() -> void:
 			tile = tile_grid.get_tile(pos.x, pos.y)
 			tile.add_object(clump_object)
 	
-	var single_obstacle_count: int
-	match density:
-		ObjectDensity.SPARSE:
-			single_obstacle_count = floori(randf_range(tile_count * 0.025, tile_count * 0.5))
-		ObjectDensity.MILD:
-			single_obstacle_count = floori(randf_range(tile_count * 0.05, tile_count * 0.1))
-		ObjectDensity.FEATUREFUL:
-			single_obstacle_count = floori(randf_range(tile_count * 0.1, tile_count * 0.15))
-		ObjectDensity.DENSE:
-			single_obstacle_count = floori(randf_range(tile_count * 0.15, tile_count * 0.2))
-	
-	if single_obstacle_count < 1:
-		single_obstacle_count = 1
+	var single_obstacle_count: int = environment.get_single_object_count(density, tile_count)
 	
 	for i in range(single_obstacle_count):
 		if len(untouched_cells) == 0:
@@ -136,7 +103,7 @@ func place_objects() -> void:
 		untouched_cells.remove_at(pos_index)
 		
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
-		tile.add_object(single_obstacles.get_random_object())
+		tile.add_object(environment.single_obstacles.get_random_object())
 	
 	EnemyActionSource.defendables = []
 	
@@ -157,7 +124,7 @@ func place_objects() -> void:
 			designated_movement_region.remove_at(pos_index)
 			
 			var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
-			tile.add_object(defendable)
+			tile.add_object(environment.defendables.get_random_object())
 			EnemyActionSource.defendables.append(tile.object)
 		
 		EnemyActionSource.recalc_distances(tile_grid)
