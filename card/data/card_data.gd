@@ -7,6 +7,9 @@ var effect_size: int
 
 
 static func sort(cards: Array[CardData]) -> void:
+	for card in cards:
+		Modifier.sort(card.modifiers)
+	
 	cards.sort_custom(_is_before)
 
 
@@ -22,6 +25,19 @@ static func _is_before(a: CardData, b: CardData) -> bool:
 			return true
 		elif a_mod._get_sort_order() > b_mod._get_sort_order():
 			return false
+	
+	if len(b.modifiers) > len(a.modifiers):
+		return true
+	
+	if a.effect_range < b.effect_range:
+		return true
+	elif a.effect_range > b.effect_range:
+		return false
+	
+	if a.effect_size < b.effect_size:
+		return true
+	elif a.effect_size > b.effect_size:
+		return false
 	
 	return false
 

@@ -58,6 +58,22 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Push.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 1, 1),
 	],
+	"Chaos Deck": [
+		CardData.new([Modifier.Move.new()], 1, 1),
+		CardData.new([Modifier.Move.new(), Modifier.Attack.new()], 1, 1),
+		CardData.new([Modifier.Move.new(), Modifier.Attack.new(), Modifier.Poison.new()], 1, 1),
+		CardData.new([Modifier.Move.new(), Modifier.Poison.new()], 1, 1),
+		CardData.new([Modifier.Move.new()], 5, 1),
+		CardData.new([Modifier.Attack.new(), Modifier.Poison.new()], 1, 1),
+		CardData.new([Modifier.Attack.new(), Modifier.Poison.new()], 1, 2),
+		CardData.new([Modifier.Attack.new(), Modifier.Poison.new()], 2, 1),
+		CardData.new([Modifier.Attack.new(), Modifier.Push.new()], 1, 1),
+		CardData.new([Modifier.Attack.new()], 1, 1),
+		CardData.new([Modifier.Heal.new(), Modifier.Poison.new()], 1, 1),
+		CardData.new([Modifier.Heal.new()], 1, 1),
+		CardData.new([Modifier.Push.new()], 2, 3),
+		CardData.new([Modifier.Push.new()], 1, 1),
+	],
 }
 
 @export var world_map_scene: PackedScene
