@@ -22,22 +22,10 @@ var player_pos: Vector2i
 var world_num: int = 0
 var levels_beat: int = 0
 
-var player_deck: Array[CardData] = [
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Move.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Attack.new()], 1, 1),
-	CardData.new([Modifier.Defend.new()], 1, 1),
-	CardData.new([Modifier.Defend.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-	CardData.new([Modifier.Push.new()], 1, 1),
-]
+var player_deck: Array[CardData]:
+	set(value):
+		CardData.sort(value)
+		player_deck = value
 
 
 func _ready() -> void:

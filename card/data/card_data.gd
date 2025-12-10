@@ -6,6 +6,26 @@ var effect_range: int
 var effect_size: int
 
 
+static func sort(cards: Array[CardData]) -> void:
+	cards.sort_custom(_is_before)
+
+
+static func _is_before(a: CardData, b: CardData) -> bool:
+	for i in len(a.modifiers):
+		if i >= len(b.modifiers):
+			return false
+		
+		var a_mod: Modifier = a.modifiers[i]
+		var b_mod: Modifier = b.modifiers[i]
+		
+		if a_mod._get_sort_order() < b_mod._get_sort_order():
+			return true
+		elif a_mod._get_sort_order() > b_mod._get_sort_order():
+			return false
+	
+	return false
+
+
 func _init(p_modifiers: Array[Modifier] = [], p_effect_range: int = 0,
 		p_effect_size: int = 0) -> void:
 	modifiers = p_modifiers
