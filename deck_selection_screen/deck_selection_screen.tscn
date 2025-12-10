@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctg8erda034nl"]
+
+[ext_resource type="Script" uid="uid://b257j2086s2a0" path="res://deck_selection_screen/deck_selection_screen.gd" id="1_alses"]
+[ext_resource type="PackedScene" uid="uid://7v0mwxr7ngxf" path="res://deck_selection_screen/deck_option/deck_option.tscn" id="2_alses"]
+[ext_resource type="PackedScene" uid="uid://4gq17h5jwwyb" path="res://world_map/world_map.tscn" id="2_wo7o8"]
+
+[node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_options_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_alses")
+world_map_scene = ExtResource("2_wo7o8")
+deck_option_scene = ExtResource("2_alses")
+deck_options_container = NodePath("DeckOptionsContainer")
+
+[node name="DeckOptionsContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2

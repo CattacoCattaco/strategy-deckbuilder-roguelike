@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=5 format=3 uid="uid://cb7yvbnqqc1l"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://cb7yvbnqqc1l"]
+
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="1_4iewc"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iiphp"]
 
@@ -27,6 +29,8 @@ bg_color = Color(0.1, 0.1, 0.1, 0.47058824)
 corner_detail = 5
 
 [resource]
+Button/font_sizes/font_size = 16
+Button/fonts/font = ExtResource("1_4iewc")
 Button/styles/focus = SubResource("StyleBoxEmpty_iiphp")
 Button/styles/hover = SubResource("StyleBoxFlat_a0n5t")
 Button/styles/normal = SubResource("StyleBoxFlat_m4xch")
