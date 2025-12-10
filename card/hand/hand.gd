@@ -117,6 +117,18 @@ func draw_card() -> void:
 	add_child(card)
 	
 	update_gap_size()
+	
+	sort()
+
+
+func sort() -> void:
+	for card in cards:
+		remove_child(card)
+	
+	Card.sort(cards)
+	
+	for card in cards:
+		add_child(card)
 
 
 func discard(card: Card) -> void:

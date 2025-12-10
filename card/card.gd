@@ -15,6 +15,13 @@ var card_data: CardData
 var needs_targets: bool = false
 var cancelled: bool = false
 
+static func sort(cards: Array[Card]) -> void:
+	cards.sort_custom(_is_before)
+
+
+static func _is_before(a: Card, b: Card) -> bool:
+	return CardData.is_before(a.card_data, b.card_data)
+
 
 func _ready() -> void:
 	if card_data:

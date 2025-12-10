@@ -10,10 +10,10 @@ static func sort(cards: Array[CardData]) -> void:
 	for card in cards:
 		Modifier.sort(card.modifiers)
 	
-	cards.sort_custom(_is_before)
+	cards.sort_custom(is_before)
 
 
-static func _is_before(a: CardData, b: CardData) -> bool:
+static func is_before(a: CardData, b: CardData) -> bool:
 	for i in len(a.modifiers):
 		if i >= len(b.modifiers):
 			return false
