@@ -69,6 +69,8 @@ func _inspect() -> void:
 			marker_type = ActionMarker.ENEMY_PUSH
 		elif effect.base_action is Modifier.Defend:
 			marker_type = ActionMarker.ENEMY_PUSH
+		elif effect.base_action is Modifier.Swap:
+			marker_type = ActionMarker.ENEMY_MOVE
 		elif effect.base_action is Modifier.Attack:
 			marker_type = ActionMarker.ENEMY_ATTACK
 		elif effect.base_action is Modifier.Poison:

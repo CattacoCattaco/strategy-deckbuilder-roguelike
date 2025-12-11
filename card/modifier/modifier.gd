@@ -182,7 +182,7 @@ class Push extends BaseAction:
 	
 	
 	func _get_sort_order() -> int:
-		return 18
+		return 17
 	
 	
 	func _get_text(effect_range: int, effect_size: int) -> String:
@@ -194,6 +194,30 @@ class Push extends BaseAction:
 			return false
 		
 		return tile.object.data.pushable
+
+
+class Swap extends BaseAction:
+	func _get_name() -> String:
+		return "Swap"
+	
+	
+	func _get_image() -> Texture2D:
+		return preload("res://card/modifier/arrow.png")
+	
+	
+	func _get_sort_order() -> int:
+		return 18
+	
+	
+	func _get_text(effect_range: int, _effect_size: int) -> String:
+		return "Swap positions with a target in range %d" % effect_range
+	
+	
+	func _can_target(tile: Tile) -> bool:
+		if tile.object:
+			return true
+		
+		return false
 
 
 class Move extends BaseAction:
@@ -240,7 +264,7 @@ class Split2 extends ModifierModifier:
 	
 	
 	func applies_to(modifier: Modifier) -> bool:
-		return modifier is not Move
+		return modifier is not Move and modifier is not Swap
 	
 	
 	func _get_text(_effect_range: int, _effect_size: int) -> String:
@@ -261,7 +285,7 @@ class Split3 extends ModifierModifier:
 	
 	
 	func applies_to(modifier: Modifier) -> bool:
-		return modifier is not Move
+		return modifier is not Move and modifier is not Swap
 	
 	
 	func _get_text(_effect_range: int, _effect_size: int) -> String:

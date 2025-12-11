@@ -113,6 +113,11 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 					continue
 				
 				push(target, effect.effect_size)
+			elif effect.base_action is Modifier.Swap:
+				if target == pos:
+					continue
+				
+				swap(target)
 			elif effect.base_action is Modifier.Move:
 				if target == pos:
 					continue
@@ -253,6 +258,28 @@ func move_to(new_pos: Vector2i) -> void:
 	tile.object = null
 	
 	pos = new_pos
+	tile = tile_grid.get_tile(pos.x, pos.y)
+	reparent(tile, false)
+	tile.object = self
+	
+	if data.action_source is PlayerActionSource:
+		EnemyActionSource.recalc_distances(tile_grid)
+
+
+func swap(other_pos: Vector2i) -> void:
+	var other_object: TileObject = tile_grid.get_tile(other_pos.x, other_pos.y).object
+	if not other_object:
+		return
+	
+	other_object.pos = pos
+	other_object.tile = tile_grid.get_tile(pos.x, pos.y)
+	other_object.reparent(other_object.tile, false)
+	other_object.tile.object = other_object
+	
+	if other_object.data.action_source is PlayerActionSource:
+		EnemyActionSource.recalc_distances(tile_grid)
+	
+	pos = other_pos
 	tile = tile_grid.get_tile(pos.x, pos.y)
 	reparent(tile, false)
 	tile.object = self

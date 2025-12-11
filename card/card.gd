@@ -147,6 +147,8 @@ func try_play() -> void:
 			action_marker = Tile.ActionMarker.PUSH
 		elif effect.base_action is Modifier.Push:
 			action_marker = Tile.ActionMarker.PUSH
+		elif effect.base_action is Modifier.Swap:
+			action_marker = Tile.ActionMarker.MOVE
 		
 		for i in range(rep_count):
 			if i > 0:
