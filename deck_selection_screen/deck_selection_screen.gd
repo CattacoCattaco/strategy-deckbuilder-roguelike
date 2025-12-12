@@ -118,12 +118,12 @@ func _ready() -> void:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+		if event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
 			deck_options_container.position.x -= 4
 			
 			if deck_options_container.position.x < min_deck_options_x:
 				deck_options_container.position.x = min_deck_options_x
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+		elif event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
 			deck_options_container.position.x += 4
 			
 			if deck_options_container.position.x > max_deck_options_x:
