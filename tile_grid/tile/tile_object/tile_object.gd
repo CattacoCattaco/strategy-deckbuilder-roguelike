@@ -318,7 +318,7 @@ func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.B
 	var positions: Array[Vector2i] = [pos]
 	var prev_layer: Array[Vector2i] = [pos]
 	
-	if base_effect._can_target(tile):
+	if base_effect._can_target(tile, self):
 		tiles.append(tile)
 	
 	for distance in range(1, range_size + 1):
@@ -342,7 +342,7 @@ func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.B
 				if not neighbor.object or can_jump:
 					new_layer.append(neighbor_pos)
 					
-				if base_effect._can_target(neighbor):
+				if base_effect._can_target(neighbor, self):
 					tiles.append(neighbor)
 		
 		prev_layer = new_layer

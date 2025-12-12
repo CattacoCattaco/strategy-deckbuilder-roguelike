@@ -73,7 +73,7 @@ func get_mod_type() -> Type:
 @abstract
 class BaseAction extends Modifier:
 	## Check if the object at a tile can be targetted by this effect
-	@abstract func _can_target(tile: Tile) -> bool
+	@abstract func _can_target(tile: Tile, source: TileObject) -> bool
 
 
 class Attack extends BaseAction:
@@ -93,7 +93,7 @@ class Attack extends BaseAction:
 		return "Deal %d damage to a target in range %d" % [effect_size, effect_range]
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, _source: TileObject) -> bool:
 		if not tile.object:
 			return false
 		
@@ -117,7 +117,7 @@ class Heal extends BaseAction:
 		return "Heal a target in range %d by %d" % [effect_range, effect_size]
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, _source: TileObject) -> bool:
 		if not tile.object:
 			return false
 		
@@ -141,7 +141,7 @@ class Poison extends BaseAction:
 		return "Apply %d poison to a target in range %d" % [effect_size, effect_range]
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, _source: TileObject) -> bool:
 		if not tile.object:
 			return false
 		
@@ -165,7 +165,7 @@ class Defend extends BaseAction:
 		return "Give a target in range %d %d shield" % [effect_range, effect_size]
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, _source: TileObject) -> bool:
 		if not tile.object:
 			return false
 		
@@ -189,8 +189,11 @@ class Push extends BaseAction:
 		return "Push a target in range %d %d spaces" % [effect_range, effect_size]
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, source: TileObject) -> bool:
 		if not tile.object:
+			return false
+		
+		if tile.object == source:
 			return false
 		
 		return tile.object.data.pushable
@@ -213,8 +216,11 @@ class Swap extends BaseAction:
 		return "Swap positions with a target in range %d" % effect_range
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, source: TileObject) -> bool:
 		if tile.object:
+			if tile.object == source:
+				return false
+			
 			return true
 		
 		return false
@@ -240,7 +246,7 @@ class Move extends BaseAction:
 		return "Move up to %d spaces" % effect_range
 	
 	
-	func _can_target(tile: Tile) -> bool:
+	func _can_target(tile: Tile, _source: TileObject) -> bool:
 		return not tile.object
 
 
