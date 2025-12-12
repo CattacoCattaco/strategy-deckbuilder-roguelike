@@ -11,6 +11,7 @@ font = ExtResource("1_g4r86")
 custom_minimum_size = Vector2(160, 240)
 layout_mode = 3
 anchors_preset = 0
+mouse_filter = 2
 script = ExtResource("1_5la07")
 name_label = NodePath("BG/NameLabel")
 select_button = NodePath("BG/SelectButton")
@@ -22,6 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.26, 0.26, 0.26, 1)
 
 [node name="NameLabel" type="Label" parent="BG"]

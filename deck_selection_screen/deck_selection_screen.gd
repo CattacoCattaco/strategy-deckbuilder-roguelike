@@ -95,6 +95,9 @@ static var DECKS: Dictionary[String, Array] = {
 
 @export var deck_options_container: HBoxContainer
 
+var min_deck_options_x: int
+var max_deck_options_x: int
+
 
 func _ready() -> void:
 	for deck_name in DECKS:
@@ -103,6 +106,28 @@ func _ready() -> void:
 			contents.append(card)
 		
 		_add_deck_option(contents, deck_name)
+	
+	await RenderingServer.frame_post_draw
+	
+	deck_options_container.position.y = (size.y - deck_options_container.size.y) / 2
+	deck_options_container.position.x = (size.x - 160) / 2
+	
+	max_deck_options_x = floori(deck_options_container.position.x)
+	min_deck_options_x = floori((size.x) / 2 - deck_options_container.size.x + 80)
+
+
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			deck_options_container.position.x -= 4
+			
+			if deck_options_container.position.x < min_deck_options_x:
+				deck_options_container.position.x = min_deck_options_x
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			deck_options_container.position.x += 4
+			
+			if deck_options_container.position.x > max_deck_options_x:
+				deck_options_container.position.x = max_deck_options_x
 
 
 func _add_deck_option(deck_contents: Array[CardData], deck_name: String) -> void:
