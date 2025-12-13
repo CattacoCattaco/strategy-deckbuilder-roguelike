@@ -1,8 +1,9 @@
 class_name DeckSelectionScreen
 extends Control
 
-static var DECKS: Dictionary[String, Array] = {
-	"Basic Deck": [
+## All available starter decks
+static var DECKS: Array[StarterDeckData] = [
+	StarterDeckData.new("Basic Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -15,8 +16,8 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Attack.new()], 1, 1),
 		CardData.new([Modifier.Heal.new()], 1, 1),
 		CardData.new([Modifier.Heal.new()], 1, 1),
-	],
-	"Poison Deck": [
+	]),
+	StarterDeckData.new("Poison Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -29,8 +30,8 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Poison.new()], 1, 1),
 		CardData.new([Modifier.Poison.new()], 1, 1),
 		CardData.new([Modifier.Poison.new()], 1, 1),
-	],
-	"Shield Deck": [
+	]),
+	StarterDeckData.new("Shield Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -43,8 +44,8 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Defend.new()], 1, 1),
 		CardData.new([Modifier.Defend.new()], 1, 1),
 		CardData.new([Modifier.Defend.new()], 1, 1),
-	],
-	"Push Deck": [
+	]),
+	StarterDeckData.new("Push Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -57,8 +58,8 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Attack.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 1, 1),
-	],
-	"Swap Deck": [
+	]),
+	StarterDeckData.new("Swap Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Attack.new()], 1, 1),
@@ -71,8 +72,8 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Swap.new()], 1, 1),
 		CardData.new([Modifier.Swap.new()], 1, 1),
 		CardData.new([Modifier.Swap.new()], 1, 1),
-	],
-	"Chaos Deck": [
+	]),
+	StarterDeckData.new("Chaos Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new(), Modifier.Attack.new()], 1, 1),
 		CardData.new([Modifier.Move.new(), Modifier.Attack.new(), Modifier.Poison.new()], 1, 1),
@@ -87,61 +88,59 @@ static var DECKS: Dictionary[String, Array] = {
 		CardData.new([Modifier.Heal.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 2, 3),
 		CardData.new([Modifier.Push.new()], 1, 1),
-	],
-}
+	]),
+]
 
 @export var world_map_scene: PackedScene
-@export var deck_option_scene: PackedScene
 
-@export var deck_options_container: HBoxContainer
+@export var deck_name_label: Label
+@export var select_button: Button
+@export var previous_button: Button
+@export var next_button: Button
 
-var min_deck_options_x: int
-var max_deck_options_x: int
+var current_deck_index: int = 0
 
 
 func _ready() -> void:
-	for deck_name in DECKS:
-		var contents: Array[CardData] = []
-		for card in DECKS[deck_name]:
-			contents.append(card)
-		
-		_add_deck_option(contents, deck_name)
+	previous_button.disabled = true
+	previous_button.pressed.connect(_previous_deck)
+	next_button.pressed.connect(_next_deck)
+	_update_current_deck()
+
+
+func _previous_deck() -> void:
+	current_deck_index -= 1
 	
-	await RenderingServer.frame_post_draw
+	if current_deck_index == 0:
+		previous_button.disabled = true
 	
-	deck_options_container.position.y = (size.y - deck_options_container.size.y) / 2
-	deck_options_container.position.x = (size.x - 160) / 2
+	next_button.disabled = false
 	
-	max_deck_options_x = floori(deck_options_container.position.x)
-	min_deck_options_x = floori((size.x) / 2 - deck_options_container.size.x + 80)
+	_update_current_deck()
 
 
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index in [MOUSE_BUTTON_WHEEL_DOWN, MOUSE_BUTTON_WHEEL_RIGHT]:
-			deck_options_container.position.x -= 4
-			
-			if deck_options_container.position.x < min_deck_options_x:
-				deck_options_container.position.x = min_deck_options_x
-		elif event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_LEFT]:
-			deck_options_container.position.x += 4
-			
-			if deck_options_container.position.x > max_deck_options_x:
-				deck_options_container.position.x = max_deck_options_x
-
-
-func _add_deck_option(deck_contents: Array[CardData], deck_name: String) -> void:
-	var deck_option: DeckOption = deck_option_scene.instantiate()
+func _next_deck() -> void:
+	current_deck_index += 1
 	
-	deck_options_container.add_child(deck_option)
+	if current_deck_index == len(DECKS) - 1:
+		next_button.disabled = true
 	
-	deck_option.name_label.text = deck_name
-	deck_option.select_button.pressed.connect(_choose_deck.bind(deck_contents))
+	previous_button.disabled = false
+	
+	_update_current_deck()
 
 
-func _choose_deck(deck: Array[CardData]) -> void:
+func _update_current_deck() -> void:
+	var deck: StarterDeckData = DECKS[current_deck_index]
+	deck_name_label.text = deck.deck_name
+	select_button.pressed.connect(_choose_deck.bind(deck.cards))
+
+
+func _choose_deck() -> void:
+	var deck: StarterDeckData = DECKS[current_deck_index]
+	
 	var world_map: WorldMap = world_map_scene.instantiate()
-	world_map.player_deck = deck
+	world_map.player_deck = deck.cards.duplicate(true)
 	
 	get_tree().root.add_child(world_map)
 	queue_free()

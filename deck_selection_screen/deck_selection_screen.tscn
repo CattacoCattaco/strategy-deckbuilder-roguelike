@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctg8erda034nl"]
+[gd_scene load_steps=6 format=3 uid="uid://ctg8erda034nl"]
 
 [ext_resource type="Script" uid="uid://b257j2086s2a0" path="res://deck_selection_screen/deck_selection_screen.gd" id="1_alses"]
-[ext_resource type="PackedScene" uid="uid://7v0mwxr7ngxf" path="res://deck_selection_screen/deck_option/deck_option.tscn" id="2_alses"]
 [ext_resource type="PackedScene" uid="uid://4gq17h5jwwyb" path="res://world_map/world_map.tscn" id="2_wo7o8"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="3_8xbyr"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="4_cmc68"]
 
-[node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_options_container")]
+[sub_resource type="LabelSettings" id="LabelSettings_6ggko"]
+font = ExtResource("3_8xbyr")
+
+[node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_name_label", "select_button", "previous_button", "next_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,10 +17,94 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_alses")
 world_map_scene = ExtResource("2_wo7o8")
-deck_option_scene = ExtResource("2_alses")
-deck_options_container = NodePath("DeckOptionsContainer")
+deck_name_label = NodePath("DeckOption/BG/NameLabel")
+select_button = NodePath("DeckOption/BG/SelectButton")
+previous_button = NodePath("Previous")
+next_button = NodePath("Next")
 
-[node name="DeckOptionsContainer" type="HBoxContainer" parent="."]
+[node name="DeckOption" type="Control" parent="."]
+custom_minimum_size = Vector2(160, 240)
 layout_mode = 1
-mouse_filter = 0
-theme_override_constants/separation = 12
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -120.0
+offset_right = 80.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BG" type="ColorRect" parent="DeckOption"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.26, 0.26, 0.26, 1)
+
+[node name="NameLabel" type="Label" parent="DeckOption/BG"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "Basic Deck"
+label_settings = SubResource("LabelSettings_6ggko")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectButton" type="Button" parent="DeckOption/BG"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -60.0
+offset_right = 64.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("4_cmc68")
+text = "Select"
+
+[node name="Previous" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.5
+anchor_right = 0.15
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cmc68")
+text = "<—"
+
+[node name="Next" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.85
+anchor_top = 0.5
+anchor_right = 0.85
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cmc68")
+text = "—>"
