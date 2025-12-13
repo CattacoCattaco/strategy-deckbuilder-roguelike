@@ -184,6 +184,9 @@ static func get_player_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> 
 
 
 static func get_player_distance(x: int, y: int, tile_grid: TileGrid) -> int:
+	if distances_need_recalc:
+		recalc_distances(tile_grid)
+	
 	return player_distances[x][y]
 
 
@@ -192,6 +195,9 @@ static func get_defendable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid)
 
 
 static func get_defendable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
+	if distances_need_recalc:
+		recalc_distances(tile_grid)
+	
 	return defendable_distances[x][y]
 
 
