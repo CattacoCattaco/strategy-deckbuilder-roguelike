@@ -124,6 +124,9 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 				
 				move_to(target)
 			
+			if is_queued_for_deletion():
+				return
+			
 			await get_tree().create_timer(0.8).timeout
 
 
@@ -148,6 +151,7 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 	
 	if target.health <= 0:
 		target.tile.delete_object()
+		return
 
 
 func heal(target_pos: Vector2i, amount: int) -> void:
@@ -251,6 +255,25 @@ func push(target_pos: Vector2i, amount: int) -> void:
 	target.move_to(pushed_pos)
 
 
+func swap(other_pos: Vector2i) -> void:
+	var other_object: TileObject = tile_grid.get_tile(other_pos.x, other_pos.y).object
+	if not other_object:
+		return
+	
+	other_object.pos = pos
+	other_object.tile = tile_grid.get_tile(pos.x, pos.y)
+	other_object.reparent(other_object.tile, false)
+	other_object.tile.object = other_object
+	
+	pos = other_pos
+	tile = tile_grid.get_tile(pos.x, pos.y)
+	reparent(tile, false)
+	tile.object = self
+	
+	if data.distance_tracked() or other_object.data.distance_tracked():
+		EnemyActionSource.distances_need_recalc = true
+
+
 func move_to(new_pos: Vector2i) -> void:
 	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
 		return
@@ -262,30 +285,8 @@ func move_to(new_pos: Vector2i) -> void:
 	reparent(tile, false)
 	tile.object = self
 	
-	if data.action_source is PlayerActionSource:
-		EnemyActionSource.recalc_distances(tile_grid)
-
-
-func swap(other_pos: Vector2i) -> void:
-	var other_object: TileObject = tile_grid.get_tile(other_pos.x, other_pos.y).object
-	if not other_object:
-		return
-	
-	other_object.pos = pos
-	other_object.tile = tile_grid.get_tile(pos.x, pos.y)
-	other_object.reparent(other_object.tile, false)
-	other_object.tile.object = other_object
-	
-	if other_object.data.action_source is PlayerActionSource:
-		EnemyActionSource.recalc_distances(tile_grid)
-	
-	pos = other_pos
-	tile = tile_grid.get_tile(pos.x, pos.y)
-	reparent(tile, false)
-	tile.object = self
-	
-	if data.action_source is PlayerActionSource:
-		EnemyActionSource.recalc_distances(tile_grid)
+	if data.distance_tracked():
+		EnemyActionSource.distances_need_recalc = true
 
 
 func do_poison() -> void:

@@ -25,11 +25,14 @@ func _init(p_distance_type: DistanceType = DistanceType.DAMAGEABLE, p_move_range
 
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
-	var best_distance: int = EnemyActionSource.get_distance_from_vec(object.pos, distance_type)
+	var tile_grid: TileGrid = object.tile_grid
+	var best_distance: int = EnemyActionSource.get_distance_from_vec(object.pos, distance_type,
+			tile_grid)
 	var best_pos: Vector2i = object.pos
 	
 	for tile: Tile in object.get_tiles_in_range(move_range, can_jump, Modifier.Move.new()):
-		var distance: int =  EnemyActionSource.get_distance_from_vec(tile.pos, distance_type)
+		var distance: int =  EnemyActionSource.get_distance_from_vec(tile.pos, distance_type,
+				tile_grid)
 		
 		if (distance < best_distance and closer) or (distance > best_distance and not closer):
 			best_distance = distance

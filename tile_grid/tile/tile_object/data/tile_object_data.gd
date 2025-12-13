@@ -113,3 +113,7 @@ func add_animation_to_sprite_frames(y: int, anim_name: String, sprite_frames: Sp
 		sprite_frames.add_frame(anim_name, atlas_texture)
 	
 	sprite_frames.set_animation_speed(anim_name, fps)
+
+
+func distance_tracked() -> bool:
+	return object_type in [ObjectType.PLAYER, ObjectType.DEFENDABLE]

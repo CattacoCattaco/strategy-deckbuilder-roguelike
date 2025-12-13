@@ -10,16 +10,21 @@ enum DistanceType {
 	## Distance from the closest defendable
 	DEFENDABLE,
 }
-
+## Do we need to recalc distances next time we try to get a position?
+static var distances_need_recalc: bool = true
 ## The distance from a tile to the player assuming that no jumps can occur
 static var player_distances: Array[Array] = []
+## The distance from a tile to the closest defendable assuming that no jumps can occur
 static var defendable_distances: Array[Array] = []
+## The defendables
 static var defendables: Array[TileObject] = []
 
 @export var action_flow: ActionFlowComponent
 
 
 static func recalc_distances(tile_grid: TileGrid) -> void:
+	distances_need_recalc = false
+	
 	player_distances = []
 	
 	for x in range(tile_grid.size.x):
@@ -44,7 +49,7 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
 					continue
 				
-				if get_player_distance_from_vec(neighbor_pos) != -1:
+				if get_player_distance_from_vec(neighbor_pos, tile_grid) != -1:
 					continue
 				
 				var neighbor_tile: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
@@ -90,7 +95,7 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
 					continue
 				
-				if get_defendable_distance_from_vec(neighbor_pos) != -1:
+				if get_defendable_distance_from_vec(neighbor_pos, tile_grid) != -1:
 					continue
 				
 				var neighbor_tile: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
@@ -106,15 +111,15 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 		if len(new_positions) == 0:
 			break
 	
-	print_distances()
+	#print_distances(tile_grid)
 
 
-static func print_distances() -> void:
+static func print_distances(tile_grid: TileGrid) -> void:
 	var print_message: String = "Player distances:\n"
 	for y in range(len(player_distances[0])):
 		print_message += "["
 		for x in range(len(player_distances)):
-			print_message += "%2d " % get_player_distance(x, y)
+			print_message += "%2d " % get_player_distance(x, y, tile_grid)
 		print_message = print_message.rstrip(" ")
 		print_message += "]\n"
 	
@@ -124,7 +129,7 @@ static func print_distances() -> void:
 	for y in range(len(player_distances[0])):
 		print_message += "["
 		for x in range(len(player_distances)):
-			print_message += "%2d " % get_defendable_distance(x, y)
+			print_message += "%2d " % get_defendable_distance(x, y, tile_grid)
 		print_message = print_message.rstrip(" ")
 		print_message += "]\n"
 	
@@ -134,36 +139,36 @@ static func print_distances() -> void:
 	for y in range(len(player_distances[0])):
 		print_message += "["
 		for x in range(len(player_distances)):
-			print_message += "%2d " % get_damageable_distance(x, y)
+			print_message += "%2d " % get_damageable_distance(x, y, tile_grid)
 		print_message = print_message.rstrip(" ")
 		print_message += "]\n"
 	
 	print(print_message)
 
 
-static func get_distance_from_vec(pos: Vector2i, type: DistanceType) -> int:
-	return get_distance(pos.x, pos.y, type)
+static func get_distance_from_vec(pos: Vector2i, type: DistanceType, tile_grid: TileGrid) -> int:
+	return get_distance(pos.x, pos.y, type, tile_grid)
 
 
-static func get_distance(x: int, y: int, type: DistanceType) -> int:
+static func get_distance(x: int, y: int, type: DistanceType, tile_grid: TileGrid) -> int:
 	match type:
 		DistanceType.DAMAGEABLE:
-			return EnemyActionSource.get_damageable_distance(x, y)
+			return EnemyActionSource.get_damageable_distance(x, y, tile_grid)
 		DistanceType.PLAYER:
-			return EnemyActionSource.get_player_distance(x, y)
+			return EnemyActionSource.get_player_distance(x, y, tile_grid)
 		DistanceType.DEFENDABLE:
-			return EnemyActionSource.get_defendable_distance(x, y)
+			return EnemyActionSource.get_defendable_distance(x, y, tile_grid)
 	
 	return 0
 
 
-static func get_damageable_distance_from_vec(pos: Vector2i) -> int:
-	return get_damageable_distance(pos.x, pos.y)
+static func get_damageable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
+	return get_damageable_distance(pos.x, pos.y, tile_grid)
 
 
-static func get_damageable_distance(x: int, y: int) -> int:
-	var player_distance: int = get_player_distance(x, y)
-	var defendable_distance: int = get_defendable_distance(x, y)
+static func get_damageable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
+	var player_distance: int = get_player_distance(x, y, tile_grid)
+	var defendable_distance: int = get_defendable_distance(x, y, tile_grid)
 	
 	if len(defendables) == 0:
 		return player_distance
@@ -174,19 +179,19 @@ static func get_damageable_distance(x: int, y: int) -> int:
 		return defendable_distance
 
 
-static func get_player_distance_from_vec(pos: Vector2i) -> int:
-	return get_player_distance(pos.x, pos.y)
+static func get_player_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
+	return get_player_distance(pos.x, pos.y, tile_grid)
 
 
-static func get_player_distance(x: int, y: int) -> int:
+static func get_player_distance(x: int, y: int, tile_grid: TileGrid) -> int:
 	return player_distances[x][y]
 
 
-static func get_defendable_distance_from_vec(pos: Vector2i) -> int:
-	return get_defendable_distance(pos.x, pos.y)
+static func get_defendable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
+	return get_defendable_distance(pos.x, pos.y, tile_grid)
 
 
-static func get_defendable_distance(x: int, y: int) -> int:
+static func get_defendable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
 	return defendable_distances[x][y]
 
 
