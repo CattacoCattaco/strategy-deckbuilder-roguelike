@@ -91,9 +91,11 @@ static var DECKS: Array[StarterDeckData] = [
 	]),
 ]
 
+@export var deck_view_scene: PackedScene
 @export var world_map_scene: PackedScene
 
 @export var deck_name_label: Label
+@export var preview_button: Button
 @export var select_button: Button
 @export var previous_button: Button
 @export var next_button: Button
@@ -104,6 +106,7 @@ var current_deck_index: int = 0
 func _ready() -> void:
 	previous_button.disabled = true
 	previous_button.pressed.connect(_previous_deck)
+	preview_button.pressed.connect(_preview_deck)
 	next_button.pressed.connect(_next_deck)
 	_update_current_deck()
 
@@ -130,10 +133,12 @@ func _next_deck() -> void:
 	_update_current_deck()
 
 
-func _update_current_deck() -> void:
-	var deck: StarterDeckData = DECKS[current_deck_index]
-	deck_name_label.text = deck.deck_name
-	select_button.pressed.connect(_choose_deck.bind(deck.cards))
+func _preview_deck() -> void:
+	var deck_view: DeckView = deck_view_scene.instantiate()
+	add_child(deck_view)
+	deck_view.set_anchors_preset(Control.PRESET_CENTER)
+	deck_view.full_deck = DECKS[current_deck_index].cards
+	deck_view.show_deck()
 
 
 func _choose_deck() -> void:
@@ -144,3 +149,9 @@ func _choose_deck() -> void:
 	
 	get_tree().root.add_child(world_map)
 	queue_free()
+
+
+func _update_current_deck() -> void:
+	var deck: StarterDeckData = DECKS[current_deck_index]
+	deck_name_label.text = deck.deck_name
+	select_button.pressed.connect(_choose_deck.bind(deck.cards))

@@ -59,7 +59,7 @@ func _input(event: InputEvent) -> void:
 			var deck_view: DeckView = deck_view_scene.instantiate()
 			add_child(deck_view)
 			deck_view.set_anchors_preset(Control.PRESET_CENTER)
-			deck_view.world_map = self
+			deck_view.full_deck = player_deck
 			deck_view.show_deck()
 
 

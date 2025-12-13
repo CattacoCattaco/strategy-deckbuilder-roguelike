@@ -34,7 +34,7 @@ func _input(event: InputEvent) -> void:
 			var deck_view: DeckView = deck_view_scene.instantiate()
 			add_child(deck_view)
 			deck_view.set_anchors_preset(Control.PRESET_CENTER)
-			deck_view.world_map = world_map
+			deck_view.full_deck = world_map.player_deck
 			deck_view.show_deck()
 
 

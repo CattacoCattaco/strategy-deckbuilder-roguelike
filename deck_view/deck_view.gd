@@ -7,7 +7,8 @@ extends Control
 @export var focus_card_holder: ColorRect
 @export var focus_card: Card
 
-var world_map: WorldMap
+var full_deck: Array[CardData]
+var source: Node
 
 
 func _ready() -> void:
@@ -41,7 +42,7 @@ func unfocus_card() -> void:
 
 
 func show_deck() -> void:
-	for card_data in world_map.player_deck:
+	for card_data in full_deck:
 		var card: Card = card_scene.instantiate()
 		
 		card.card_data = card_data

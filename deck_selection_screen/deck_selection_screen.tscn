@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ctg8erda034nl"]
+[gd_scene load_steps=7 format=3 uid="uid://ctg8erda034nl"]
 
 [ext_resource type="Script" uid="uid://b257j2086s2a0" path="res://deck_selection_screen/deck_selection_screen.gd" id="1_alses"]
+[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_cmc68"]
 [ext_resource type="PackedScene" uid="uid://4gq17h5jwwyb" path="res://world_map/world_map.tscn" id="2_wo7o8"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="3_8xbyr"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="4_cmc68"]
@@ -8,7 +9,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_6ggko"]
 font = ExtResource("3_8xbyr")
 
-[node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_name_label", "select_button", "previous_button", "next_button")]
+[node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_name_label", "preview_button", "select_button", "previous_button", "next_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,8 +17,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_alses")
+deck_view_scene = ExtResource("2_cmc68")
 world_map_scene = ExtResource("2_wo7o8")
 deck_name_label = NodePath("DeckOption/BG/NameLabel")
+preview_button = NodePath("DeckOption/BG/PreviewButton")
 select_button = NodePath("DeckOption/BG/SelectButton")
 previous_button = NodePath("Previous")
 next_button = NodePath("Next")
@@ -62,6 +65,25 @@ label_settings = SubResource("LabelSettings_6ggko")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PreviewButton" type="Button" parent="DeckOption/BG"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -84.0
+offset_right = 64.0
+offset_bottom = -52.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("4_cmc68")
+text = "Preview"
+
 [node name="SelectButton" type="Button" parent="DeckOption/BG"]
 z_index = 2
 layout_mode = 1
@@ -71,7 +93,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -64.0
-offset_top = -60.0
+offset_top = -44.0
 offset_right = 64.0
 offset_bottom = -12.0
 grow_horizontal = 2
