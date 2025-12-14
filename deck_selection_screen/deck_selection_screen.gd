@@ -103,7 +103,7 @@ static var DECKS: Array[StarterDeckData] = [
 @export var previous_button: Button
 @export var next_button: Button
 
-var current_deck_index: int = 4
+var current_deck_index: int = 0
 
 
 func _ready() -> void:

@@ -87,7 +87,7 @@ script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
 player_data = ExtResource("4_kqtwp")
 movement_region_object_data = ExtResource("4_0vku6")
-environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResource("8_ycykd"), ExtResource("10_1w5d2")])
+environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResource("10_1w5d2"), ExtResource("8_ycykd")])
 enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_s8kfo"), SubResource("Resource_2yo27")])
 mission_enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_h5v0e"), SubResource("Resource_gsi5n")])
 
