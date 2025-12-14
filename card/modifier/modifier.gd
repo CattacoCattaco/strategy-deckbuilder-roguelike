@@ -154,7 +154,7 @@ class Defend extends BaseAction:
 	
 	
 	func _get_image() -> Texture2D:
-		return preload("res://card/modifier/push.png")
+		return preload("res://card/modifier/defend.png")
 	
 	
 	func _get_sort_order() -> int:
@@ -205,7 +205,7 @@ class Swap extends BaseAction:
 	
 	
 	func _get_image() -> Texture2D:
-		return preload("res://card/modifier/arrow.png")
+		return preload("res://card/modifier/swap.png")
 	
 	
 	func _get_sort_order() -> int:

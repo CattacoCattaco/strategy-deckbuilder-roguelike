@@ -88,6 +88,9 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Heal.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 2, 3),
 		CardData.new([Modifier.Push.new()], 1, 1),
+		CardData.new([Modifier.Swap.new()], 1, 6),
+		CardData.new([Modifier.Defend.new()], 3, 1),
+		CardData.new([Modifier.Defend.new(), Modifier.Swap.new(), Modifier.Push.new()], 1, 1),
 	]),
 ]
 

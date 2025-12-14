@@ -8,6 +8,9 @@ enum ThoughtBubbleType {
 	HEAL,
 	MOVE,
 	POISON,
+	PUSH,
+	DEFEND,
+	SWAP,
 	COMPLEX,
 }
 
@@ -17,6 +20,9 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_heal.png"),
 	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_move.png"),
 	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_poison.png"),
+	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_push.png"),
+	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_defend.png"),
+	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_swap.png"),
 	preload("res://tile_grid/tile/tile_object/thought_bubble/thought_bubble_complex.png"),
 ]
 
@@ -352,45 +358,53 @@ func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.B
 
 
 func display_action_thought_bubble(action: CardData) -> void:
-	var is_attack: bool = false
-	var is_heal: bool = false
-	var is_move: bool = false
-	var is_poison: bool = false
+	var thought_bubble_type: ThoughtBubbleType = ThoughtBubbleType.EMPTY
 	
 	for modifier in action.modifiers:
 		if modifier is Modifier.Attack:
-			is_attack = true
-			
-			if is_heal or is_move or is_poison:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.ATTACK
 		elif modifier is Modifier.Heal:
-			is_heal = true
-			
-			if is_attack or is_move or is_poison:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.HEAL
 		elif modifier is Modifier.Move:
-			is_move = true
-			
-			if is_attack or is_heal or is_poison:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.MOVE
 		elif modifier is Modifier.Poison:
-			is_poison = true
-			
-			if is_attack or is_heal or is_move:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
 				set_thought_bubble(ThoughtBubbleType.COMPLEX)
 				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.POISON
+		elif modifier is Modifier.Push:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
+				set_thought_bubble(ThoughtBubbleType.COMPLEX)
+				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.PUSH
+		elif modifier is Modifier.Defend:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
+				set_thought_bubble(ThoughtBubbleType.COMPLEX)
+				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.DEFEND
+		elif modifier is Modifier.Swap:
+			if thought_bubble_type != ThoughtBubbleType.EMPTY:
+				set_thought_bubble(ThoughtBubbleType.COMPLEX)
+				return
+			else:
+				thought_bubble_type = ThoughtBubbleType.SWAP
 	
-	if is_attack:
-		set_thought_bubble(ThoughtBubbleType.ATTACK)
-	elif is_heal:
-		set_thought_bubble(ThoughtBubbleType.HEAL)
-	elif is_move:
-		set_thought_bubble(ThoughtBubbleType.MOVE)
-	elif is_poison:
-		set_thought_bubble(ThoughtBubbleType.POISON)
+	set_thought_bubble(thought_bubble_type)
 
 
 func set_thought_bubble(type: ThoughtBubbleType) -> void:

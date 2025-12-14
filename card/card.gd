@@ -135,20 +135,20 @@ func try_play() -> void:
 		
 		var action_marker: Tile.ActionMarker
 		
-		if effect.base_action is Modifier.Attack:
-			action_marker = Tile.ActionMarker.ATTACK
-		elif effect.base_action is Modifier.Heal:
-			action_marker = Tile.ActionMarker.HEAL
-		elif effect.base_action is Modifier.Move:
-			action_marker = Tile.ActionMarker.MOVE
-		elif effect.base_action is Modifier.Poison:
-			action_marker = Tile.ActionMarker.POISON
-		elif effect.base_action is Modifier.Defend:
-			action_marker = Tile.ActionMarker.PUSH
-		elif effect.base_action is Modifier.Push:
+		if effect.base_action is Modifier.Push:
 			action_marker = Tile.ActionMarker.PUSH
 		elif effect.base_action is Modifier.Swap:
+			action_marker = Tile.ActionMarker.SWAP
+		elif effect.base_action is Modifier.Attack:
+			action_marker = Tile.ActionMarker.ATTACK
+		elif effect.base_action is Modifier.Defend:
+			action_marker = Tile.ActionMarker.DEFEND
+		elif effect.base_action is Modifier.Poison:
+			action_marker = Tile.ActionMarker.POISON
+		elif effect.base_action is Modifier.Move:
 			action_marker = Tile.ActionMarker.MOVE
+		elif effect.base_action is Modifier.Heal:
+			action_marker = Tile.ActionMarker.HEAL
 		
 		for i in range(rep_count):
 			if i > 0:

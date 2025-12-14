@@ -3,12 +3,16 @@ extends Node2D
 
 enum ActionMarker {
 	PUSH,
+	SWAP,
 	ATTACK,
+	DEFEND,
 	POISON,
 	MOVE,
 	HEAL,
 	ENEMY_PUSH,
+	ENEMY_SWAP,
 	ENEMY_ATTACK,
+	ENEMY_DEFEND,
 	ENEMY_POISON,
 	ENEMY_MOVE,
 	ENEMY_HEAL,
@@ -67,12 +71,12 @@ func _inspect() -> void:
 		
 		if effect.base_action is Modifier.Push:
 			marker_type = ActionMarker.ENEMY_PUSH
-		elif effect.base_action is Modifier.Defend:
-			marker_type = ActionMarker.ENEMY_PUSH
 		elif effect.base_action is Modifier.Swap:
-			marker_type = ActionMarker.ENEMY_MOVE
+			marker_type = ActionMarker.ENEMY_SWAP
 		elif effect.base_action is Modifier.Attack:
 			marker_type = ActionMarker.ENEMY_ATTACK
+		elif effect.base_action is Modifier.Defend:
+			marker_type = ActionMarker.ENEMY_DEFEND
 		elif effect.base_action is Modifier.Poison:
 			marker_type = ActionMarker.ENEMY_POISON
 		elif effect.base_action is Modifier.Move:
