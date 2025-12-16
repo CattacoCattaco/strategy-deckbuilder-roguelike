@@ -1,6 +1,6 @@
 class_name DistanceCheckActionFlow
 extends ActionFlowComponent
-## Chooses an ActionFlowComponent based on comparing the enemies distance to
+## Chooses an ActionFlowComponent based on comparing the enemie's distance to
 ## a threshold or comparing it to a different distance type
 
 const DistanceType = EnemyActionSource.DistanceType

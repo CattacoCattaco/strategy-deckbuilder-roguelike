@@ -18,8 +18,46 @@ static var player_distances: Array[Array] = []
 static var defendable_distances: Array[Array] = []
 ## The defendables
 static var defendables: Array[TileObject] = []
+## The enemies
+static var enemies: Array[TileObject] = []
 
 @export var action_flow: ActionFlowComponent
+
+
+static func get_distance_from_enemy(pos: Vector2i, source: TileObject, healable: bool,
+		checked_tiles: Array[Vector2i] = []) -> int:
+	checked_tiles.append(pos)
+	
+	var best_distance: int = -1
+	
+	for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+		var neighbor: Vector2i = pos + dir
+		
+		if neighbor in checked_tiles:
+			continue
+		
+		if not source.tile_grid.has_tile(neighbor.x, neighbor.y):
+			continue
+		
+		var neighbor_tile: Tile = source.tile_grid.get_tile(neighbor.x, neighbor.y)
+		
+		var neighbor_object: TileObject = neighbor_tile.object
+		if neighbor_object:
+			if neighbor_object == source:
+				continue
+			elif neighbor_object in EnemyActionSource.enemies:
+				if neighbor_object.health < neighbor_object.data.max_health or not healable:
+					return 0
+			elif neighbor_object.data.object_type == TileObjectData.ObjectType.STATIC:
+				continue
+		
+		var distance: int = get_distance_from_enemy(neighbor, source, healable,
+				checked_tiles.duplicate())
+		
+		if best_distance > distance or best_distance == -1:
+			best_distance = distance
+	
+	return best_distance
 
 
 static func recalc_distances(tile_grid: TileGrid) -> void:

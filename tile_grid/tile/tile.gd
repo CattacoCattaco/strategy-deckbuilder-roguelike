@@ -65,6 +65,9 @@ func _inspect() -> void:
 		var effect: Effect = effects[i]
 		var target: Vector2i = action_source.next_action_targets[i]
 		
+		if not tile_grid.has_tile(target.x, target.y):
+			continue
+		
 		var target_tile: Tile = tile_grid.get_tile(target.x, target.y)
 		
 		var marker_type: ActionMarker
@@ -129,10 +132,10 @@ func delete_object() -> void:
 	if object in tile_grid.round_manager.turn_order:
 		tile_grid.round_manager.turn_order.erase(object)
 	
-	if object in tile_grid.round_manager.enemies:
-		tile_grid.round_manager.enemies.erase(object)
+	if object in EnemyActionSource.enemies:
+		EnemyActionSource.enemies.erase(object)
 		
-		if len(tile_grid.round_manager.enemies) == 0:
+		if len(EnemyActionSource.enemies) == 0:
 			tile_grid.win()
 	
 	if object in EnemyActionSource.defendables:

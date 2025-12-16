@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=37 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -24,19 +24,21 @@
 [ext_resource type="Resource" uid="uid://bdwmipo3c33mo" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/destruction_bot.tres" id="14_1w5d2"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="14_ofus2"]
 [ext_resource type="Resource" uid="uid://sjfa8gslyxmo" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/fear_bot.tres" id="15_h5v0e"]
+[ext_resource type="Resource" uid="uid://cauktvw7rxsc0" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/heal_bot.tres" id="15_s8kfo"]
 [ext_resource type="Texture2D" uid="uid://ba2p5h8us83x2" path="res://buttons/pass.png" id="16_6mnwf"]
 [ext_resource type="BitMap" uid="uid://4t61j2twqjb8" path="res://buttons/pass_map.png" id="17_eoot7"]
+[ext_resource type="Resource" uid="uid://c7332nunrq0pk" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/heal_bot.tres" id="18_s8kfo"]
 
 [sub_resource type="Resource" id="Resource_s8kfo"]
 script = ExtResource("8_dnmic")
-objects = Array[ExtResource("4_t02f7")]([ExtResource("9_eoot7"), ExtResource("10_jp86b")])
-weights = Array[int]([1, 1])
+objects = Array[ExtResource("4_t02f7")]([ExtResource("9_eoot7"), ExtResource("10_jp86b"), ExtResource("15_s8kfo")])
+weights = Array[int]([1, 1, 1])
 metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
 
 [sub_resource type="Resource" id="Resource_2yo27"]
 script = ExtResource("8_dnmic")
-objects = Array[ExtResource("4_t02f7")]([ExtResource("13_ycykd"), ExtResource("15_h5v0e")])
-weights = Array[int]([1, 1])
+objects = Array[ExtResource("4_t02f7")]([ExtResource("13_ycykd"), ExtResource("15_h5v0e"), ExtResource("18_s8kfo")])
+weights = Array[int]([1, 1, 1])
 metadata/_custom_type_script = "uid://bmvmi6iqabq4g"
 
 [sub_resource type="Resource" id="Resource_h5v0e"]

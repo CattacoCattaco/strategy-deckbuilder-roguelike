@@ -276,8 +276,7 @@ func swap(other_pos: Vector2i) -> void:
 	reparent(tile, false)
 	tile.object = self
 	
-	if data.distance_tracked() or other_object.data.distance_tracked():
-		EnemyActionSource.distances_need_recalc = true
+	EnemyActionSource.distances_need_recalc = true
 
 
 func move_to(new_pos: Vector2i) -> void:

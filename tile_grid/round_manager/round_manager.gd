@@ -7,13 +7,11 @@ var is_player_turn: bool
 var current_turn_index: int
 var turn_order: Array[TileObject]
 
-var enemies: Array[TileObject]
-
 
 func start_rounds() -> void:
 	is_player_turn = false
 	turn_order = []
-	enemies = []
+	EnemyActionSource.enemies = []
 	
 	for x in range(tile_grid.size.x):
 		for y in range(tile_grid.size.y):
@@ -23,7 +21,7 @@ func start_rounds() -> void:
 				continue
 			
 			if tile.object.data.object_type == TileObjectData.ObjectType.ENEMY:
-				enemies.append(tile.object)
+				EnemyActionSource.enemies.append(tile.object)
 			
 			if tile.object.data.action_source is NullActionSource:
 				continue
