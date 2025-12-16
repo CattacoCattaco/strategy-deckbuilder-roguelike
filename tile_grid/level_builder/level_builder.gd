@@ -14,7 +14,6 @@ enum ObjectDensity {
 @export var movement_region_object_data: TileObjectData
 @export var environments: Array[LevelEnvironment]
 @export var enemies_by_level: Array[WeightedObjectList]
-@export var mission_enemies_by_level: Array[WeightedObjectList]
 
 var density: ObjectDensity
 
@@ -133,11 +132,7 @@ func place_objects() -> void:
 			if EnemyActionSource.get_player_distance_from_vec(pos, tile_grid) == -1:
 				designated_movement_region.erase(pos)
 	
-	var current_enemies: WeightedObjectList
-	if tile_grid.is_mission:
-		current_enemies = mission_enemies_by_level[world_map.world_num]
-	else:
-		current_enemies = enemies_by_level[world_map.world_num]
+	var current_enemies: WeightedObjectList = enemies_by_level[world_map.world_num]
 	
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)

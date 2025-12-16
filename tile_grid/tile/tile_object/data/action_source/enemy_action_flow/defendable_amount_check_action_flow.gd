@@ -1,13 +1,10 @@
-class_name EnemyAmountCheckActionFlow
+class_name DefendableAmountCheckActionFlow
 extends ActionFlowComponent
-## Chooses an ActionFlowComponent based on comparing the number of enemies to
+## Chooses an ActionFlowComponent based on comparing the number of defendables to
 ## a threshold
 
 ## The threshold being checked
 @export var threshold: int = 1
-
-## Do we only care about healable enemies?
-@export var healable: bool = false
 
 ## What to do if distance is below threshold
 @export var below: ActionFlowComponent
@@ -17,11 +14,9 @@ extends ActionFlowComponent
 @export var above: ActionFlowComponent
 
 
-func _init(p_threshold: int = 1, p_healable: bool = false, p_below: ActionFlowComponent = null,
+func _init(p_threshold: int = 1, p_below: ActionFlowComponent = null,
 		p_at: ActionFlowComponent = null, p_above: ActionFlowComponent = null) -> void:
 	threshold = p_threshold
-	
-	healable = p_healable
 	
 	below = p_below
 	at = p_at
@@ -29,18 +24,11 @@ func _init(p_threshold: int = 1, p_healable: bool = false, p_below: ActionFlowCo
 
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
-	var enemy_count: int = 0
+	var defendable_count: int = len(EnemyActionSource.defendables)
 	
-	if healable:
-		for enemy in EnemyActionSource.enemies:
-			if enemy.health < enemy.data.max_health:
-				enemy_count += 1
-	else:
-		enemy_count = len(EnemyActionSource.enemies)
-	
-	if enemy_count < threshold:
+	if defendable_count < threshold:
 		below._resolve(object, action_source)
-	elif enemy_count == threshold:
+	elif defendable_count == threshold:
 		at._resolve(object, action_source)
-	elif enemy_count > threshold:
+	elif defendable_count > threshold:
 		above._resolve(object, action_source)
