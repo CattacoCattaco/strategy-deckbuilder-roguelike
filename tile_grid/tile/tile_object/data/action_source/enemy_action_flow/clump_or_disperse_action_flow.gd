@@ -31,7 +31,7 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var best_pos: Vector2i = object.pos
 	
 	for tile: Tile in object.get_tiles_in_range(move_range, can_jump, Modifier.Move.new()):
-		var distance: int =  EnemyActionSource.get_distance_from_enemy(tile.pos, tile.object,
+		var distance: int =  EnemyActionSource.get_distance_from_enemy(tile.pos, object,
 				healable)
 		
 		if (distance < best_distance and clump) or (distance > best_distance and not clump):
