@@ -63,8 +63,8 @@ func load_sprite_anim() -> void:
 		TileObjectData.TextureType.ANIMATED:
 			sprite.play("default")
 		TileObjectData.TextureType.VARIANTS:
-			var varients: int = data.texture.get_height() >> 5
-			sprite.play(str(randi_range(0, varients - 1)))
+			var varient_count: int = data.texture.get_height() >> 5
+			sprite.play(str(randi_range(0, varient_count - 1)))
 		TileObjectData.TextureType.HEALTH_STATES:
 			show_health()
 

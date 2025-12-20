@@ -1,8 +1,45 @@
-[gd_scene load_steps=2 format=3 uid="uid://bgkccwielx33n"]
+[gd_scene load_steps=8 format=3 uid="uid://bgkccwielx33n"]
 
 [ext_resource type="Script" uid="uid://ddr4gvgc26qgk" path="res://addons/enemy_editor/screen/enemy_editor_screen.gd" id="1_trvwo"]
+[ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile_grid/tile/tile_object/textures/acid.png" id="2_2di7j"]
 
-[node name="EnemyEditorScreen" type="Control" node_paths=PackedStringArray("name_edit")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
+atlas = ExtResource("2_2di7j")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1rx1a"]
+atlas = ExtResource("2_2di7j")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5p1m"]
+atlas = ExtResource("2_2di7j")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2dnll"]
+atlas = ExtResource("2_2di7j")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hqcyb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5k012")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1rx1a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5p1m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2dnll")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.25
+}]
+
+[node name="EnemyEditorScreen" type="Control" node_paths=PackedStringArray("name_edit", "sprite_label", "pick_button", "texture_type_options", "change_variant_button", "texture_preview")]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 3
 anchors_preset = 15
@@ -14,6 +51,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_trvwo")
 name_edit = NodePath("NameEdit")
+sprite_label = NodePath("ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer/SpriteLabel")
+pick_button = NodePath("ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer/PickButton")
+texture_type_options = NodePath("ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer/TextureTypeOptions")
+change_variant_button = NodePath("ScrollContainer/GridContainer/TextureRegion/VBoxContainer/ChangeVariantButton")
+texture_preview = NodePath("ScrollContainer/GridContainer/TextureRegion/TextureBG/TexturePreview")
 
 [node name="NameEdit" type="LineEdit" parent="."]
 custom_minimum_size = Vector2(300, 0)
@@ -26,3 +68,92 @@ offset_bottom = 46.0
 grow_horizontal = 2
 text = "This is a Really Really Long Name"
 alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="TextureLabel" type="Label" parent="ScrollContainer/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Texture: "
+
+[node name="TextureRegion" type="ColorRect" parent="ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(500, 180)
+layout_mode = 2
+color = Color(0, 0, 0, 0.3372549)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/GridContainer/TextureRegion"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -180.0
+offset_bottom = -10.0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer"]
+layout_mode = 2
+columns = 2
+
+[node name="SpriteLabel" type="Label" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Sprite: "
+
+[node name="PickButton" type="Button" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Pick"
+
+[node name="TextureTypeLabel" type="Label" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer"]
+layout_mode = 2
+text = "Texture Type: "
+
+[node name="TextureTypeOptions" type="OptionButton" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer/GridContainer"]
+layout_mode = 2
+item_count = 3
+popup/item_0/text = "Animated"
+popup/item_0/id = 0
+popup/item_1/text = "Variants"
+popup/item_1/id = 1
+popup/item_2/text = "Health States"
+popup/item_2/id = 2
+
+[node name="ChangeVariantButton" type="Button" parent="ScrollContainer/GridContainer/TextureRegion/VBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Change Variant"
+
+[node name="TextureBG" type="ColorRect" parent="ScrollContainer/GridContainer/TextureRegion"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -80.0
+offset_right = -10.0
+offset_bottom = 80.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3372549)
+
+[node name="TexturePreview" type="AnimatedSprite2D" parent="ScrollContainer/GridContainer/TextureRegion/TextureBG"]
+texture_filter = 1
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_hqcyb")
+centered = false
