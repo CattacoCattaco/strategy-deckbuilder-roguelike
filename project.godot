@@ -15,6 +15,10 @@ run/main_scene="uid://ctg8erda034nl"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=2
+
 [display]
 
 window/size/viewport_width=960
@@ -25,7 +29,7 @@ window/stretch/scale_mode="integer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+enabled=PackedStringArray("res://addons/enemy_editor/plugin.cfg", "res://addons/godot_super-wakatime/plugin.cfg")
 
 [input]
 

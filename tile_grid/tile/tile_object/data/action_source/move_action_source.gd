@@ -10,7 +10,7 @@ func _generate_next_action(object: TileObject) -> void:
 	var pos: Vector2i = object.pos
 	var empty_neighbors: Array[Vector2i]
 	
-	for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+	for dir in Constants.DIRS:
 		var neighbor: Vector2i = pos + dir
 		var tile_grid: TileGrid = object.tile_grid
 		

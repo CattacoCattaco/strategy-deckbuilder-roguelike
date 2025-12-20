@@ -59,7 +59,7 @@ func set_as_path() -> void:
 
 func update_path_sprite(update_neighbors: bool = false) -> void:
 	var dir_has_path: Dictionary[Vector2i, bool] = {}
-	for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+	for dir in Constants.DIRS:
 		var neighbor_pos: Vector2i = pos + dir
 		
 		if not world_map.has_tile_at_vec(neighbor_pos):

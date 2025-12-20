@@ -52,7 +52,7 @@ func place_objects() -> void:
 	
 	while len(designated_movement_region) < movement_region_size:
 		walk(movement_region_origin, designated_movement_region, movement_region_size, 
-				[Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)].pick_random())
+				Constants.DIRS.pick_random())
 	
 	designated_movement_region.erase(movement_region_origin)
 	var origin_tile: Tile = tile_grid.get_tile(movement_region_origin.x, movement_region_origin.y)
@@ -78,7 +78,7 @@ func place_objects() -> void:
 		
 		for j in range(clump_size):
 			var empty_neighbors: Array[Vector2i] = []
-			for dir in [Vector2i(0, 1), Vector2i(1,0), Vector2i(0, -1), Vector2i(-1,0)]:
+			for dir in Constants.DIRS:
 				if pos + dir in untouched_cells:
 					empty_neighbors.append(pos + dir)
 			
@@ -153,7 +153,7 @@ func walk(current_pos: Vector2i, region: Array[Vector2i], goal_size: int, from: 
 	var valid_neighbors: Array[Vector2i] = []
 	var semivalid_neighbors: Array[Vector2i] = []
 	
-	for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+	for dir in Constants.DIRS:
 		if current_pos + dir in untouched_cells:
 			valid_neighbors.append(current_pos + dir)
 		elif len(valid_neighbors) == 0 and current_pos + dir in region:

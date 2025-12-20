@@ -30,7 +30,7 @@ static func get_distance_from_enemy(pos: Vector2i, source: TileObject, healable:
 	
 	var best_distance: int = -1
 	
-	for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+	for dir in Constants.DIRS:
 		var neighbor: Vector2i = pos + dir
 		
 		if neighbor in checked_tiles:
@@ -81,7 +81,7 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 		var new_positions: Array[Vector2i] = []
 		
 		for old_pos in prev_positions:
-			for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+			for dir in Constants.DIRS:
 				var neighbor_pos: Vector2i = old_pos + dir
 				
 				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
@@ -127,7 +127,7 @@ static func recalc_distances(tile_grid: TileGrid) -> void:
 		var new_positions: Array[Vector2i] = []
 		
 		for old_pos in prev_positions:
-			for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+			for dir in Constants.DIRS:
 				var neighbor_pos: Vector2i = old_pos + dir
 				
 				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):

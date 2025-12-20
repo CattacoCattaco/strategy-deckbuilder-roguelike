@@ -330,7 +330,7 @@ func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.B
 	for distance in range(1, range_size + 1):
 		var new_layer: Array[Vector2i]
 		for prev_pos in prev_layer:
-			for dir in [Vector2i(0, 1), Vector2i(1, 0), Vector2i(0, -1), Vector2i(-1, 0)]:
+			for dir in Constants.DIRS:
 				var neighbor_pos: Vector2i = prev_pos + dir
 				
 				# Not on board

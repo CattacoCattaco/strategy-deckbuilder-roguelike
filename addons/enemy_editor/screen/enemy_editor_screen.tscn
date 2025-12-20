@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgkccwielx33n"]
+
+[ext_resource type="Script" uid="uid://ddr4gvgc26qgk" path="res://addons/enemy_editor/screen/enemy_editor_screen.gd" id="1_trvwo"]
+
+[node name="EnemyEditorScreen" type="Control" node_paths=PackedStringArray("name_edit")]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_trvwo")
+name_edit = NodePath("NameEdit")
+
+[node name="NameEdit" type="LineEdit" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_top = 15.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "This is a Really Really Long Name"
+alignment = 1
