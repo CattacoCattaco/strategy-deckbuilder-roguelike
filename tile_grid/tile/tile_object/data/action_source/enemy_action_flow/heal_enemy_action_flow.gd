@@ -5,19 +5,22 @@ extends ActionFlowComponent
 
 ## The range to heal in
 @export var heal_range: int = 1
+## Can the range jump
+@export var can_jump: bool = false
 ## The amount to heal by
 @export var heal_size: int = 1
 
 
-func _init(p_heal_range: int = 1, p_heal_size: int = 1) -> void:
+func _init(p_heal_range: int = 1, p_can_jump: bool = false, p_heal_size: int = 1) -> void:
 	heal_range = p_heal_range
+	can_jump = p_can_jump
 	heal_size = p_heal_size
 
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var healable_others: Array[Vector2i] = []
 	
-	for neighbor_tile in object.get_tiles_in_range(heal_range, false, Modifier.Heal.new()):
+	for neighbor_tile in object.get_tiles_in_range(heal_range, can_jump, Modifier.Heal.new()):
 		var neighbor_object: TileObject = neighbor_tile.object
 		
 		if not neighbor_object:

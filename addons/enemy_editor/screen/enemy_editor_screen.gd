@@ -68,7 +68,7 @@ func edit(object: TileObjectData) -> void:
 	elif tile_object_data.action_source is EnemyActionSource:
 		object_type = 3
 		var action_source: EnemyActionSource = tile_object_data.action_source
-		enemy_action_flow_editor.action_flow = action_source.action_flow
+		enemy_action_flow_editor.edit(action_source.action_flow)
 	
 	action_source_type_options.selected = object_type
 	

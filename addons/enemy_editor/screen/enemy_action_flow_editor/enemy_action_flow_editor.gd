@@ -2,6 +2,9 @@
 class_name EnemyActionFlowEditor
 extends PanelContainer
 
+const INSTANCE_SCENE = preload(
+		"res://addons/enemy_editor/screen/enemy_action_flow_editor/enemy_action_flow_editor.tscn")
+
 signal action_flow_updated()
 
 @export var action_flow_type_options: OptionButton
@@ -14,6 +17,35 @@ var action_flow: ActionFlowComponent
 
 func _ready() -> void:
 	action_flow_type_options.item_selected.connect(_set_action_flow_type)
+
+
+func edit(new_flow: ActionFlowComponent) -> void:
+	action_flow = new_flow
+	
+	if action_flow is AttackActionFlow:
+		action_flow_type_options.selected = 0
+	elif action_flow is ClumpOrDisperseActionFlow:
+		action_flow_type_options.selected = 1
+	elif action_flow is DefendableAmountCheckActionFlow:
+		action_flow_type_options.selected = 2
+	elif action_flow is DistanceCheckActionFlow:
+		action_flow_type_options.selected = 3
+	elif action_flow is EnemyAmountCheckActionFlow:
+		action_flow_type_options.selected = 4
+	elif action_flow is EnemyDistanceCheckActionFlow:
+		action_flow_type_options.selected = 5
+	elif action_flow is HealEnemyActionFlow:
+		action_flow_type_options.selected = 6
+	elif action_flow is MoveCloserFurtherActionFlow:
+		action_flow_type_options.selected = 7
+	elif action_flow is NullActionFlow:
+		action_flow_type_options.selected = 8
+	elif action_flow is PoisonActionFlow:
+		action_flow_type_options.selected = 9
+	elif action_flow is RandomActionFlow:
+		action_flow_type_options.selected = 10
+	
+	show_flow_options()
 
 
 func _set_action_flow_type(type: int) -> void:
@@ -41,4 +73,164 @@ func _set_action_flow_type(type: int) -> void:
 		10:
 			action_flow = RandomActionFlow.new()
 	
+	action_flow_updated.emit()
+	
+	show_flow_options()
+
+
+func show_flow_options() -> void:
+	for child in options_container.get_children():
+		child.queue_free()
+	
+	match action_flow_type_options.selected:
+		0:
+			create_float_editor("player_weight", 0, 1, 0.05)
+			create_int_editor("attack_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_int_editor("attack_damage", 0, 100, 1)
+		1:
+			create_int_editor("move_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_bool_editor("clump")
+			create_bool_editor("healable")
+		2:
+			create_int_editor("threshold", 0, 100, 1)
+			create_action_flow_editor("below")
+			create_action_flow_editor("at")
+			create_action_flow_editor("above")
+		3:
+			create_enum_editor("distance_type", ["Damageable", "Player", "Defendable"])
+			create_bool_editor("use_threshold")
+			create_int_editor("threshold", 0, 100, 1)
+			create_enum_editor("comp_distance_type", ["Damageable", "Player", "Defendable"])
+			create_action_flow_editor("below")
+			create_action_flow_editor("at")
+			create_action_flow_editor("above")
+		4:
+			create_int_editor("threshold", 0, 100, 1)
+			create_bool_editor("healable")
+			create_action_flow_editor("below")
+			create_action_flow_editor("at")
+			create_action_flow_editor("above")
+		5:
+			create_int_editor("threshold", 0, 100, 1)
+			create_bool_editor("healable")
+			create_action_flow_editor("below")
+			create_action_flow_editor("at")
+			create_action_flow_editor("above")
+		6:
+			create_int_editor("heal_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_int_editor("heal_size", 0, 100, 1)
+		7:
+			create_enum_editor("distance_type", ["Damageable", "Player", "Defendable"])
+			create_int_editor("move_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_bool_editor("closer")
+		8:
+			# Null Action Flow has no params
+			pass
+		9:
+			create_float_editor("player_weight", 0, 1, 0.05)
+			create_int_editor("poison_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_int_editor("poison_damage", 0, 100, 1)
+		10:
+			pass
+
+
+func create_float_editor(property_name: String, min: float, max: float, step: float) -> void:
+	var label := Label.new()
+	label.text = property_name.capitalize()
+	
+	options_container.add_child(label)
+	
+	var spin_box := SpinBox.new()
+	spin_box.value = action_flow.get(property_name)
+	spin_box.min_value = min
+	spin_box.max_value = max
+	spin_box.step = step
+	
+	spin_box.value_changed.connect(_set_float.bind(property_name))
+	options_container.add_child(spin_box)
+
+
+func create_int_editor(property_name: String, min: int, max: int, step: int) -> void:
+	var label := Label.new()
+	label.text = property_name.capitalize()
+	
+	options_container.add_child(label)
+	
+	var spin_box := SpinBox.new()
+	spin_box.value = action_flow.get(property_name)
+	spin_box.min_value = min
+	spin_box.max_value = max
+	spin_box.step = step
+	spin_box.rounded = true
+	
+	spin_box.value_changed.connect(_set_int.bind(property_name))
+	options_container.add_child(spin_box)
+
+
+func create_bool_editor(property_name: String) -> void:
+	var label := Label.new()
+	label.text = property_name.capitalize()
+	
+	options_container.add_child(label)
+	
+	var check_box := CheckBox.new()
+	check_box.button_pressed = action_flow.get(property_name)
+	
+	check_box.toggled.connect(_set_bool.bind(property_name))
+	options_container.add_child(check_box)
+
+
+func create_enum_editor(property_name: String, options: Array[String]) -> void:
+	var label := Label.new()
+	label.text = property_name.capitalize()
+	
+	options_container.add_child(label)
+	
+	var option_button := OptionButton.new()
+	for option in options:
+		option_button.add_item(option)
+	
+	option_button.selected = action_flow.get(property_name)
+	
+	option_button.item_selected.connect(_set_int.bind(property_name))
+	options_container.add_child(option_button)
+
+
+func create_action_flow_editor(property_name: String) -> void:
+	var label := Label.new()
+	label.text = property_name.capitalize()
+	
+	options_container.add_child(label)
+	
+	var action_flow_editor: EnemyActionFlowEditor = INSTANCE_SCENE.instantiate()
+	action_flow_editor.edit(action_flow.get(property_name))
+	
+	var bound_func: Callable = _set_action_flow.bind(action_flow_editor, property_name)
+	
+	action_flow_editor.action_flow_updated.connect(bound_func)
+	options_container.add_child(action_flow_editor)
+
+
+func _set_float(value: float, property_name: StringName) -> void:
+	action_flow.set(property_name, value)
+	action_flow_updated.emit()
+
+
+func _set_int(value: int, property_name: StringName) -> void:
+	action_flow.set(property_name, value)
+	action_flow_updated.emit()
+
+
+func _set_bool(value: bool, property_name: StringName) -> void:
+	action_flow.set(property_name, value)
+	action_flow_updated.emit()
+
+
+func _set_action_flow(editor: EnemyActionFlowEditor, property_name: StringName) -> void:
+	action_flow.set(property_name, editor.action_flow)
 	action_flow_updated.emit()

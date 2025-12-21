@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="TileObjectData" load_steps=16 format=3 uid="uid://d0p6glfbfxbq1"]
 
 [ext_resource type="Script" uid="uid://bno8surrmo4dh" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/clump_or_disperse_action_flow.gd" id="1_rytnr"]
-[ext_resource type="Script" uid="uid://203ilqf2cmjy" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/heal_enemy.gd" id="2_nsua6"]
+[ext_resource type="Script" uid="uid://203ilqf2cmjy" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/heal_enemy_action_flow.gd" id="2_nsua6"]
 [ext_resource type="Script" uid="uid://e0capc5363gd" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/enemy_distance_check_action_flow.gd" id="3_3bg27"]
 [ext_resource type="Script" uid="uid://bgwlpnkrqb5ev" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/null_action_flow.gd" id="4_b7jd0"]
 [ext_resource type="Script" uid="uid://cq1ckukfgghfb" path="res://tile_grid/tile/tile_object/data/action_source/enemy_action_flow/enemy_amount_check_action_flow.gd" id="4_nbtbv"]
