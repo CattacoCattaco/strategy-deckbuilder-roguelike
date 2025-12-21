@@ -82,6 +82,8 @@ func show_flow_options() -> void:
 	for child in options_container.get_children():
 		child.queue_free()
 	
+	options_container.columns = 2
+	
 	match action_flow_type_options.selected:
 		0:
 			create_float_editor("player_weight", 0, 1, 0.05)
@@ -136,7 +138,19 @@ func show_flow_options() -> void:
 			create_bool_editor("can_jump")
 			create_int_editor("poison_damage", 0, 100, 1)
 		10:
-			pass
+			options_container.columns = 1
+			
+			var random_action_flow: RandomActionFlow = action_flow
+			for i in len(random_action_flow.options):
+				create_random_editor(i)
+			
+			var new_button := Button.new()
+			new_button.text = "New Option"
+			new_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+			new_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			
+			new_button.pressed.connect(_add_random_option)
+			options_container.add_child(new_button)
 
 
 func create_float_editor(property_name: String, min: float, max: float, step: float) -> void:
@@ -216,6 +230,66 @@ func create_action_flow_editor(property_name: String) -> void:
 	options_container.add_child(action_flow_editor)
 
 
+func create_random_editor(index: int) -> void:
+	var random_action_flow: RandomActionFlow = action_flow
+	
+	var panel_container := PanelContainer.new()
+	panel_container.add_theme_stylebox_override("Panel", theme.get_stylebox("panel", "Panel"))
+	
+	options_container.add_child(panel_container)
+	
+	var margin_container := MarginContainer.new()
+	margin_container.add_theme_constant_override("margin_left", 5)
+	margin_container.add_theme_constant_override("margin_top", 5)
+	margin_container.add_theme_constant_override("margin_right", 5)
+	margin_container.add_theme_constant_override("margin_bottom", 5)
+	
+	panel_container.add_child(margin_container)
+	
+	var vbox_container := VBoxContainer.new()
+	margin_container.add_child(vbox_container)
+	
+	var grid_container := GridContainer.new()
+	grid_container.columns = 2
+	
+	vbox_container.add_child(grid_container)
+	
+	var label := Label.new()
+	label.text = "Option %s Chance" % index
+	
+	grid_container.add_child(label)
+	
+	var spin_box := SpinBox.new()
+	spin_box.value = random_action_flow.probabilities[index]
+	spin_box.min_value = 0
+	spin_box.max_value = 1
+	spin_box.step = 0.05
+	
+	spin_box.value_changed.connect(_set_probability.bind(index))
+	grid_container.add_child(spin_box)
+	
+	var action_label := Label.new()
+	action_label.text = "Option %s Action" % index
+	
+	grid_container.add_child(action_label)
+	
+	var action_flow_editor: EnemyActionFlowEditor = INSTANCE_SCENE.instantiate()
+	action_flow_editor.edit(random_action_flow.options[index])
+	
+	var bound_func: Callable = _set_random_action.bind(action_flow_editor, index)
+	
+	action_flow_editor.action_flow_updated.connect(bound_func)
+	grid_container.add_child(action_flow_editor)
+	
+	var delete_button := Button.new()
+	delete_button.text = "Delete Option"
+	delete_button.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	delete_button.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	
+	delete_button.pressed.connect(_remove_random_option.bind(index))
+	vbox_container.add_child(delete_button)
+
+
 func _set_float(value: float, property_name: StringName) -> void:
 	action_flow.set(property_name, value)
 	action_flow_updated.emit()
@@ -234,3 +308,27 @@ func _set_bool(value: bool, property_name: StringName) -> void:
 func _set_action_flow(editor: EnemyActionFlowEditor, property_name: StringName) -> void:
 	action_flow.set(property_name, editor.action_flow)
 	action_flow_updated.emit()
+
+
+func _set_probability(value: float, index: int) -> void:
+	var random_action_flow: RandomActionFlow = action_flow
+	random_action_flow.probabilities[index] = value
+
+
+func _set_random_action(editor: EnemyActionFlowEditor, index: int) -> void:
+	var random_action_flow: RandomActionFlow = action_flow
+	random_action_flow.options[index] = editor.action_flow
+
+
+func _remove_random_option(index: int) -> void:
+	var random_action_flow: RandomActionFlow = action_flow
+	random_action_flow.options.remove_at(index)
+	random_action_flow.probabilities.remove_at(index)
+	show_flow_options()
+
+
+func _add_random_option() -> void:
+	var random_action_flow: RandomActionFlow = action_flow
+	random_action_flow.options.append(null)
+	random_action_flow.probabilities.append(0)
+	show_flow_options()

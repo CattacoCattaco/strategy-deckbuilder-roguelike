@@ -1,15 +1,19 @@
-[gd_scene load_steps=10 format=3 uid="uid://bgkccwielx33n"]
+[gd_scene load_steps=12 format=3 uid="uid://bgkccwielx33n"]
 
 [ext_resource type="Script" uid="uid://ddr4gvgc26qgk" path="res://addons/enemy_editor/screen/enemy_editor_screen.gd" id="1_trvwo"]
 [ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile_grid/tile/tile_object/textures/acid.png" id="2_2di7j"]
 [ext_resource type="PackedScene" uid="uid://b5fxm1vegp5yr" path="res://addons/enemy_editor/screen/enemy_action_flow_editor/enemy_action_flow_editor.tscn" id="3_hqcyb"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2di7j"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3obq6"]
 bg_color = Color(0, 0, 0, 0.3372549)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="Theme_hqcyb"]
+Panel/styles/panel = SubResource("StyleBoxFlat_3obq6")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_3obq6")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
 atlas = ExtResource("2_2di7j")
@@ -46,6 +50,13 @@ animations = [{
 "name": &"default",
 "speed": 1.25
 }]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2di7j"]
+bg_color = Color(0, 0, 0, 0.3372549)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="EnemyEditorScreen" type="Control" node_paths=PackedStringArray("name_edit", "sprite_label", "pick_button", "texture_type_options", "change_variant_button", "texture_preview", "object_type_button", "max_health_box", "pushable_check", "action_source_type_options", "action_source_settings_grids", "speed_boxes", "preview_action_checks", "enemy_action_flow_editor")]
 custom_minimum_size = Vector2(100, 100)
@@ -111,7 +122,7 @@ text = "Texture: "
 custom_minimum_size = Vector2(550, 148)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_2di7j")
+theme = SubResource("Theme_hqcyb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/GridContainer/TextureRegion"]
 layout_mode = 1
@@ -171,7 +182,7 @@ offset_right = -10.0
 offset_bottom = 64.0
 grow_horizontal = 0
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_2di7j")
+theme = SubResource("Theme_hqcyb")
 
 [node name="TexturePreview" type="AnimatedSprite2D" parent="ScrollContainer/GridContainer/TextureRegion/TextureBG"]
 texture_filter = 1

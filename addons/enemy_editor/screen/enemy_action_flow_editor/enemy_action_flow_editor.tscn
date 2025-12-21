@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5fxm1vegp5yr"]
+[gd_scene load_steps=4 format=3 uid="uid://b5fxm1vegp5yr"]
 
 [ext_resource type="Script" uid="uid://cbh6tmjmflant" path="res://addons/enemy_editor/screen/enemy_action_flow_editor/enemy_action_flow_editor.gd" id="1_kv2md"]
 
@@ -9,9 +9,13 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
+[sub_resource type="Theme" id="Theme_kv2md"]
+Panel/styles/panel = SubResource("StyleBoxFlat_3obq6")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_3obq6")
+
 [node name="EnemyActionFlowEditor" type="PanelContainer" node_paths=PackedStringArray("action_flow_type_options", "options_container")]
 size_flags_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_3obq6")
+theme = SubResource("Theme_kv2md")
 script = ExtResource("1_kv2md")
 action_flow_type_options = NodePath("MarginContainer/VBoxContainer/ActionFlowTypeOptions")
 options_container = NodePath("MarginContainer/VBoxContainer/OptionsContainer")
