@@ -8,6 +8,9 @@ extends Control
 @export var texture_type_options: OptionButton
 @export var change_variant_button: Button
 @export var texture_preview: AnimatedSprite2D
+@export var object_type_button: OptionButton
+@export var max_health_box: SpinBox
+@export var pushable_check: CheckBox
 
 var tile_object_data: TileObjectData
 var plugin: EnemyEditorPlugin
@@ -18,6 +21,9 @@ func _ready() -> void:
 	pick_button.pressed.connect(_pick_sprite)
 	texture_type_options.item_selected.connect(_texture_type_selected)
 	change_variant_button.pressed.connect(_change_variant)
+	object_type_button.item_selected.connect(_set_object_type)
+	max_health_box.value_changed.connect(_set_max_health)
+	pushable_check.toggled.connect(_set_pushable)
 
 
 func edit(object: TileObjectData) -> void:
@@ -33,6 +39,10 @@ func edit(object: TileObjectData) -> void:
 		change_variant_button.hide()
 	
 	update_preview_sprite()
+	
+	object_type_button.selected = tile_object_data.object_type
+	max_health_box.value = tile_object_data.max_health
+	pushable_check.button_pressed = tile_object_data.pushable
 
 
 func _rename(new_name: String) -> void:
@@ -77,6 +87,21 @@ func _texture_type_selected(type: int) -> void:
 func _change_variant() -> void:
 	var varient_count: int = tile_object_data.texture.get_height() >> 5
 	texture_preview.play(str(randi_range(0, varient_count - 1)))
+
+
+func _set_object_type(object_type: int) -> void:
+	tile_object_data.object_type = object_type
+	save_data()
+
+
+func _set_max_health(max_health: int) -> void:
+	tile_object_data.max_health = max_health
+	save_data()
+
+
+func _set_pushable(pushable: bool) -> void:
+	tile_object_data.pushable = pushable
+	save_data()
 
 
 func update_preview_sprite() -> void:
