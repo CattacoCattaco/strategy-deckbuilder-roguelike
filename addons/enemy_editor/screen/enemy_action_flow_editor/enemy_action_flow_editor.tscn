@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5fxm1vegp5yr"]
+
+[ext_resource type="Script" uid="uid://cbh6tmjmflant" path="res://addons/enemy_editor/screen/enemy_action_flow_editor/enemy_action_flow_editor.gd" id="1_kv2md"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3obq6"]
+bg_color = Color(0, 0, 0, 0.3372549)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="EnemyActionFlowEditor" type="PanelContainer" node_paths=PackedStringArray("action_flow_type_options", "options_container")]
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3obq6")
+script = ExtResource("1_kv2md")
+action_flow_type_options = NodePath("MarginContainer/VBoxContainer/ActionFlowTypeOptions")
+options_container = NodePath("MarginContainer/VBoxContainer/OptionsContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ActionFlowTypeOptions" type="OptionButton" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+item_count = 11
+popup/item_0/text = "Attack Action Flow"
+popup/item_0/id = 0
+popup/item_1/text = "Clump or Disperse Action Flow"
+popup/item_1/id = 1
+popup/item_2/text = "Defendable Amount Check Action Flow"
+popup/item_2/id = 2
+popup/item_3/text = "Distance Check Action Flow"
+popup/item_3/id = 3
+popup/item_4/text = "Enemy Amount Check Action Flow"
+popup/item_4/id = 4
+popup/item_5/text = "Enemy Distance Check Action Flow"
+popup/item_5/id = 5
+popup/item_6/text = "Heal Enemy Action Flow"
+popup/item_6/id = 6
+popup/item_7/text = "Move Closer Further Action Flow"
+popup/item_7/id = 7
+popup/item_8/text = "Null Action Flow"
+popup/item_8/id = 8
+popup/item_9/text = "Poison Action Flow"
+popup/item_9/id = 9
+popup/item_10/text = "Random Action Flow"
+popup/item_10/id = 10
+
+[node name="OptionsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+columns = 2

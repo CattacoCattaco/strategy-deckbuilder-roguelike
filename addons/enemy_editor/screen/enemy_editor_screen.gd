@@ -11,6 +11,11 @@ extends Control
 @export var object_type_button: OptionButton
 @export var max_health_box: SpinBox
 @export var pushable_check: CheckBox
+@export var action_source_type_options: OptionButton
+@export var action_source_settings_grids: Array[GridContainer]
+@export var speed_boxes: Array[SpinBox]
+@export var preview_action_checks: Array[CheckBox]
+@export var enemy_action_flow_editor: EnemyActionFlowEditor
 
 var tile_object_data: TileObjectData
 var plugin: EnemyEditorPlugin
@@ -24,6 +29,15 @@ func _ready() -> void:
 	object_type_button.item_selected.connect(_set_object_type)
 	max_health_box.value_changed.connect(_set_max_health)
 	pushable_check.toggled.connect(_set_pushable)
+	action_source_type_options.item_selected.connect(_change_action_source_type)
+	
+	for i in len(speed_boxes):
+		speed_boxes[i].value_changed.connect(_set_speed)
+		preview_action_checks[i].toggled.connect(_set_preview_actions)
+	
+	enemy_action_flow_editor.enemy_editor_screen = self
+	
+	enemy_action_flow_editor.action_flow_updated.connect(_set_action_flow)
 
 
 func edit(object: TileObjectData) -> void:
@@ -43,6 +57,30 @@ func edit(object: TileObjectData) -> void:
 	object_type_button.selected = tile_object_data.object_type
 	max_health_box.value = tile_object_data.max_health
 	pushable_check.button_pressed = tile_object_data.pushable
+	
+	var object_type: int
+	if tile_object_data.action_source is NullActionSource:
+		object_type = 0
+	elif tile_object_data.action_source is MoveActionSource:
+		object_type = 1
+	elif tile_object_data.action_source is PlayerActionSource:
+		object_type = 2
+	elif tile_object_data.action_source is EnemyActionSource:
+		object_type = 3
+		var action_source: EnemyActionSource = tile_object_data.action_source
+		enemy_action_flow_editor.action_flow = action_source.action_flow
+	
+	action_source_type_options.selected = object_type
+	
+	for i in len(action_source_settings_grids):
+		if i == object_type:
+			action_source_settings_grids[i].show()
+		else:
+			action_source_settings_grids[i].hide()
+	
+	for i in len(speed_boxes):
+		speed_boxes[i].value = tile_object_data.action_source.speed
+		preview_action_checks[i].button_pressed = tile_object_data.action_source.preview_actions
 
 
 func _rename(new_name: String) -> void:
@@ -102,6 +140,50 @@ func _set_max_health(max_health: int) -> void:
 func _set_pushable(pushable: bool) -> void:
 	tile_object_data.pushable = pushable
 	save_data()
+
+
+func _change_action_source_type(type: int) -> void:
+	match type:
+		0:
+			tile_object_data.action_source = NullActionSource.new()
+		1:
+			tile_object_data.action_source = MoveActionSource.new()
+		2:
+			tile_object_data.action_source = PlayerActionSource.new()
+		3:
+			tile_object_data.action_source = EnemyActionSource.new()
+	save_data()
+	
+	for i in len(action_source_settings_grids):
+		if i == type:
+			action_source_settings_grids[i].show()
+		else:
+			action_source_settings_grids[i].hide()
+	
+	speed_boxes[type].value = tile_object_data.action_source.speed
+	preview_action_checks[type].button_pressed = tile_object_data.action_source.preview_actions
+	enemy_action_flow_editor.action_flow_type_options.selected = -1
+
+
+func _set_speed(speed: int) -> void:
+	tile_object_data.action_source.speed = speed
+	save_data()
+	
+	for i in len(speed_boxes):
+		speed_boxes[i].value = speed
+
+
+func _set_preview_actions(preview_actions: bool) -> void:
+	tile_object_data.action_source.preview_actions = preview_actions
+	save_data()
+	
+	for i in len(preview_action_checks):
+		preview_action_checks[i].button_pressed = preview_actions
+
+
+func _set_action_flow() -> void:
+	var action_source: EnemyActionSource = tile_object_data.action_source
+	action_source.action_flow = enemy_action_flow_editor.action_flow
 
 
 func update_preview_sprite() -> void:
