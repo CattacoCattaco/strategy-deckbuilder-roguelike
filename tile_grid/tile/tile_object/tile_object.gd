@@ -249,12 +249,18 @@ func push(target_pos: Vector2i, amount: int) -> void:
 		var new_pushed_pos: Vector2i = pushed_pos + push_dir
 		
 		if not tile_grid.has_tile(new_pushed_pos.x, new_pushed_pos.y):
-			break
+			target.move_to(pushed_pos)
+			if target.data.max_health != -1:
+				damage(pushed_pos, amount - i)
+			return
 		
 		var pushed_tile: Tile = tile_grid.get_tile(new_pushed_pos.x, new_pushed_pos.y)
 		
 		if pushed_tile.object:
-			break
+			target.move_to(pushed_pos)
+			if target.data.max_health != -1:
+				damage(pushed_pos, amount - i)
+			return
 		
 		pushed_pos = new_pushed_pos
 	
@@ -296,6 +302,11 @@ func move_to(new_pos: Vector2i) -> void:
 
 func do_poison() -> void:
 	if shield_level > 0:
+		poison_level -= 1
+	
+		if poison_level == 0:
+			poisoned_sprite.hide()
+		
 		shield_level -= 1
 		
 		defense_label.text = str(shield_level)

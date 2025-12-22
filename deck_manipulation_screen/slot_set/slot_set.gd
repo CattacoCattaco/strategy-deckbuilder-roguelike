@@ -43,6 +43,9 @@ func _ready() -> void:
 			Modifier.Heal.new(),
 			Modifier.Move.new(),
 			Modifier.Poison.new(),
+			Modifier.Push.new(),
+			Modifier.Defend.new(),
+			Modifier.Swap.new(),
 			Modifier.Split2.new(),
 			Modifier.Split3.new(),
 			Modifier.Jump.new(),
@@ -198,6 +201,9 @@ func get_draft_card() -> CardData:
 			Modifier.Attack.new(),
 			Modifier.Heal.new(),
 			Modifier.Poison.new(),
+			Modifier.Push.new(),
+			Modifier.Defend.new(),
+			Modifier.Swap.new(),
 		].pick_random()
 		
 		while new_modifier in modifiers:
