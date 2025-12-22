@@ -1,7 +1,6 @@
 class_name HealEnemyActionFlow
 extends ActionFlowComponent
-## Chooses an ActionFlowComponent based on comparing the enemies distance to
-## a threshold or comparing it to a different distance type
+## Heals a nearby enemy
 
 ## The range to heal in
 @export var heal_range: int = 1
@@ -35,7 +34,19 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	
 	action_source.next_action = CardData.new([Modifier.Heal.new()], heal_range, heal_size)
 	if len(healable_others) > 0:
-		action_source.next_action_targets = [healable_others.pick_random()]
+		var lowest_health_other: TileObject = (
+				object.tile_grid.get_tile(healable_others[0].x, healable_others[0].y).object)
+		var lowest_health: int = lowest_health_other.health
+		
+		for i in range(1, len(healable_others)):
+			var other: TileObject = (
+					object.tile_grid.get_tile(healable_others[i].x, healable_others[i].y).object)
+			
+			if other.health < lowest_health:
+				lowest_health_other = other
+				lowest_health = other.health
+		
+		action_source.next_action_targets = [lowest_health_other.pos]
 	elif object.health < object.data.max_health:
 		action_source.next_action_targets = [object.pos]
 	else:

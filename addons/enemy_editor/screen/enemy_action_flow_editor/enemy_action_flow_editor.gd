@@ -28,22 +28,24 @@ func edit(new_flow: ActionFlowComponent) -> void:
 		action_flow_type_options.selected = 1
 	elif action_flow is DefendableAmountCheckActionFlow:
 		action_flow_type_options.selected = 2
-	elif action_flow is DistanceCheckActionFlow:
+	elif action_flow is DefendEnemyActionFlow:
 		action_flow_type_options.selected = 3
-	elif action_flow is EnemyAmountCheckActionFlow:
+	elif action_flow is DistanceCheckActionFlow:
 		action_flow_type_options.selected = 4
-	elif action_flow is EnemyDistanceCheckActionFlow:
+	elif action_flow is EnemyAmountCheckActionFlow:
 		action_flow_type_options.selected = 5
-	elif action_flow is HealEnemyActionFlow:
+	elif action_flow is EnemyDistanceCheckActionFlow:
 		action_flow_type_options.selected = 6
-	elif action_flow is MoveCloserFurtherActionFlow:
+	elif action_flow is HealEnemyActionFlow:
 		action_flow_type_options.selected = 7
-	elif action_flow is NullActionFlow:
+	elif action_flow is MoveCloserFurtherActionFlow:
 		action_flow_type_options.selected = 8
-	elif action_flow is PoisonActionFlow:
+	elif action_flow is NullActionFlow:
 		action_flow_type_options.selected = 9
-	elif action_flow is RandomActionFlow:
+	elif action_flow is PoisonActionFlow:
 		action_flow_type_options.selected = 10
+	elif action_flow is RandomActionFlow:
+		action_flow_type_options.selected = 11
 	
 	show_flow_options()
 
@@ -57,20 +59,22 @@ func _set_action_flow_type(type: int) -> void:
 		2:
 			action_flow = DefendableAmountCheckActionFlow.new()
 		3:
-			action_flow = DistanceCheckActionFlow.new()
+			action_flow = DefendEnemyActionFlow.new()
 		4:
-			action_flow = EnemyAmountCheckActionFlow.new()
+			action_flow = DistanceCheckActionFlow.new()
 		5:
-			action_flow = EnemyDistanceCheckActionFlow.new()
+			action_flow = EnemyAmountCheckActionFlow.new()
 		6:
-			action_flow = HealEnemyActionFlow.new()
+			action_flow = EnemyDistanceCheckActionFlow.new()
 		7:
-			action_flow = MoveCloserFurtherActionFlow.new()
+			action_flow = HealEnemyActionFlow.new()
 		8:
-			action_flow = NullActionFlow.new()
+			action_flow = MoveCloserFurtherActionFlow.new()
 		9:
-			action_flow = PoisonActionFlow.new()
+			action_flow = NullActionFlow.new()
 		10:
+			action_flow = PoisonActionFlow.new()
+		11:
 			action_flow = RandomActionFlow.new()
 	
 	action_flow_updated.emit()
@@ -95,12 +99,19 @@ func show_flow_options() -> void:
 			create_bool_editor("can_jump")
 			create_bool_editor("clump")
 			create_bool_editor("healable")
+			create_int_editor("max_player_distance", -1, 100, 1)
 		2:
 			create_int_editor("threshold", 0, 100, 1)
 			create_action_flow_editor("below")
 			create_action_flow_editor("at")
 			create_action_flow_editor("above")
 		3:
+			create_int_editor("defend_range", 0, 100, 1)
+			create_bool_editor("can_jump")
+			create_int_editor("defend_size", 0, 100, 1)
+			create_bool_editor("healable")
+			create_int_editor("max_player_distance", -1, 100, 1)
+		4:
 			create_enum_editor("distance_type", ["Damageable", "Player", "Defendable"])
 			create_bool_editor("use_threshold")
 			create_int_editor("threshold", 0, 100, 1)
@@ -108,36 +119,38 @@ func show_flow_options() -> void:
 			create_action_flow_editor("below")
 			create_action_flow_editor("at")
 			create_action_flow_editor("above")
-		4:
-			create_int_editor("threshold", 0, 100, 1)
-			create_bool_editor("healable")
-			create_action_flow_editor("below")
-			create_action_flow_editor("at")
-			create_action_flow_editor("above")
 		5:
 			create_int_editor("threshold", 0, 100, 1)
 			create_bool_editor("healable")
+			create_int_editor("max_player_distance", -1, 100, 1)
 			create_action_flow_editor("below")
 			create_action_flow_editor("at")
 			create_action_flow_editor("above")
 		6:
+			create_int_editor("threshold", 0, 100, 1)
+			create_bool_editor("healable")
+			create_int_editor("max_player_distance", -1, 100, 1)
+			create_action_flow_editor("below")
+			create_action_flow_editor("at")
+			create_action_flow_editor("above")
+		7:
 			create_int_editor("heal_range", 0, 100, 1)
 			create_bool_editor("can_jump")
 			create_int_editor("heal_size", 0, 100, 1)
-		7:
+		8:
 			create_enum_editor("distance_type", ["Damageable", "Player", "Defendable"])
 			create_int_editor("move_range", 0, 100, 1)
 			create_bool_editor("can_jump")
 			create_bool_editor("closer")
-		8:
+		9:
 			# Null Action Flow has no params
 			pass
-		9:
+		10:
 			create_float_editor("player_weight", 0, 1, 0.05)
 			create_int_editor("poison_range", 0, 100, 1)
 			create_bool_editor("can_jump")
 			create_int_editor("poison_damage", 0, 100, 1)
-		10:
+		11:
 			options_container.columns = 1
 			
 			var random_action_flow: RandomActionFlow = action_flow
@@ -160,10 +173,10 @@ func create_float_editor(property_name: String, min: float, max: float, step: fl
 	options_container.add_child(label)
 	
 	var spin_box := SpinBox.new()
-	spin_box.value = action_flow.get(property_name)
 	spin_box.min_value = min
 	spin_box.max_value = max
 	spin_box.step = step
+	spin_box.value = action_flow.get(property_name)
 	
 	spin_box.value_changed.connect(_set_float.bind(property_name))
 	options_container.add_child(spin_box)
@@ -176,11 +189,11 @@ func create_int_editor(property_name: String, min: int, max: int, step: int) -> 
 	options_container.add_child(label)
 	
 	var spin_box := SpinBox.new()
-	spin_box.value = action_flow.get(property_name)
 	spin_box.min_value = min
 	spin_box.max_value = max
 	spin_box.step = step
 	spin_box.rounded = true
+	spin_box.value = action_flow.get(property_name)
 	
 	spin_box.value_changed.connect(_set_int.bind(property_name))
 	options_container.add_child(spin_box)

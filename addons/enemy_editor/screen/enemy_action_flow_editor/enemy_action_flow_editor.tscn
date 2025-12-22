@@ -32,29 +32,31 @@ layout_mode = 2
 
 [node name="ActionFlowTypeOptions" type="OptionButton" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-item_count = 11
+item_count = 12
 popup/item_0/text = "Attack Action Flow"
 popup/item_0/id = 0
 popup/item_1/text = "Clump or Disperse Action Flow"
 popup/item_1/id = 1
 popup/item_2/text = "Defendable Amount Check Action Flow"
 popup/item_2/id = 2
-popup/item_3/text = "Distance Check Action Flow"
+popup/item_3/text = "Defend Enemy Action Flow"
 popup/item_3/id = 3
-popup/item_4/text = "Enemy Amount Check Action Flow"
+popup/item_4/text = "Distance Check Action Flow"
 popup/item_4/id = 4
-popup/item_5/text = "Enemy Distance Check Action Flow"
+popup/item_5/text = "Enemy Amount Check Action Flow"
 popup/item_5/id = 5
-popup/item_6/text = "Heal Enemy Action Flow"
+popup/item_6/text = "Enemy Distance Check Action Flow"
 popup/item_6/id = 6
-popup/item_7/text = "Move Closer Further Action Flow"
+popup/item_7/text = "Heal Enemy Action Flow"
 popup/item_7/id = 7
-popup/item_8/text = "Null Action Flow"
+popup/item_8/text = "Move Closer Further Action Flow"
 popup/item_8/id = 8
-popup/item_9/text = "Poison Action Flow"
+popup/item_9/text = "Null Action Flow"
 popup/item_9/id = 9
-popup/item_10/text = "Random Action Flow"
+popup/item_10/text = "Poison Action Flow"
 popup/item_10/id = 10
+popup/item_11/text = "Random Action Flow"
+popup/item_11/id = 11
 
 [node name="OptionsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

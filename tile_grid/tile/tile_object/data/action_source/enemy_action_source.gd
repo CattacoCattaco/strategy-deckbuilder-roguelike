@@ -25,7 +25,7 @@ static var enemies: Array[TileObject] = []
 
 
 static func get_distance_from_enemy(pos: Vector2i, source: TileObject, healable: bool,
-		checked_tiles: Array[Vector2i] = []) -> int:
+		max_player_distance: int, checked_tiles: Array[Vector2i] = []) -> int:
 	checked_tiles.append(pos)
 	
 	var best_distance: int = -1
@@ -46,18 +46,29 @@ static func get_distance_from_enemy(pos: Vector2i, source: TileObject, healable:
 			if neighbor_object == source:
 				continue
 			elif neighbor_object in EnemyActionSource.enemies:
-				if neighbor_object.health < neighbor_object.data.max_health or not healable:
+				if is_enemy_valid(neighbor_object, healable, max_player_distance):
 					return 0
 			elif neighbor_object.data.object_type == TileObjectData.ObjectType.STATIC:
 				continue
 		
-		var distance: int = get_distance_from_enemy(neighbor, source, healable,
+		var distance: int = get_distance_from_enemy(neighbor, source, healable, max_player_distance,
 				checked_tiles.duplicate())
 		
 		if best_distance > distance or best_distance == -1:
 			best_distance = distance
 	
 	return best_distance
+
+
+static func is_enemy_valid(enemy: TileObject, healable: bool, max_player_distance: int) -> bool:
+	if healable and enemy.health < enemy.data.max_health:
+		return false
+	
+	var player_distance: int = get_player_distance_from_vec(enemy.pos, enemy.tile_grid)
+	if max_player_distance > -1 and player_distance > max_player_distance:
+		return false
+	
+	return true
 
 
 static func recalc_distances(tile_grid: TileGrid) -> void:

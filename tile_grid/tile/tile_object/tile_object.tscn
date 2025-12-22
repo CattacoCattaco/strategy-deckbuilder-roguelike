@@ -112,7 +112,7 @@ centered = false
 [node name="Poison" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_nfi5s")
-frame_progress = 0.50647163
+frame_progress = 0.33344987
 centered = false
 
 [node name="ThoughtBubble" type="Sprite2D" parent="."]
