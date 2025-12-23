@@ -46,18 +46,34 @@ func do_turn() -> void:
 	var current_object: TileObject = turn_order[current_turn_index]
 	var action_source: ActionSource = current_object.data.action_source
 	
+	var from_player: bool = action_source is PlayerActionSource
+	
 	if action_source.preview_actions:
-		if current_object.tile.inspected:
-			current_object.tile._uninspect()
-			current_object.tile.inspected = true
+		var old_tile: Tile = current_object.tile
 		
-		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
+		if current_object.tile.inspected:
+			old_tile._uninspect()
+			old_tile.inspected = true
+		
+		var action: CardData = action_source.next_action
+		var targets: Array[Vector2i] = action_source.next_action_targets
+		await current_object.do_action(action, targets, from_player)
+		
 		action_source._generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
+		
+		if old_tile.inspected:
+			if current_object.tile == old_tile:
+				old_tile._inspect()
+			else:
+				old_tile.inspected = false
 	else:
 		@warning_ignore("redundant_await")
 		await action_source._generate_next_action(current_object)
-		await current_object.do_action(action_source.next_action, action_source.next_action_targets)
+		
+		var action: CardData = action_source.next_action
+		var targets: Array[Vector2i] = action_source.next_action_targets
+		await current_object.do_action(action, targets, from_player)
 	
 	if current_object.poison_level > 0:
 		current_object.do_poison()

@@ -16,7 +16,8 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Attack.new()], 1, 1),
 		CardData.new([Modifier.Heal.new()], 1, 1),
 		CardData.new([Modifier.Heal.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new()),
 	StarterDeckData.new("Poison Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -30,7 +31,8 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Poison.new()], 1, 1),
 		CardData.new([Modifier.Poison.new()], 1, 1),
 		CardData.new([Modifier.Poison.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new(StatsManager.Stat.HIGHEST_POISON_LEVEL, 5, "Get an enemy to have 5 poison.")),
 	StarterDeckData.new("Shield Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -44,7 +46,8 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Defend.new()], 1, 1),
 		CardData.new([Modifier.Defend.new()], 1, 1),
 		CardData.new([Modifier.Defend.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new(StatsManager.Stat.TOTAL_DAMAGE_BLOCKED, 50, "Block 50 damage.")),
 	StarterDeckData.new("Push Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -58,7 +61,8 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Push.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 1, 1),
 		CardData.new([Modifier.Push.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new(StatsManager.Stat.TOTAL_PUSH_DAMAGE, 10, "Deal 10 push damage.")),
 	StarterDeckData.new("Swap Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new()], 1, 1),
@@ -72,7 +76,8 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Swap.new()], 1, 1),
 		CardData.new([Modifier.Swap.new()], 1, 1),
 		CardData.new([Modifier.Swap.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new(StatsManager.Stat.SWAP_COUNT, 20, "Swap 20 times.")),
 	StarterDeckData.new("Chaos Deck", [
 		CardData.new([Modifier.Move.new()], 1, 1),
 		CardData.new([Modifier.Move.new(), Modifier.Attack.new()], 1, 1),
@@ -91,13 +96,16 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Swap.new()], 1, 6),
 		CardData.new([Modifier.Defend.new()], 3, 1),
 		CardData.new([Modifier.Defend.new(), Modifier.Swap.new(), Modifier.Push.new()], 1, 1),
-	]),
+	],
+	UnlockCond.new(StatsManager.Stat.TOTAL_DAMAGE_CAUSED, 500, "Deal 500 damage.")),
 ]
 
 @export var deck_view_scene: PackedScene
 @export var world_map_scene: PackedScene
 
 @export var deck_name_label: Label
+@export var locked_label: Label
+@export var unlock_cond_label: Label
 @export var preview_button: Button
 @export var select_button: Button
 @export var previous_button: Button
@@ -160,3 +168,18 @@ func _choose_deck() -> void:
 func _update_current_deck() -> void:
 	var deck: StarterDeckData = DECKS[current_deck_index]
 	deck_name_label.text = deck.deck_name
+	
+	var unlock_cond: UnlockCond = deck.unlock_cond
+	
+	if unlock_cond.is_complete():
+		locked_label.hide()
+		unlock_cond_label.hide()
+		preview_button.show()
+		select_button.show()
+	else:
+		locked_label.show()
+		unlock_cond_label.show()
+		preview_button.hide()
+		select_button.hide()
+		
+		unlock_cond_label.text = unlock_cond.get_text()

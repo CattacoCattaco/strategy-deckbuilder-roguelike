@@ -69,7 +69,7 @@ func load_sprite_anim() -> void:
 			show_health()
 
 
-func do_action(action: CardData, targets: Array[Vector2i]) -> void:
+func do_action(action: CardData, targets: Array[Vector2i], from_player: bool = false) -> void:
 	var effects: Array[Effect] = action.get_effects()
 	
 	var current_target_index: int = 0
@@ -107,28 +107,28 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 				continue
 			
 			if effect.base_action is Modifier.Attack:
-				damage(target, effect.effect_size)
+				damage(target, effect.effect_size, from_player, effect.base_action)
 			elif effect.base_action is Modifier.Heal:
-				heal(target, effect.effect_size)
+				heal(target, effect.effect_size, from_player)
 			elif effect.base_action is Modifier.Poison:
-				poison(target, effect.effect_size)
+				poison(target, effect.effect_size, from_player)
 			elif effect.base_action is Modifier.Defend:
-				defend(target, effect.effect_size)
+				defend(target, effect.effect_size, from_player)
 			elif effect.base_action is Modifier.Push:
 				if target == pos:
 					continue
 				
-				push(target, effect.effect_size)
+				push(target, effect.effect_size, from_player)
 			elif effect.base_action is Modifier.Swap:
 				if target == pos:
 					continue
 				
-				swap(target)
+				swap(target, from_player, can_jump)
 			elif effect.base_action is Modifier.Move:
 				if target == pos:
 					continue
 				
-				move_to(target)
+				move_to(target, from_player, can_jump)
 			
 			if is_queued_for_deletion():
 				return
@@ -136,7 +136,7 @@ func do_action(action: CardData, targets: Array[Vector2i]) -> void:
 			await get_tree().create_timer(0.8).timeout
 
 
-func damage(target_pos: Vector2i, amount: int) -> void:
+func damage(target_pos: Vector2i, amount: int, from_player: bool, action: Modifier) -> void:
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -150,7 +150,21 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 		if target.shield_level == 0:
 			target.defense_label.hide()
 		
+		if not from_player:
+			StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_DAMAGE_BLOCKED)
+			StatsManager.check_new_highest(amount, StatsManager.Stat.HIGHEST_DAMAGE_BLOCKED)
+		
 		return
+	
+	if from_player:
+		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_DAMAGE_CAUSED)
+		StatsManager.check_new_highest(amount, StatsManager.Stat.MOST_DAMAGE_CAUSED)
+		if action is Modifier.Attack:
+			StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_ATTACK_DAMAGE)
+			StatsManager.check_new_highest(amount, StatsManager.Stat.LARGEST_ATTACK_SIZE)
+		elif action is Modifier.Push:
+			StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_PUSH_DAMAGE)
+			StatsManager.check_new_highest(amount, StatsManager.Stat.HIGHEST_PUSH_DAMAGE)
 	
 	target.health -= amount
 	target.show_health()
@@ -160,7 +174,7 @@ func damage(target_pos: Vector2i, amount: int) -> void:
 		return
 
 
-func heal(target_pos: Vector2i, amount: int) -> void:
+func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -175,6 +189,10 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 		
 		return
 	
+	if from_player:
+		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_DAMAGE_HEALED)
+		StatsManager.check_new_highest(amount, StatsManager.Stat.LARGEST_HEAL)
+	
 	target.health += amount
 	
 	if target.health > target.data.max_health:
@@ -183,7 +201,7 @@ func heal(target_pos: Vector2i, amount: int) -> void:
 	target.show_health()
 
 
-func poison(target_pos: Vector2i, amount: int) -> void:
+func poison(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -191,10 +209,14 @@ func poison(target_pos: Vector2i, amount: int) -> void:
 	
 	target.poison_level += amount
 	
+	if from_player:
+		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_POISON_INCREASE)
+		StatsManager.check_new_highest(target.poison_level, StatsManager.Stat.HIGHEST_POISON_LEVEL)
+	
 	target.poisoned_sprite.show()
 
 
-func defend(target_pos: Vector2i, amount: int) -> void:
+func defend(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
 	
@@ -202,13 +224,21 @@ func defend(target_pos: Vector2i, amount: int) -> void:
 	
 	target.shield_level += amount
 	
+	if from_player:
+		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_SHIELD_GAINED)
+		StatsManager.check_new_highest(target.shield_level, StatsManager.Stat.HIGHEST_SHIELD_LEVEL)
+	
 	target.defense_label.show()
 	target.defense_label.text = str(target.shield_level)
 
 
-func push(target_pos: Vector2i, amount: int) -> void:
+func push(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	if not tile_grid.get_tile(target_pos.x, target_pos.y).object:
 		return
+	
+	if from_player:
+		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_AMOUNT_PUSHED)
+		StatsManager.check_new_highest(amount, StatsManager.Stat.LARGEST_PUSH)
 	
 	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
 	
@@ -249,28 +279,33 @@ func push(target_pos: Vector2i, amount: int) -> void:
 		var new_pushed_pos: Vector2i = pushed_pos + push_dir
 		
 		if not tile_grid.has_tile(new_pushed_pos.x, new_pushed_pos.y):
-			target.move_to(pushed_pos)
+			target.move_to(pushed_pos, from_player, false)
 			if target.data.max_health != -1:
-				damage(pushed_pos, amount - i)
+				damage(pushed_pos, amount - i, from_player, Modifier.Push.new())
 			return
 		
 		var pushed_tile: Tile = tile_grid.get_tile(new_pushed_pos.x, new_pushed_pos.y)
 		
 		if pushed_tile.object:
-			target.move_to(pushed_pos)
+			target.move_to(pushed_pos, from_player, false)
 			if target.data.max_health != -1:
-				damage(pushed_pos, amount - i)
+				damage(pushed_pos, amount - i, from_player, Modifier.Push.new())
 			return
 		
 		pushed_pos = new_pushed_pos
 	
-	target.move_to(pushed_pos)
+	target.move_to(pushed_pos, from_player, false)
 
 
-func swap(other_pos: Vector2i) -> void:
+func swap(other_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	var other_object: TileObject = tile_grid.get_tile(other_pos.x, other_pos.y).object
 	if not other_object:
 		return
+	
+	if from_player:
+		var distance: int = tile.get_distance(other_pos, is_jump)
+		StatsManager.increase_total(distance, StatsManager.Stat.SWAP_COUNT)
+		StatsManager.check_new_highest(distance, StatsManager.Stat.LARGEST_PUSH)
 	
 	other_object.pos = pos
 	other_object.tile = tile_grid.get_tile(pos.x, pos.y)
@@ -285,9 +320,14 @@ func swap(other_pos: Vector2i) -> void:
 	EnemyActionSource.distances_need_recalc = true
 
 
-func move_to(new_pos: Vector2i) -> void:
+func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	if tile_grid.get_tile(new_pos.x, new_pos.y).object:
 		return
+	
+	if data.object_type == TileObjectData.ObjectType.PLAYER and from_player:
+		var distance: int = tile.get_distance(new_pos, is_jump)
+		StatsManager.increase_total(1, StatsManager.Stat.SWAP_COUNT)
+		StatsManager.check_new_highest(distance, StatsManager.Stat.LARGEST_PUSH)
 	
 	tile.object = null
 	
@@ -302,6 +342,10 @@ func move_to(new_pos: Vector2i) -> void:
 
 func do_poison() -> void:
 	if shield_level > 0:
+		if data.object_type == TileObjectData.ObjectType.ENEMY:
+			StatsManager.increase_total(poison_level, StatsManager.Stat.TOTAL_DAMAGE_BLOCKED)
+			StatsManager.check_new_highest(poison_level, StatsManager.Stat.HIGHEST_DAMAGE_BLOCKED)
+		
 		poison_level -= 1
 	
 		if poison_level == 0:
@@ -315,6 +359,9 @@ func do_poison() -> void:
 			defense_label.hide()
 		
 		return
+	
+	if data.object_type == TileObjectData.ObjectType.ENEMY:
+		StatsManager.increase_total(poison_level, StatsManager.Stat.TOTAL_POISON_DAMAGE)
 	
 	health -= poison_level
 	

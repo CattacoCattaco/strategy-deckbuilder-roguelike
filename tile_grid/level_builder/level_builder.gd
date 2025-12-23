@@ -106,7 +106,10 @@ func place_objects() -> void:
 	
 	EnemyActionSource.defendables = []
 	
-	var enemy_count: int = world_map.levels_beat + 2 * world_map.world_num + 1
+	var enemy_count: int = world_map.levels_beat - 3 * world_map.world_num + 1
+	
+	if enemy_count < 1:
+		enemy_count = 1
 	
 	if tile_grid.is_mission:
 		enemy_count = (enemy_count >> 2) + 1

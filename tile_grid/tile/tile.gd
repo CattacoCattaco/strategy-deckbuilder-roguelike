@@ -116,6 +116,47 @@ func _targeted() -> void:
 	tile_grid.tile_targeted.emit(pos)
 
 
+func get_distance(other: Vector2i, can_jump: bool) -> int:
+	if can_jump:
+		return absi(pos.x - other.x) + absi(pos.y - other.y)
+	
+	if pos == other:
+		return 0
+	
+	var prev_gen: Array[Vector2i] = [pos]
+	var checked: Array[Vector2i] = [pos]
+	
+	var distance: int = 0
+	
+	while len(prev_gen) > 0:
+		distance += 1
+		
+		var new_gen: Array[Vector2i] = []
+		
+		for old_pos in prev_gen:
+			for dir in Constants.DIRS:
+				var neighbor: Vector2i = old_pos + dir
+				
+				if neighbor == other:
+					return distance
+				
+				if (not tile_grid.has_tile(neighbor.x, neighbor.y)) or neighbor in checked:
+					continue
+				
+				checked.append(neighbor)
+				
+				var neighbor_tile: Tile = tile_grid.get_tile(neighbor.x, neighbor.y)
+				
+				if neighbor_tile.object:
+					continue
+				
+				new_gen.append(neighbor)
+		
+		prev_gen = new_gen
+	
+	return -1
+
+
 func add_object(data: TileObjectData) -> void:
 	object = tile_object_scene.instantiate()
 	
