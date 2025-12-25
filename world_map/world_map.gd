@@ -176,6 +176,10 @@ func try_move_player_in_dir(dir: Vector2i) -> void:
 	
 	player_pos = neighbor_pos
 	player.position = neighbor_tile.position
+	
+	var new_tile: WorldMapTile = get_tile_from_vec(player_pos)
+	if new_tile.event_type == WorldMapTile.EventType.EXIT:
+		new_tile.completed = true
 
 
 func try_do_event() -> void:

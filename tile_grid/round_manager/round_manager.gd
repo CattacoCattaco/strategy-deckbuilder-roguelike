@@ -50,10 +50,11 @@ func do_turn() -> void:
 	
 	if action_source.preview_actions:
 		var old_tile: Tile = current_object.tile
+		var uninspected: bool = false
 		
 		if current_object.tile.inspected:
 			old_tile._uninspect()
-			old_tile.inspected = true
+			uninspected = true
 		
 		var action: CardData = action_source.next_action
 		var targets: Array[Vector2i] = action_source.next_action_targets
@@ -62,11 +63,8 @@ func do_turn() -> void:
 		action_source._generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
 		
-		if old_tile.inspected:
-			if current_object.tile == old_tile:
-				old_tile._inspect()
-			else:
-				old_tile.inspected = false
+		if uninspected and current_object.tile == old_tile:
+			old_tile._inspect()
 	else:
 		@warning_ignore("redundant_await")
 		await action_source._generate_next_action(current_object)

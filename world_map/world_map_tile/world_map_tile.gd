@@ -109,7 +109,7 @@ func add_exit() -> void:
 	event_signs[EventType.EXIT].show()
 	is_positive = true
 	event_type = EventType.EXIT
-	completed = true
+	completed = false
 
 
 func add_encounter() -> void:
