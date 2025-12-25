@@ -60,12 +60,18 @@ var values: Array[int] = []
 func _ready() -> void:
 	for i in range(Stat.STAT_COUNT):
 		values.append(0)
+	
+	var _load_successful: bool = GameSaver.load_stats()
+	
+	print(values)
 
 
 func increase_total(amount: int, stat: Stat) -> void:
 	values[stat] += amount
+	GameSaver.save_stats()
 
 
 func check_new_highest(amount: int, stat: Stat) -> void:
 	if values[stat] < amount:
 		values[stat] = amount
+		GameSaver.save_stats()
