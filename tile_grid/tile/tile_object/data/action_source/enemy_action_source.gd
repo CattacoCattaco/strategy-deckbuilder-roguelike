@@ -10,12 +10,10 @@ enum DistanceType {
 	## Distance from the closest defendable
 	DEFENDABLE,
 }
-## Do we need to recalc distances next time we try to get a position?
-static var distances_need_recalc: bool = true
 ## The distance from a tile to the player assuming that no jumps can occur
-static var player_distances: Array[Array] = []
+static var player_distances: Dictionary[Vector2i, int] = {}
 ## The distance from a tile to the closest defendable assuming that no jumps can occur
-static var defendable_distances: Array[Array] = []
+static var defendable_distances: Dictionary[Vector2i, int] = {}
 ## The defendables
 static var defendables: Array[TileObject] = []
 ## The enemies
@@ -25,199 +23,99 @@ static var enemies: Array[TileObject] = []
 
 
 static func get_distance_from_enemy(pos: Vector2i, source: TileObject, healable: bool,
-		max_player_distance: int, checked_tiles: Array[Vector2i] = []) -> int:
-	checked_tiles.append(pos)
+		max_player_distance: int, can_jump: bool) -> int:
+	if can_jump:
+		var best_distance: int = -1
+		
+		for enemy in enemies:
+			var jump_distance: int = absi(pos.x - enemy.pos.x) + absi(pos.y - enemy.pos.y)
+			
+			if best_distance == -1 or jump_distance < best_distance:
+				best_distance = jump_distance
+		
+		return best_distance
 	
-	var best_distance: int = -1
+	if pos != source.pos:
+		var current_tile: Tile = source.tile_grid.get_tile(pos.x, pos.y)
+		if current_tile.object:
+			var type: TileObjectData.ObjectType = current_tile.object.data.object_type
+			if type == TileObjectData.ObjectType.ENEMY:
+				return 0
 	
-	for dir in Constants.DIRS:
-		var neighbor: Vector2i = pos + dir
-		
-		if neighbor in checked_tiles:
-			continue
-		
-		if not source.tile_grid.has_tile(neighbor.x, neighbor.y):
-			continue
-		
-		var neighbor_tile: Tile = source.tile_grid.get_tile(neighbor.x, neighbor.y)
-		
-		var neighbor_object: TileObject = neighbor_tile.object
-		if neighbor_object:
-			if neighbor_object == source:
-				continue
-			elif neighbor_object in EnemyActionSource.enemies:
-				if is_enemy_valid(neighbor_object, healable, max_player_distance):
-					return 0
-			elif neighbor_object.data.object_type == TileObjectData.ObjectType.STATIC:
-				continue
-		
-		var distance: int = get_distance_from_enemy(neighbor, source, healable, max_player_distance,
-				checked_tiles.duplicate())
-		
-		if best_distance > distance or best_distance == -1:
-			best_distance = distance
+	var prev_gen: Array[Vector2i] = [pos]
+	var checked: Array[Vector2i] = [pos, source.pos]
 	
-	return best_distance
+	var distance: int = 0
+	
+	while len(prev_gen) > 0:
+		distance += 1
+		
+		var new_gen: Array[Vector2i] = []
+		
+		for old_pos in prev_gen:
+			for dir in Constants.DIRS:
+				var neighbor: Vector2i = old_pos + dir
+				
+				var no_tile: bool = not source.tile_grid.has_tile(neighbor.x, neighbor.y)
+				if no_tile or neighbor in checked:
+					continue
+				
+				checked.append(neighbor)
+				
+				var neighbor_tile: Tile = source.tile_grid.get_tile(neighbor.x, neighbor.y)
+				
+				if neighbor_tile.object:
+					var type: TileObjectData.ObjectType = neighbor_tile.object.data.object_type
+					if type == TileObjectData.ObjectType.ENEMY:
+						if is_enemy_valid(neighbor_tile.object, healable, max_player_distance):
+							return distance
+					elif not neighbor_tile.object.data.moves():
+						continue
+				
+				new_gen.append(neighbor)
+		
+		prev_gen = new_gen
+	
+	return -1
 
 
 static func is_enemy_valid(enemy: TileObject, healable: bool, max_player_distance: int) -> bool:
 	if healable and enemy.health < enemy.data.max_health:
 		return false
 	
-	var player_distance: int = get_player_distance_from_vec(enemy.pos, enemy.tile_grid)
+	var player_distance: int = get_player_distance_from_vec(enemy.pos, enemy.tile_grid, false)
 	if max_player_distance > -1 and player_distance > max_player_distance:
 		return false
 	
 	return true
 
 
-static func recalc_distances(tile_grid: TileGrid) -> void:
-	distances_need_recalc = false
-	
-	player_distances = []
-	
-	for x in range(tile_grid.size.x):
-		var column: Array[int] = []
-		for y in range(tile_grid.size.y):
-			column.append(-1)
-		
-		player_distances.append(column)
-	
-	var player_pos: Vector2i = tile_grid.hand.player.pos
-	
-	var prev_positions: Array[Vector2i] = [player_pos]
-	player_distances[player_pos.x][player_pos.y] = 0
-	
-	for distance in range(1, tile_grid.size.x * tile_grid.size.y):
-		var new_positions: Array[Vector2i] = []
-		
-		for old_pos in prev_positions:
-			for dir in Constants.DIRS:
-				var neighbor_pos: Vector2i = old_pos + dir
-				
-				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
-					continue
-				
-				if get_player_distance_from_vec(neighbor_pos, tile_grid) != -1:
-					continue
-				
-				var neighbor_tile: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
-				if neighbor_tile.object:
-					var neighbor_type: TileObjectData.ObjectType
-					neighbor_type = neighbor_tile.object.data.object_type
-					
-					if neighbor_type in [TileObjectData.ObjectType.STATIC,
-							TileObjectData.ObjectType.DEFENDABLE]:
-						continue
-				
-				new_positions.append(neighbor_pos)
-				player_distances[neighbor_pos.x][neighbor_pos.y] = distance
-		
-		prev_positions = new_positions
-		
-		if len(new_positions) == 0:
-			break
-	
-	defendable_distances = []
-	
-	for x in range(tile_grid.size.x):
-		var column: Array[int] = []
-		for y in range(tile_grid.size.y):
-			column.append(-1)
-		
-		defendable_distances.append(column)
-	
-	prev_positions = []
-	
-	for defendable in defendables:
-		var pos: Vector2i = defendable.pos
-		prev_positions.append(pos)
-		defendable_distances[pos.x][pos.y] = 0
-	
-	for distance in range(1, tile_grid.size.x * tile_grid.size.y):
-		var new_positions: Array[Vector2i] = []
-		
-		for old_pos in prev_positions:
-			for dir in Constants.DIRS:
-				var neighbor_pos: Vector2i = old_pos + dir
-				
-				if not tile_grid.has_tile(neighbor_pos.x, neighbor_pos.y):
-					continue
-				
-				if get_defendable_distance_from_vec(neighbor_pos, tile_grid) != -1:
-					continue
-				
-				var neighbor_tile: Tile = tile_grid.get_tile(neighbor_pos.x, neighbor_pos.y)
-				if neighbor_tile.object:
-					if neighbor_tile.object.data.object_type == TileObjectData.ObjectType.STATIC:
-						continue
-				
-				new_positions.append(neighbor_pos)
-				defendable_distances[neighbor_pos.x][neighbor_pos.y] = distance
-		
-		prev_positions = new_positions
-		
-		if len(new_positions) == 0:
-			break
-	
-	#print_distances(tile_grid)
+static func get_distance_from_vec(pos: Vector2i, type: DistanceType, tile_grid: TileGrid,
+		can_jump: bool) -> int:
+	return get_distance(pos.x, pos.y, type, tile_grid, can_jump)
 
 
-static func print_distances(tile_grid: TileGrid) -> void:
-	var print_message: String = "Player distances:\n"
-	for y in range(len(player_distances[0])):
-		print_message += "["
-		for x in range(len(player_distances)):
-			print_message += "%2d " % get_player_distance(x, y, tile_grid)
-		print_message = print_message.rstrip(" ")
-		print_message += "]\n"
-	
-	print_message += "\n"
-	
-	print_message += "Defendable distances:\n"
-	for y in range(len(player_distances[0])):
-		print_message += "["
-		for x in range(len(player_distances)):
-			print_message += "%2d " % get_defendable_distance(x, y, tile_grid)
-		print_message = print_message.rstrip(" ")
-		print_message += "]\n"
-	
-	print_message += "\n"
-	
-	print_message += "Damageable distances:\n"
-	for y in range(len(player_distances[0])):
-		print_message += "["
-		for x in range(len(player_distances)):
-			print_message += "%2d " % get_damageable_distance(x, y, tile_grid)
-		print_message = print_message.rstrip(" ")
-		print_message += "]\n"
-	
-	print(print_message)
-
-
-static func get_distance_from_vec(pos: Vector2i, type: DistanceType, tile_grid: TileGrid) -> int:
-	return get_distance(pos.x, pos.y, type, tile_grid)
-
-
-static func get_distance(x: int, y: int, type: DistanceType, tile_grid: TileGrid) -> int:
+static func get_distance(x: int, y: int, type: DistanceType, tile_grid: TileGrid, can_jump: bool
+		) -> int:
 	match type:
 		DistanceType.DAMAGEABLE:
-			return EnemyActionSource.get_damageable_distance(x, y, tile_grid)
+			return EnemyActionSource.get_damageable_distance(x, y, tile_grid, can_jump)
 		DistanceType.PLAYER:
-			return EnemyActionSource.get_player_distance(x, y, tile_grid)
+			return EnemyActionSource.get_player_distance(x, y, tile_grid, can_jump)
 		DistanceType.DEFENDABLE:
-			return EnemyActionSource.get_defendable_distance(x, y, tile_grid)
+			return EnemyActionSource.get_defendable_distance(x, y, tile_grid, can_jump)
 	
 	return 0
 
 
-static func get_damageable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
-	return get_damageable_distance(pos.x, pos.y, tile_grid)
+static func get_damageable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid, can_jump: bool
+		) -> int:
+	return get_damageable_distance(pos.x, pos.y, tile_grid, can_jump)
 
 
-static func get_damageable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
-	var player_distance: int = get_player_distance(x, y, tile_grid)
-	var defendable_distance: int = get_defendable_distance(x, y, tile_grid)
+static func get_damageable_distance(x: int, y: int, tile_grid: TileGrid, can_jump: bool) -> int:
+	var player_distance: int = get_player_distance(x, y, tile_grid, can_jump)
+	var defendable_distance: int = get_defendable_distance(x, y, tile_grid, can_jump)
 	
 	if len(defendables) == 0:
 		return player_distance
@@ -228,26 +126,135 @@ static func get_damageable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
 		return defendable_distance
 
 
-static func get_player_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
-	return get_player_distance(pos.x, pos.y, tile_grid)
+static func get_player_distance_from_vec(pos: Vector2i, tile_grid: TileGrid, can_jump: bool) -> int:
+	return get_player_distance(pos.x, pos.y, tile_grid, can_jump)
 
 
-static func get_player_distance(x: int, y: int, tile_grid: TileGrid) -> int:
-	if distances_need_recalc:
-		recalc_distances(tile_grid)
+static func get_player_distance(x: int, y: int, tile_grid: TileGrid, can_jump: bool) -> int:
+	var pos := Vector2i(x, y)
 	
-	return player_distances[x][y]
-
-
-static func get_defendable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid) -> int:
-	return get_defendable_distance(pos.x, pos.y, tile_grid)
-
-
-static func get_defendable_distance(x: int, y: int, tile_grid: TileGrid) -> int:
-	if distances_need_recalc:
-		recalc_distances(tile_grid)
+	var player_pos: Vector2i = tile_grid.hand.player.pos
 	
-	return defendable_distances[x][y]
+	print("pos: ", pos)
+	print("player: ", player_pos)
+	
+	if can_jump:
+		return absi(pos.x - player_pos.x) + absi(pos.y - player_pos.y)
+	
+	if pos in player_distances:
+		return player_distances[pos]
+	
+	if pos == player_pos:
+		player_distances[pos] = 0
+		return 0
+	
+	var prev_gen: Array[Vector2i] = [player_pos]
+	var checked: Array[Vector2i] = [player_pos]
+	
+	var distance: int = 0
+	
+	while len(prev_gen) > 0:
+		distance += 1
+		
+		var new_gen: Array[Vector2i] = []
+		
+		for old_pos in prev_gen:
+			for dir in Constants.DIRS:
+				var neighbor: Vector2i = old_pos + dir
+				
+				var no_tile: bool = not tile_grid.has_tile(neighbor.x, neighbor.y)
+				if no_tile or neighbor in checked:
+					continue
+				
+				player_distances[neighbor] = distance
+				
+				print("Neighbor: ", neighbor)
+				print("Neighbor Distance: ", distance)
+				
+				if neighbor == pos:
+					return distance
+				
+				checked.append(neighbor)
+				
+				var neighbor_tile: Tile = tile_grid.get_tile(neighbor.x, neighbor.y)
+				
+				if neighbor_tile.object:
+					if not neighbor_tile.object.data.moves():
+						continue
+				
+				new_gen.append(neighbor)
+		
+		prev_gen = new_gen
+	
+	return -1
+
+
+static func get_defendable_distance_from_vec(pos: Vector2i, tile_grid: TileGrid, can_jump: bool
+		) -> int:
+	return get_defendable_distance(pos.x, pos.y, tile_grid, can_jump)
+
+
+static func get_defendable_distance(x: int, y: int, tile_grid: TileGrid, can_jump: bool) -> int:
+	if len(defendables) == 0:
+		return -1
+	
+	var pos := Vector2i(x, y)
+	
+	var current_tile: Tile = tile_grid.get_tile(pos.x, pos.y)
+	
+	if current_tile.object:
+		var type: TileObjectData.ObjectType = current_tile.object.data.object_type
+		if type == TileObjectData.ObjectType.DEFENDABLE:
+			return 0
+	
+	if can_jump:
+		var best_distance: int = -1
+		for defendable in defendables:
+			var defendable_distance: int = current_tile.get_distance(defendable.pos, true)
+			
+			if best_distance == -1 or defendable_distance < best_distance:
+				best_distance = defendable_distance
+		
+		return best_distance
+	
+	if pos in defendable_distances:
+		return defendable_distances[pos]
+	
+	var prev_gen: Array[Vector2i] = [pos]
+	var checked: Array[Vector2i] = [pos]
+	
+	var distance: int = 0
+	
+	while len(prev_gen) > 0:
+		distance += 1
+		
+		var new_gen: Array[Vector2i] = []
+		
+		for old_pos in prev_gen:
+			for dir in Constants.DIRS:
+				var neighbor: Vector2i = old_pos + dir
+				
+				var no_tile: bool = not tile_grid.has_tile(neighbor.x, neighbor.y)
+				if no_tile or neighbor in checked:
+					continue
+				
+				checked.append(neighbor)
+				
+				var neighbor_tile: Tile = tile_grid.get_tile(neighbor.x, neighbor.y)
+				
+				if neighbor_tile.object:
+					var type: TileObjectData.ObjectType = neighbor_tile.object.data.object_type
+					if type == TileObjectData.ObjectType.DEFENDABLE:
+						defendable_distances[pos] = distance
+						return distance
+					elif type == TileObjectData.ObjectType.STATIC:
+						continue
+				
+				new_gen.append(neighbor)
+		
+		prev_gen = new_gen
+	
+	return -1
 
 
 func _init(p_speed: int = 0, p_preview_actions: bool = true,

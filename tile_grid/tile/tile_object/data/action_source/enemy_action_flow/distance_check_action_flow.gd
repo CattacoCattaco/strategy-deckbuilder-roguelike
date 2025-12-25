@@ -41,14 +41,17 @@ func _init(p_distance_type: DistanceType = DistanceType.DAMAGEABLE, p_use_thresh
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var base_distance: int = EnemyActionSource.get_distance_from_vec(object.pos, distance_type,
-			object.tile_grid)
+			object.tile_grid, false)
 	var comp_value: int
 	
 	if use_threshold:
 		comp_value = threshold
 	else:
 		comp_value = EnemyActionSource.get_distance_from_vec(object.pos, comp_distance_type,
-				object.tile_grid)
+				object.tile_grid, false)
+	
+	print(object.pos)
+	print(base_distance)
 	
 	if base_distance < comp_value:
 		below._resolve(object, action_source)

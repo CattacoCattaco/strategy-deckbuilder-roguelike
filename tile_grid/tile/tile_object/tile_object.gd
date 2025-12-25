@@ -317,7 +317,10 @@ func swap(other_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	reparent(tile, false)
 	tile.object = self
 	
-	EnemyActionSource.distances_need_recalc = true
+	if TileObjectData.ObjectType.PLAYER in [data.object_type, other_object.data.object_type]:
+		EnemyActionSource.player_distances = {}
+	elif TileObjectData.ObjectType.DEFENDABLE in [data.object_type, other_object.data.object_type]:
+		EnemyActionSource.defendable_distances = {}
 
 
 func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
@@ -336,8 +339,10 @@ func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	reparent(tile, false)
 	tile.object = self
 	
-	if data.distance_tracked():
-		EnemyActionSource.distances_need_recalc = true
+	if data.object_type == TileObjectData.ObjectType.PLAYER:
+		EnemyActionSource.player_distances = {}
+	elif data.object_type == TileObjectData.ObjectType.DEFENDABLE:
+		EnemyActionSource.defendable_distances = {}
 
 
 func do_poison() -> void:

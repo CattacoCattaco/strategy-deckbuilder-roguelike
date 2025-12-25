@@ -30,7 +30,7 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 		
 		if neighbor_object in EnemyActionSource.enemies:
 			if neighbor_object.health < neighbor_object.data.max_health:
-				healable_others.append(neighbor_object)
+				healable_others.append(neighbor_object.pos)
 	
 	action_source.next_action = CardData.new([Modifier.Heal.new()], heal_range, heal_size)
 	if len(healable_others) > 0:

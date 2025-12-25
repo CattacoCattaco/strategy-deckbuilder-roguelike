@@ -42,7 +42,7 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 		if neighbor_object in EnemyActionSource.enemies:
 			if EnemyActionSource.is_enemy_valid(neighbor_object, healable, max_player_distance):
 				var player_distance: int = EnemyActionSource.get_damageable_distance_from_vec(
-						neighbor_object.pos, object.tile_grid)
+						neighbor_object.pos, object.tile_grid, can_jump)
 				
 				if min_player_distance == -1 or player_distance < min_player_distance:
 					best_defendable_other = neighbor_object

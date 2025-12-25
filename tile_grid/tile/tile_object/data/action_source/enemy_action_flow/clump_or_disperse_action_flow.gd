@@ -32,12 +32,12 @@ func _init(p_move_range: int = 1, p_can_jump: bool = false, p_clump: bool = true
 
 func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var best_distance: int = EnemyActionSource.get_distance_from_enemy(object.pos, object, healable,
-			max_player_distance)
+			max_player_distance, can_jump)
 	var best_pos: Vector2i = object.pos
 	
 	for tile: Tile in object.get_tiles_in_range(move_range, can_jump, Modifier.Move.new()):
 		var distance: int =  EnemyActionSource.get_distance_from_enemy(tile.pos, object,
-				healable, max_player_distance)
+				healable, max_player_distance, can_jump)
 		
 		if (distance < best_distance and clump) or (distance > best_distance and not clump):
 			best_distance = distance

@@ -170,6 +170,9 @@ func add_object(data: TileObjectData) -> void:
 
 
 func delete_object() -> void:
+	if not object:
+		return
+	
 	if object in tile_grid.round_manager.turn_order:
 		tile_grid.round_manager.turn_order.erase(object)
 	

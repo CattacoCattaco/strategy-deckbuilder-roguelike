@@ -117,3 +117,7 @@ func add_animation_to_sprite_frames(y: int, anim_name: String, sprite_frames: Sp
 
 func distance_tracked() -> bool:
 	return object_type in [ObjectType.PLAYER, ObjectType.DEFENDABLE]
+
+
+func moves() -> bool:
+	return object_type in [ObjectType.PLAYER, ObjectType.ENEMY]

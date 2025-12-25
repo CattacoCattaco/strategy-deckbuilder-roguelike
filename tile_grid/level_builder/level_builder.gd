@@ -129,10 +129,11 @@ func place_objects() -> void:
 			tile.add_object(environment.defendables.get_random_object())
 			EnemyActionSource.defendables.append(tile.object)
 		
-		EnemyActionSource.distances_need_recalc = true
+		EnemyActionSource.player_distances = {}
+		EnemyActionSource.defendable_distances = {}
 		
 		for pos in designated_movement_region:
-			if EnemyActionSource.get_player_distance_from_vec(pos, tile_grid) == -1:
+			if EnemyActionSource.get_player_distance_from_vec(pos, tile_grid, false) == -1:
 				designated_movement_region.erase(pos)
 	
 	var current_enemies: WeightedObjectList = enemies_by_level[world_map.world_num]
@@ -145,7 +146,8 @@ func place_objects() -> void:
 		var tile: Tile = tile_grid.get_tile(pos.x, pos.y)
 		tile.add_object(current_enemies.get_random_object())
 	
-	EnemyActionSource.distances_need_recalc = true
+	EnemyActionSource.player_distances = {}
+	EnemyActionSource.defendable_distances = {}
 
 
 func walk(current_pos: Vector2i, region: Array[Vector2i], goal_size: int, from: Vector2i,
