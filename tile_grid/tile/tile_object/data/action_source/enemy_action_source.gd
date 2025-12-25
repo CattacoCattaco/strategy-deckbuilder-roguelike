@@ -135,9 +135,6 @@ static func get_player_distance(x: int, y: int, tile_grid: TileGrid, can_jump: b
 	
 	var player_pos: Vector2i = tile_grid.hand.player.pos
 	
-	print("pos: ", pos)
-	print("player: ", player_pos)
-	
 	if can_jump:
 		return absi(pos.x - player_pos.x) + absi(pos.y - player_pos.y)
 	
@@ -167,9 +164,6 @@ static func get_player_distance(x: int, y: int, tile_grid: TileGrid, can_jump: b
 					continue
 				
 				player_distances[neighbor] = distance
-				
-				print("Neighbor: ", neighbor)
-				print("Neighbor Distance: ", distance)
 				
 				if neighbor == pos:
 					return distance

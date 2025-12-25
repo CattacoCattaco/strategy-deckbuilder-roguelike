@@ -37,9 +37,6 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	var enemy_distance: int = EnemyActionSource.get_distance_from_enemy(object.pos, object,
 			healable, max_player_distance, false)
 	
-	print(object.pos)
-	print(enemy_distance)
-	
 	if enemy_distance < threshold:
 		below._resolve(object, action_source)
 	elif enemy_distance == threshold:

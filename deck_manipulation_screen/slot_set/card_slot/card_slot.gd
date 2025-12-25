@@ -30,7 +30,6 @@ func add_card(new_card: Card) -> void:
 
 
 func remove_card() -> void:
-	print("removed")
 	card.reparent(hand)
 	
 	hand.cards.append(card)

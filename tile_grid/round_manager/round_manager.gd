@@ -7,6 +7,8 @@ var is_player_turn: bool
 var current_turn_index: int
 var turn_order: Array[TileObject]
 
+var done: bool = false
+
 
 func start_rounds() -> void:
 	is_player_turn = false
@@ -43,28 +45,27 @@ func start_rounds() -> void:
 
 
 func do_turn() -> void:
+	if done:
+		return
+	
 	var current_object: TileObject = turn_order[current_turn_index]
 	var action_source: ActionSource = current_object.data.action_source
 	
 	var from_player: bool = action_source is PlayerActionSource
 	
 	if action_source.preview_actions:
-		var old_tile: Tile = current_object.tile
-		var uninspected: bool = false
-		
 		if current_object.tile.inspected:
-			old_tile._uninspect()
-			uninspected = true
+			current_object.tile._uninspect()
 		
 		var action: CardData = action_source.next_action
 		var targets: Array[Vector2i] = action_source.next_action_targets
 		await current_object.do_action(action, targets, from_player)
 		
+		if done:
+			return
+		
 		action_source._generate_next_action(current_object)
 		current_object.display_action_thought_bubble(action_source.next_action)
-		
-		if uninspected and current_object.tile == old_tile:
-			old_tile._inspect()
 	else:
 		@warning_ignore("redundant_await")
 		await action_source._generate_next_action(current_object)
@@ -73,10 +74,16 @@ func do_turn() -> void:
 		var targets: Array[Vector2i] = action_source.next_action_targets
 		await current_object.do_action(action, targets, from_player)
 	
-	if current_object.poison_level > 0:
+	if done:
+		return
+	
+	if current_object and current_object.poison_level > 0:
 		current_object.do_poison()
 		
 		await get_tree().create_timer(0.8).timeout
+	
+	if done:
+		return
 	
 	current_turn_index += 1
 	

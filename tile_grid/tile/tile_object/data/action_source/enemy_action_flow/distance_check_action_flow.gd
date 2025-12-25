@@ -50,9 +50,6 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 		comp_value = EnemyActionSource.get_distance_from_vec(object.pos, comp_distance_type,
 				object.tile_grid, false)
 	
-	print(object.pos)
-	print(base_distance)
-	
 	if base_distance < comp_value:
 		below._resolve(object, action_source)
 	elif base_distance == comp_value:

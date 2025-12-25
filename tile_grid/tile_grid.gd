@@ -6,6 +6,8 @@ signal tile_targeted(pos: Vector2i)
 
 @export var tile_scene: PackedScene
 @export var deck_view_scene: PackedScene
+@onready var deck_selection_scene: PackedScene = load(
+		"res://deck_selection_screen/deck_selection_screen.tscn")
 
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
@@ -15,6 +17,7 @@ signal tile_targeted(pos: Vector2i)
 @export var focus_card_holder: ColorRect
 @export var focus_card: Card
 @export var lose_screen: ColorRect
+@export var return_button: Button
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -27,11 +30,14 @@ var tiles: Array[Array] = []
 
 
 func _ready() -> void:
+	print(not not deck_selection_scene)
+	
 	your_turn_label.hide()
 	focus_card_holder.hide()
 	lose_screen.hide()
 
 	focus_card_holder.gui_input.connect(_focus_holder_gui_input)
+	return_button.pressed.connect(_return_to_deck_selection)
 	
 	focus_card.hand = hand
 	
@@ -134,13 +140,23 @@ func unfocus_card() -> void:
 
 
 func win() -> void:
+	round_manager.done = true
+	
 	world_map.levels_beat += 1
 	get_tree().root.add_child(world_map)
 	queue_free()
 
 
 func lose() -> void:
+	round_manager.done = true
+	
 	lose_screen.show()
+
+
+func _return_to_deck_selection() -> void:
+	var deck_selection_screen: DeckSelectionScreen = deck_selection_scene.instantiate()
+	get_tree().root.add_child(deck_selection_screen)
+	queue_free()
 
 
 func get_dist_with_jumps(a: Vector2i, b: Vector2i) -> int:

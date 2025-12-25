@@ -305,7 +305,7 @@ func swap(other_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	if from_player:
 		var distance: int = tile.get_distance(other_pos, is_jump)
 		StatsManager.increase_total(distance, StatsManager.Stat.SWAP_COUNT)
-		StatsManager.check_new_highest(distance, StatsManager.Stat.LARGEST_PUSH)
+		StatsManager.check_new_highest(distance, StatsManager.Stat.FURTHEST_SWAP)
 	
 	other_object.pos = pos
 	other_object.tile = tile_grid.get_tile(pos.x, pos.y)
@@ -329,8 +329,8 @@ func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 	
 	if data.object_type == TileObjectData.ObjectType.PLAYER and from_player:
 		var distance: int = tile.get_distance(new_pos, is_jump)
-		StatsManager.increase_total(1, StatsManager.Stat.SWAP_COUNT)
-		StatsManager.check_new_highest(distance, StatsManager.Stat.LARGEST_PUSH)
+		StatsManager.increase_total(distance, StatsManager.Stat.DISTANCE_TRAVELLED)
+		StatsManager.check_new_highest(distance, StatsManager.Stat.LONGEST_MOVE)
 	
 	tile.object = null
 	
