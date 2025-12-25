@@ -6,8 +6,6 @@ signal tile_targeted(pos: Vector2i)
 
 @export var tile_scene: PackedScene
 @export var deck_view_scene: PackedScene
-@onready var deck_selection_scene: PackedScene = load(
-		"res://deck_selection_screen/deck_selection_screen.tscn")
 
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
@@ -28,10 +26,11 @@ var is_mission: bool = false
 
 var tiles: Array[Array] = []
 
+var deck_selection_scene: PackedScene = load(
+		"res://deck_selection_screen/deck_selection_screen.tscn")
+
 
 func _ready() -> void:
-	print(not not deck_selection_scene)
-	
 	your_turn_label.hide()
 	focus_card_holder.hide()
 	lose_screen.hide()

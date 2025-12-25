@@ -1,15 +1,21 @@
 class_name WorldMap
 extends Node2D
 
+signal endless_entered()
+
 @export var tile_scene: PackedScene
 @export var level_scene: PackedScene
 @export var deck_manipulation_scene: PackedScene
 @export var deck_view_scene: PackedScene
 
 @export var player: AnimatedSprite2D
+@export var you_win_screen: ColorRect
+@export var return_button: Button
+@export var endless_button: Button
 @export var camera: DraggableCamera
 
-@export var used_size: int = 7
+@export var win_world_num: int = 4
+@export var used_size: int = 4
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -27,9 +33,15 @@ var player_deck: Array[CardData]:
 		CardData.sort(value)
 		player_deck = value
 
+var deck_selection_scene: PackedScene = load(
+		"res://deck_selection_screen/deck_selection_screen.tscn")
+
 
 func _ready() -> void:
 	player.play("default")
+	you_win_screen.hide()
+	return_button.pressed.connect(_return_to_deck_selection)
+	endless_button.pressed.connect(enter_endless)
 	generate_map()
 
 
@@ -191,6 +203,9 @@ func try_do_event() -> void:
 			pass
 		WorldMapTile.EventType.EXIT:
 			world_num += 1
+			if world_num == win_world_num:
+				you_win_screen.show()
+				await endless_entered
 			generate_map()
 		WorldMapTile.EventType.ENCOUNTER:
 			if not tile.completed:
@@ -279,6 +294,17 @@ func try_do_event() -> void:
 				get_tree().root.remove_child(self)
 	
 	tile.completed = true
+
+
+func _return_to_deck_selection() -> void:
+	var deck_selection_screen: DeckSelectionScreen = deck_selection_scene.instantiate()
+	get_tree().root.add_child(deck_selection_screen)
+	queue_free()
+
+
+func enter_endless() -> void:
+	you_win_screen.hide()
+	endless_entered.emit()
 
 
 func has_tile_at_vec(pos: Vector2i) -> bool:
