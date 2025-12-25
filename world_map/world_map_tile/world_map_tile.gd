@@ -16,15 +16,15 @@ enum EventType {
 	NONE,
 }
 
-const POSITIVE_EVENTS: Array[EventType] = [
-	EventType.MERGE,
-	EventType.ADD_SYMBOL,
-	EventType.PLUS_RANGE,
-	EventType.PLUS_EFFECT_SIZE,
-	EventType.DESTROY_CARD,
-	EventType.DRAFT,
-	EventType.STAT_SWAP,
-]
+const POSITIVE_EVENT_UNLOCKS: Dictionary[EventType, int] = {
+	EventType.MERGE: 0,
+	EventType.ADD_SYMBOL: 0,
+	EventType.PLUS_RANGE: 0,
+	EventType.PLUS_EFFECT_SIZE: 0,
+	EventType.DRAFT: 0,
+	EventType.DESTROY_CARD: 1,
+	EventType.STAT_SWAP: 1,
+}
 
 @export var bg: Sprite2D
 @export var path: Sprite2D
@@ -125,7 +125,12 @@ func add_encounter() -> void:
 
 
 func add_reward_event() -> void:
-	event_type = POSITIVE_EVENTS.pick_random()
+	var unlocked_events: Array[EventType] = []
+	for event in POSITIVE_EVENT_UNLOCKS:
+		if world_map.world_num >= POSITIVE_EVENT_UNLOCKS[event]:
+			unlocked_events.append(event)
+	
+	event_type = unlocked_events.pick_random()
 	event_signs[event_type].show()
 	is_positive = true
 	completed = false

@@ -38,18 +38,7 @@ func _ready() -> void:
 			slot.create_card(get_draft_card())
 	
 	if type == Type.ADD_SYMBOL:
-		modifier = [
-			Modifier.Attack.new(),
-			Modifier.Heal.new(),
-			Modifier.Move.new(),
-			Modifier.Poison.new(),
-			Modifier.Push.new(),
-			Modifier.Defend.new(),
-			Modifier.Swap.new(),
-			Modifier.Split2.new(),
-			Modifier.Split3.new(),
-			Modifier.Jump.new(),
-		].pick_random()
+		modifier = Modifier.all_modifiers.pick_random()
 
 
 func add_card(card: Card) -> void:
@@ -185,9 +174,9 @@ func get_draft_card() -> CardData:
 	for i in range(specialness):
 		var rand_value: float = randf()
 		
-		if base_action_count < 4 and rand_value < 0.35:
+		if base_action_count < 7 and rand_value < 0.35:
 			base_action_count += 1
-		elif modifier_modifier_count < 3 and rand_value < 0.25:
+		elif modifier_modifier_count < 3 and rand_value - 0.35 < 0.15:
 			modifier_modifier_count += 1
 		else:
 			if randf() < 0.5:
@@ -196,39 +185,18 @@ func get_draft_card() -> CardData:
 				effect_size += 1
 	
 	for i in range(base_action_count):
-		var new_modifier: Modifier = [
-			Modifier.Move.new(),
-			Modifier.Attack.new(),
-			Modifier.Heal.new(),
-			Modifier.Poison.new(),
-			Modifier.Push.new(),
-			Modifier.Defend.new(),
-			Modifier.Swap.new(),
-		].pick_random()
+		var new_modifier: Modifier = Modifier.base_actions.pick_random()
 		
 		while new_modifier in modifiers:
-			new_modifier = [
-				Modifier.Move.new(),
-				Modifier.Attack.new(),
-				Modifier.Heal.new(),
-				Modifier.Poison.new(),
-			].pick_random()
+			new_modifier = Modifier.base_actions.pick_random()
 		
 		modifiers.append(new_modifier)
 	
 	for i in range(modifier_modifier_count):
-		var new_modifier: Modifier = [
-			Modifier.Split2.new(),
-			Modifier.Split3.new(),
-			Modifier.Jump.new(),
-		].pick_random()
+		var new_modifier: Modifier = Modifier.modifier_modifiers.pick_random()
 		
 		while new_modifier in modifiers:
-			new_modifier = [
-				Modifier.Split2.new(),
-				Modifier.Split3.new(),
-				Modifier.Jump.new(),
-			].pick_random()
+			new_modifier = Modifier.modifier_modifiers.pick_random()
 		
 		modifiers.append(new_modifier)
 	

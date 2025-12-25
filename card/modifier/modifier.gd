@@ -8,6 +8,38 @@ enum Type {
 	GLOBAL_MOD,
 }
 
+## List of all of the different modifiers
+static var all_modifiers: Array[Modifier] = [
+	Attack.new(),
+	Heal.new(),
+	Move.new(),
+	Poison.new(),
+	Push.new(),
+	Defend.new(),
+	Swap.new(),
+	Split2.new(),
+	Split3.new(),
+	Jump.new(),
+]
+
+## List of all of the base actions
+static var base_actions: Array[Modifier] = [
+	Attack.new(),
+	Heal.new(),
+	Move.new(),
+	Poison.new(),
+	Push.new(),
+	Defend.new(),
+	Swap.new(),
+]
+
+## List of all of the modifier modifiers
+static var modifier_modifiers: Array[Modifier] = [
+	Split2.new(),
+	Split3.new(),
+	Jump.new(),
+]
+
 
 static func lists_match(a: Array[Modifier], b: Array[Modifier]) -> bool:
 	if len(a) != len(b):
