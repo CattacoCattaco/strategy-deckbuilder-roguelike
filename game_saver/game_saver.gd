@@ -191,6 +191,11 @@ func load_world_map(world_map: WorldMap) -> bool:
 	return true
 
 
+func delete_world_map() -> void:
+	while FileAccess.file_exists(SAVE_PATH % "world"):
+		DirAccess.remove_absolute(SAVE_PATH % "world")
+
+
 func are_tile_states_valid(tile_states: Array) -> bool:
 	for column: Variant in tile_states:
 		if column is not Array:

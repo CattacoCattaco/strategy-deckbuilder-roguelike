@@ -152,6 +152,8 @@ func lose() -> void:
 	round_manager.done = true
 	
 	lose_screen.show()
+	
+	GameSaver.delete_world_map()
 
 
 func _return_to_deck_selection() -> void:
