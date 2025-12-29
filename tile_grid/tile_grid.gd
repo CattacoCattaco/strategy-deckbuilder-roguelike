@@ -141,6 +141,8 @@ func unfocus_card() -> void:
 func win() -> void:
 	round_manager.done = true
 	
+	world_map.get_tile_from_vec(world_map.player_pos).completed = true
+	
 	world_map.levels_beat += 1
 	get_tree().root.add_child(world_map)
 	queue_free()

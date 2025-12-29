@@ -309,8 +309,6 @@ func try_do_event() -> void:
 				
 				get_tree().root.add_child(deck_manipulation_screen)
 				get_tree().root.remove_child(self)
-	
-	tile.completed = true
 
 
 func _return_to_deck_selection() -> void:

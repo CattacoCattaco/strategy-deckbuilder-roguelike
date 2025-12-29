@@ -59,5 +59,6 @@ func set_slot_set(type: SlotSet.Type) -> void:
 
 
 func return_to_map() -> void:
+	world_map.get_tile_from_vec(world_map.player_pos).completed = true
 	get_tree().root.add_child(world_map)
 	queue_free()
