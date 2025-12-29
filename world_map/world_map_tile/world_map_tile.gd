@@ -37,14 +37,16 @@ var has_path: bool = false
 
 var is_positive: bool = false
 var event_type: EventType = EventType.NONE
-var completed: bool = false
+var completed: bool = false:
+	set(value):
+		completed = value
+		if world_map.generated:
+			GameSaver.save_world_map(world_map)
 
-var _path_atlas: AtlasTexture
+@onready var _path_atlas: AtlasTexture = path.texture
 
 
 func _ready() -> void:
-	_path_atlas = path.texture
-	
 	path.hide()
 	for event_sign in event_signs:
 		event_sign.hide()

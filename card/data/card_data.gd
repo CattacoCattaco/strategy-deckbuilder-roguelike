@@ -6,6 +6,44 @@ var effect_range: int
 var effect_size: int
 
 
+static func is_valid_json(data: Dictionary) -> bool:
+	if "effect_range" not in data or data["effect_range"] is not float:
+		return false
+	if "effect_size" not in data or data["effect_size"] is not float:
+		return false
+	if "modifiers" not in data or data["modifiers"] is not Array:
+		return false
+	
+	for sort_order_f: float in data["modifiers"]:
+		var sort_order: int = roundi(sort_order_f)
+		var found_match: bool = false
+		for modifier in Modifier.all_modifiers:
+			if modifier._get_sort_order() == sort_order:
+				found_match = true
+				break
+		
+		if not found_match:
+			return false
+	
+	return true
+
+
+static func parse_json(data: Dictionary) -> CardData:
+	var card_data := CardData.new()
+	card_data.effect_range = roundi(data["effect_range"])
+	card_data.effect_size = roundi(data["effect_size"])
+	
+	card_data.modifiers = []
+	for sort_order_f: float in data["modifiers"]:
+		var sort_order: int = roundi(sort_order_f)
+		for modifier in Modifier.all_modifiers:
+			if modifier._get_sort_order() == sort_order:
+				card_data.modifiers.append(modifier)
+				break
+	
+	return card_data
+
+
 static func sort(cards: Array[CardData]) -> void:
 	for card in cards:
 		Modifier.sort(card.modifiers)
@@ -99,3 +137,18 @@ func get_effects_text() -> String:
 		effect_text += global_mod._get_text(effect_range, effect_size)
 	
 	return effect_text
+
+
+func jsonify() -> Dictionary:
+	var data: Dictionary = {
+		"effect_range": effect_range,
+		"effect_size": effect_size,
+	}
+	
+	var modifier_sort_orders: Array = []
+	for modifier in modifiers:
+		modifier_sort_orders.append(modifier._get_sort_order())
+	
+	data["modifiers"] = modifier_sort_orders
+	
+	return data

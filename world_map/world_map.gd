@@ -32,9 +32,14 @@ var player_deck: Array[CardData]:
 	set(value):
 		CardData.sort(value)
 		player_deck = value
+		
+		if generated:
+			GameSaver.save_world_map(self)
 
 var deck_selection_scene: PackedScene = load(
 		"res://deck_selection_screen/deck_selection_screen.tscn")
+
+var generated: bool = false
 
 
 func _ready() -> void:
@@ -42,7 +47,14 @@ func _ready() -> void:
 	you_win_screen.hide()
 	return_button.pressed.connect(_return_to_deck_selection)
 	endless_button.pressed.connect(enter_endless)
-	generate_map()
+	
+	if not GameSaver.load_world_map(self):
+		print("bad")
+		generate_map()
+	else:
+		print("?")
+	
+	generated = true
 
 
 func _input(event: InputEvent) -> void:
@@ -76,6 +88,8 @@ func _input(event: InputEvent) -> void:
 
 
 func generate_map() -> void:
+	generated = false
+	
 	for column in tiles:
 		for tile: WorldMapTile in column:
 			tile.queue_free()
@@ -165,6 +179,10 @@ func generate_map() -> void:
 		else:
 			tile.add_reward_event()
 			is_challenge = true
+	
+	GameSaver.save_world_map(self)
+	
+	generated = true
 
 
 func try_move_player_in_dir(dir: Vector2i) -> void:
