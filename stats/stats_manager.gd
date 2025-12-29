@@ -61,7 +61,8 @@ func _ready() -> void:
 	for i in range(Stat.STAT_COUNT):
 		values.append(0)
 	
-	var _load_successful: bool = GameSaver.load_stats()
+	if GameSaver.has_stats():
+		GameSaver.load_stats()
 	
 	print(values)
 

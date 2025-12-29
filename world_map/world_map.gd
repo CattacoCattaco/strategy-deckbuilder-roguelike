@@ -28,13 +28,7 @@ var player_pos: Vector2i
 var world_num: int = 0
 var levels_beat: int = 0
 
-var player_deck: Array[CardData]:
-	set(value):
-		CardData.sort(value)
-		player_deck = value
-		
-		if generated:
-			GameSaver.save_world_map(self)
+var player_deck: Array[CardData]
 
 var deck_selection_scene: PackedScene = load(
 		"res://deck_selection_screen/deck_selection_screen.tscn")
@@ -47,14 +41,6 @@ func _ready() -> void:
 	you_win_screen.hide()
 	return_button.pressed.connect(_return_to_deck_selection)
 	endless_button.pressed.connect(enter_endless)
-	
-	if not GameSaver.load_world_map(self):
-		print("bad")
-		generate_map()
-	else:
-		print("?")
-	
-	generated = true
 
 
 func _input(event: InputEvent) -> void:
@@ -85,6 +71,19 @@ func _input(event: InputEvent) -> void:
 			deck_view.set_anchors_preset(Control.PRESET_CENTER)
 			deck_view.full_deck = player_deck
 			deck_view.show_deck()
+
+
+func player_deck_updated() -> void:
+	CardData.sort(player_deck)
+	
+	if generated:
+		GameSaver.save_world_map(self)
+
+
+func load_map() -> void:
+	GameSaver.load_world_map(self)
+	
+	generated = true
 
 
 func generate_map() -> void:

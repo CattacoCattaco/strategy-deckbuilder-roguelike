@@ -67,4 +67,5 @@ func take_card() -> void:
 		for output_slot in slot_set.output_slots:
 			deck.append(output_slot.card.card_data)
 	
+	deck_manipulation_screen.world_map.player_deck_updated()
 	deck_manipulation_screen.return_to_map()

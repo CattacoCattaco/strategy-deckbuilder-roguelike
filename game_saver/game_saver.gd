@@ -9,8 +9,8 @@ func save_stats() -> void:
 	file.close()
 
 
-func load_stats() -> bool:
-	if FileAccess.file_exists(SAVE_PATH % "stats"):
+func has_stats() -> bool:
+	if not FileAccess.file_exists(SAVE_PATH % "stats"):
 		return false
 	
 	var file := FileAccess.open(SAVE_PATH % "stats", FileAccess.READ)
@@ -24,9 +24,21 @@ func load_stats() -> bool:
 		if stat >= StatsManager.Stat.STAT_COUNT:
 			return false
 		
-		StatsManager.values.append(roundi(data[stat]))
+		if data[stat] is not float:
+			return false
 	
 	return true
+
+
+func load_stats() -> void:
+	var file := FileAccess.open(SAVE_PATH % "stats", FileAccess.READ)
+	var data: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	for stat in len(data):
+		StatsManager.values.append(roundi(data[stat]))
+	
+	return
 
 
 func save_world_map(world_map: WorldMap) -> void:
@@ -67,7 +79,7 @@ func save_world_map(world_map: WorldMap) -> void:
 	file.close()
 
 
-func load_world_map(world_map: WorldMap) -> bool:
+func has_world_map() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH % "world"):
 		return false
 	
@@ -76,43 +88,63 @@ func load_world_map(world_map: WorldMap) -> bool:
 	file.close()
 	
 	if data is not Dictionary:
-		print("Data is not dictionary")
 		return false
 	
 	if "player_x" in data:
 		if data["player_x"] is not float:
-			print("player_x is not number")
 			return false
-		
-		world_map.player_pos.x = roundi(data["player_x"])
+	
 	if "player_y" in data:
 		if data["player_y"] is not float:
-			print("player_y is not number")
 			return false
-		
-		world_map.player_pos.y = roundi(data["player_y"])
+	
 	if "world_num" in data:
 		if data["world_num"] is not float:
-			print("world_num is not number")
 			return false
-		
-		world_map.world_num = roundi(data["world_num"])
+	
 	if "levels_beat" in data:
 		if data["levels_beat"] is not float:
-			print("levels_beat is not number")
 			return false
-		
-		world_map.levels_beat = roundi(data["levels_beat"])
+	
 	if "tile_states" in data:
 		if data["tile_states"] is not Array:
-			print("tile_states is not array")
 			return false
 		
 		var tile_states: Array = data["tile_states"]
 		var is_valid: bool = are_tile_states_valid(tile_states)
 		if not is_valid:
-			print("tile_states is not valid")
 			return false
+	
+	if "player_deck" in data:
+		if data["player_deck"] is not Array:
+			return false
+		
+		for card: Variant in data["player_deck"]:
+			if card is not Dictionary or not CardData.is_valid_json(card):
+				return false
+	
+	return true
+
+
+func load_world_map(world_map: WorldMap) -> bool:
+	var file := FileAccess.open(SAVE_PATH % "world", FileAccess.READ)
+	var data: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	if "player_x" in data:
+		world_map.player_pos.x = roundi(data["player_x"])
+	
+	if "player_y" in data:
+		world_map.player_pos.y = roundi(data["player_y"])
+	
+	if "world_num" in data:
+		world_map.world_num = roundi(data["world_num"])
+	
+	if "levels_beat" in data:
+		world_map.levels_beat = roundi(data["levels_beat"])
+	
+	if "tile_states" in data:
+		var tile_states: Array = data["tile_states"]
 		
 		world_map.tiles = []
 		
@@ -148,20 +180,12 @@ func load_world_map(world_map: WorldMap) -> bool:
 				
 				if tile.event_type != WorldMapTile.EventType.NONE:
 					tile.event_signs[tile.event_type].show()
+	
 	if "player_deck" in data:
-		if data["player_deck"] is not Array:
-			print("player_deck is not array")
-			return false
-		
-		for card: Variant in data["player_deck"]:
-			if card is not Dictionary or not CardData.is_valid_json(card):
-				print(card)
-				print("player_deck has invalid card")
-				return false
-		
 		world_map.player_deck = []
 		for card: Dictionary in data["player_deck"]:
 			world_map.player_deck.append(CardData.parse_json(card))
+		world_map.player_deck_updated()
 	
 	world_map.player.position = world_map.get_tile_from_vec(world_map.player_pos).position
 	return true

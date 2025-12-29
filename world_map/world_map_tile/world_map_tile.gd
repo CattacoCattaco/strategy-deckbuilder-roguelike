@@ -43,7 +43,7 @@ var completed: bool = false:
 		if world_map.generated:
 			GameSaver.save_world_map(world_map)
 
-@onready var _path_atlas: AtlasTexture = path.texture
+@onready var path_atlas: AtlasTexture
 
 
 func _ready() -> void:
@@ -60,6 +60,9 @@ func set_as_path() -> void:
 
 
 func update_path_sprite(update_neighbors: bool = false) -> void:
+	if not path_atlas:
+		path_atlas = path.texture
+	
 	var dir_has_path: Dictionary[Vector2i, bool] = {}
 	for dir in Constants.DIRS:
 		var neighbor_pos: Vector2i = pos + dir
@@ -81,23 +84,23 @@ func update_path_sprite(update_neighbors: bool = false) -> void:
 	
 	match [dir_has_path[Vector2i(-1, 0)], dir_has_path[Vector2i(1, 0)]]:
 		[false, false]:
-			_path_atlas.region.position.x = 0
+			path_atlas.region.position.x = 0
 		[false, true]:
-			_path_atlas.region.position.x = 32
+			path_atlas.region.position.x = 32
 		[true, true]:
-			_path_atlas.region.position.x = 64
+			path_atlas.region.position.x = 64
 		[true, false]:
-			_path_atlas.region.position.x = 96
+			path_atlas.region.position.x = 96
 	
 	match [dir_has_path[Vector2i(0, -1)], dir_has_path[Vector2i(0, 1)]]:
 		[false, false]:
-			_path_atlas.region.position.y = 0
+			path_atlas.region.position.y = 0
 		[false, true]:
-			_path_atlas.region.position.y = 32
+			path_atlas.region.position.y = 32
 		[true, true]:
-			_path_atlas.region.position.y = 64
+			path_atlas.region.position.y = 64
 		[true, false]:
-			_path_atlas.region.position.y = 96
+			path_atlas.region.position.y = 96
 
 
 func add_entrance() -> void:
