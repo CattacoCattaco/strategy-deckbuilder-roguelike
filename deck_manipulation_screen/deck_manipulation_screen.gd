@@ -25,6 +25,9 @@ func _ready() -> void:
 		else:
 			if not slot_set.show_hand:
 				hand.hide()
+			else:
+				hand.show()
+				hand.draw_hand()
 			slot_set.show()
 
 

@@ -27,6 +27,9 @@ func add_card(new_card: Card) -> void:
 	
 	hand.cards.erase(card)
 	hand.update_gap_size()
+	
+	empty_sprite.hide()
+	full_sprite.show()
 
 
 func remove_card() -> void:
@@ -40,6 +43,9 @@ func remove_card() -> void:
 	for output_slot in slot_set.output_slots:
 		if output_slot.card:
 			output_slot.delete_card()
+	
+	empty_sprite.show()
+	full_sprite.hide()
 
 
 func create_card(data: CardData) -> void:
@@ -50,10 +56,16 @@ func create_card(data: CardData) -> void:
 	
 	add_child(card)
 	card.position = Vector2(6, 6)
+	
+	empty_sprite.hide()
+	full_sprite.show()
 
 
 func delete_card() -> void:
 	card.queue_free()
+	
+	empty_sprite.show()
+	full_sprite.hide()
 
 
 func take_card() -> void:
@@ -69,3 +81,6 @@ func take_card() -> void:
 	
 	deck_manipulation_screen.world_map.player_deck_updated()
 	deck_manipulation_screen.return_to_map()
+	
+	empty_sprite.show()
+	full_sprite.hide()

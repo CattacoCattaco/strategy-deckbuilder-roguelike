@@ -251,9 +251,6 @@ func save_level(tile_grid: TileGrid) -> void:
 					"object_data": object.data_path,
 				}
 				
-				print("path: ", object.data_path)
-				print(not not object.data)
-				
 				var next_action := CardData.new()
 				
 				if object.data.action_source.next_action:

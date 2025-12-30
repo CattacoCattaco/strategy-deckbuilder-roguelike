@@ -58,13 +58,11 @@ var values: Array[int] = []
 
 
 func _ready() -> void:
-	for i in range(Stat.STAT_COUNT):
-		values.append(0)
-	
 	if GameSaver.has_stats():
 		GameSaver.load_stats()
-	
-	print(values)
+	else:
+		for i in range(Stat.STAT_COUNT):
+			values.append(0)
 
 
 func increase_total(amount: int, stat: Stat) -> void:
