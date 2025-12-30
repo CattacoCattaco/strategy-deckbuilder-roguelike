@@ -199,6 +199,16 @@ func _choose_deck() -> void:
 			get_tree().root.add_child(tile_grid)
 			
 			tile_grid.load_level.call_deferred()
+		elif GameSaver.has_deck_manipulation():
+			get_tree().root.remove_child(world_map)
+			
+			var deck_manipulation: DeckManipulationScreen
+			deck_manipulation = world_map.deck_manipulation_scene.instantiate()
+			
+			deck_manipulation.world_map = world_map
+			deck_manipulation.load_from_save = true
+			
+			get_tree().root.add_child(deck_manipulation)
 
 
 func _update_current_deck() -> void:

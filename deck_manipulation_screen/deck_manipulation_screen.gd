@@ -10,6 +10,7 @@ extends Control
 
 var world_map: WorldMap
 var current_slot_set: SlotSet
+var load_from_save: bool = false
 
 
 func _ready() -> void:
@@ -19,16 +20,23 @@ func _ready() -> void:
 	
 	focus_card.hand = hand
 	
+	if load_from_save:
+		GameSaver.load_deck_manipulation(self)
+	
+	if not current_slot_set.show_hand:
+		hand.hide()
+	else:
+		hand.show()
+		if not load_from_save:
+			hand.draw_hand()
+	
 	for slot_set in slot_sets:
 		if slot_set != current_slot_set:
 			slot_set.hide()
 		else:
-			if not slot_set.show_hand:
-				hand.hide()
-			else:
-				hand.show()
-				hand.draw_hand()
 			slot_set.show()
+	
+	GameSaver.save_deck_manipulation(self)
 
 
 func _input(event: InputEvent) -> void:
@@ -65,3 +73,5 @@ func return_to_map() -> void:
 	world_map.get_tile_from_vec(world_map.player_pos).completed = true
 	get_tree().root.add_child(world_map)
 	queue_free()
+	
+	GameSaver.delete_deck_manipulation()

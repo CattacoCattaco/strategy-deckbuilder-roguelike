@@ -492,3 +492,94 @@ func load_level(tile_grid: TileGrid) -> void:
 func delete_level() -> void:
 	while FileAccess.file_exists(SAVE_PATH % "level"):
 		DirAccess.remove_absolute(SAVE_PATH % "level")
+
+
+func save_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) -> void:
+	var current_set: SlotSet = deck_manipulation_screen.current_slot_set
+	var data: Dictionary = {
+		"current_slot_set": current_set.type,
+	}
+	
+	var hand: Array = []
+	for card in deck_manipulation_screen.hand.cards:
+		hand.append(card.card_data.jsonify())
+	data["hand"] = hand
+	
+	if current_set.type == SlotSet.Type.ADD_SYMBOL:
+		data["modifier"] = current_set.modifier._get_sort_order()
+	elif current_set.type == SlotSet.Type.DRAFT_CARD:
+		var draft_cards: Array = []
+		for card_slot in current_set.output_slots:
+			draft_cards.append(card_slot.card.card_data.jsonify())
+		
+		data["draft_cards"] = draft_cards
+	
+	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.WRITE)
+	file.store_string(JSON.stringify(data, "\t"))
+	file.close()
+
+
+func has_deck_manipulation() -> bool:
+	if not FileAccess.file_exists(SAVE_PATH % "deck_manipulation"):
+		return false
+	
+	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.READ)
+	var data: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	if data is not Dictionary:
+		return false
+	
+	if "current_slot_set" not in data or data["current_slot_set"] is not float:
+		return false
+	
+	if "hand" not in data or data["hand"] is not Array:
+		return false
+	
+	var hand: Array = data["hand"]
+	for card: Variant in hand:
+		if card is not Dictionary or not CardData.is_valid_json(card):
+			return false
+	
+	var set_type: int = roundi(data["current_slot_set"])
+	
+	if set_type == SlotSet.Type.ADD_SYMBOL:
+		if "modifier" not in data or data["modifier"] is not float:
+			return false
+	elif set_type == SlotSet.Type.DRAFT_CARD:
+		if "draft_cards" not in data or data["draft_cards"] is not Array:
+			return false
+		
+		var draft_cards: Array = data["draft_cards"]
+		for card: Variant in draft_cards:
+			if card is not Dictionary or not CardData.is_valid_json(card):
+				return false
+	
+	return true
+
+
+func load_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) -> void:
+	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.READ)
+	var data: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	deck_manipulation_screen.set_slot_set(roundi(data["current_slot_set"]))
+	
+	for card: Dictionary in data["hand"]:
+		deck_manipulation_screen.hand.add_card(CardData.parse_json(card))
+	
+	var set_type: SlotSet.Type = deck_manipulation_screen.current_slot_set.type
+	
+	if set_type == SlotSet.Type.ADD_SYMBOL:
+		for modifier in Modifier.all_modifiers:
+			if modifier._get_sort_order() == data["modifier"]:
+				deck_manipulation_screen.current_slot_set.modifier = modifier
+	elif set_type == SlotSet.Type.DRAFT_CARD:
+		for i in len(data["hand"]):
+			var slot: CardSlot = deck_manipulation_screen.current_slot_set.output_slots[i]
+			slot.create_card(CardData.parse_json(data["hand"][i]))
+
+
+func delete_deck_manipulation() -> void:
+	while FileAccess.file_exists(SAVE_PATH % "deck_manipulation"):
+		DirAccess.remove_absolute(SAVE_PATH % "deck_manipulation")
