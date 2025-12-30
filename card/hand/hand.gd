@@ -30,7 +30,9 @@ func _ready() -> void:
 	
 	if tile_grid:
 		pass_button.pressed.connect(_pass)
-	
+
+
+func draw_hand() -> void:
 	for i in range(hand_size):
 		draw_card()
 
@@ -108,10 +110,14 @@ func get_bottom_offset() -> int:
 
 
 func draw_card() -> void:
+	add_card(deck.draw_card())
+
+
+func add_card(data: CardData) -> void:
 	var card: Card = card_scene.instantiate()
 	
 	card.hand = self
-	card.card_data = deck.draw_card()
+	card.card_data = data
 	
 	cards.append(card)
 	add_child(card)

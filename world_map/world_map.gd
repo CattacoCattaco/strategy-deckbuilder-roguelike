@@ -212,6 +212,8 @@ func try_move_player_in_dir(dir: Vector2i) -> void:
 
 
 func try_do_event() -> void:
+	GameSaver.save_world_map(self)
+	
 	var tile: WorldMapTile = get_tile_from_vec(player_pos)
 	
 	match tile.event_type:
@@ -231,6 +233,8 @@ func try_do_event() -> void:
 				
 				get_tree().root.add_child(level)
 				get_tree().root.remove_child(self)
+				
+				level.generate_level.call_deferred()
 		WorldMapTile.EventType.MISSION:
 			if not tile.completed:
 				var level: TileGrid = level_scene.instantiate()
@@ -239,6 +243,8 @@ func try_do_event() -> void:
 				
 				get_tree().root.add_child(level)
 				get_tree().root.remove_child(self)
+				
+				level.generate_level.call_deferred()
 		WorldMapTile.EventType.MERGE:
 			if not tile.completed:
 				var deck_manipulation_screen: DeckManipulationScreen 

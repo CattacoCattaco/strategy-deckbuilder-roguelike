@@ -31,10 +31,12 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 @export var thought_bubble: Sprite2D
 @export var defense_label: Label
 
-@export var data: TileObjectData:
+var data: TileObjectData:
 	set(value):
+		data_path = value.resource_path
 		data = value.duplicate(true)
 		load_sprite_anim()
+var data_path: String
 
 var tile_grid: TileGrid
 var tile: Tile

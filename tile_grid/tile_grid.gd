@@ -19,7 +19,7 @@ signal tile_targeted(pos: Vector2i)
 
 @export var camera_padding := Vector2i(64, 64)
 
-@export var size := Vector2i(15, 15)
+var size := Vector2i(15, 15)
 
 var world_map: WorldMap
 var is_mission: bool = false
@@ -39,7 +39,37 @@ func _ready() -> void:
 	return_button.pressed.connect(_return_to_deck_selection)
 	
 	focus_card.hand = hand
-	
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.is_action_pressed("zoom"):
+			if scale == Vector2(1, 1):
+				camera.position *= 2
+				# Set camera scale to reciprocal of self scale so UI doesn't get scaled
+				camera.scale = Vector2(0.5, 0.5)
+				scale = Vector2(2, 2)
+			else:
+				camera.position /= 2
+				camera.scale = Vector2(1, 1)
+				scale = Vector2(1, 1)
+		elif event.is_action_pressed("skip_target"):
+			tile_targeted.emit(Vector2(-1, -1))
+		elif event.is_action_pressed("view_deck"):
+			var deck_view: DeckView = deck_view_scene.instantiate()
+			add_child(deck_view)
+			deck_view.set_anchors_preset(Control.PRESET_CENTER)
+			deck_view.full_deck = world_map.player_deck
+			deck_view.show_deck()
+
+
+func _focus_holder_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+			unfocus_card()
+
+
+func generate_level() -> void:
 	if world_map.levels_beat < 2:
 		size = Vector2i(3, 3)
 		level_builder.density = LevelBuilder.ObjectDensity.SPARSE
@@ -78,7 +108,7 @@ func _ready() -> void:
 		level_builder.density = LevelBuilder.ObjectDensity.MILD
 	
 	var pixel_size: Vector2 = size * 32
-	var offset := -Vector2(pixel_size) / 2
+	var offset := -pixel_size / 2
 	
 	for x in range(size.x):
 		var column: Array[Tile] = []
@@ -97,35 +127,12 @@ func _ready() -> void:
 		tiles.append(column)
 	
 	level_builder.place_objects()
+	hand.draw_hand()
 	round_manager.start_rounds()
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed("zoom"):
-			if scale == Vector2(1, 1):
-				camera.position *= 2
-				# Set camera scale to reciprocal of self scale so UI doesn't get scaled
-				camera.scale = Vector2(0.5, 0.5)
-				scale = Vector2(2, 2)
-			else:
-				camera.position /= 2
-				camera.scale = Vector2(1, 1)
-				scale = Vector2(1, 1)
-		elif event.is_action_pressed("skip_target"):
-			tile_targeted.emit(Vector2(-1, -1))
-		elif event.is_action_pressed("view_deck"):
-			var deck_view: DeckView = deck_view_scene.instantiate()
-			add_child(deck_view)
-			deck_view.set_anchors_preset(Control.PRESET_CENTER)
-			deck_view.full_deck = world_map.player_deck
-			deck_view.show_deck()
-
-
-func _focus_holder_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-			unfocus_card()
+func load_level() -> void:
+	GameSaver.load_level(self)
 
 
 func focus(card_data: CardData) -> void:
@@ -146,6 +153,8 @@ func win() -> void:
 	world_map.levels_beat += 1
 	get_tree().root.add_child(world_map)
 	queue_free()
+	
+	GameSaver.delete_level()
 
 
 func lose() -> void:
@@ -154,6 +163,7 @@ func lose() -> void:
 	lose_screen.show()
 	
 	GameSaver.delete_world_map()
+	GameSaver.delete_level()
 
 
 func _return_to_deck_selection() -> void:

@@ -189,6 +189,16 @@ func _choose_deck() -> void:
 		world_map.world_num = 0
 		
 		world_map.generate_map()
+	else:
+		if GameSaver.has_level():
+			get_tree().root.remove_child(world_map)
+			
+			var tile_grid: TileGrid = world_map.level_scene.instantiate()
+			tile_grid.world_map = world_map
+			
+			get_tree().root.add_child(tile_grid)
+			
+			tile_grid.load_level.call_deferred()
 
 
 func _update_current_deck() -> void:

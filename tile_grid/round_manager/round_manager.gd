@@ -48,6 +48,8 @@ func do_turn() -> void:
 	if done:
 		return
 	
+	GameSaver.save_level(tile_grid)
+	
 	var current_object: TileObject = turn_order[current_turn_index]
 	var action_source: ActionSource = current_object.data.action_source
 	
