@@ -2,6 +2,7 @@ class_name WorldMapTile
 extends Node2D
 
 enum EventType {
+	NONE,
 	ENTRANCE,
 	EXIT,
 	ENCOUNTER,
@@ -13,7 +14,6 @@ enum EventType {
 	DESTROY_CARD,
 	DRAFT,
 	STAT_SWAP,
-	NONE,
 }
 
 const POSITIVE_EVENT_UNLOCKS: Dictionary[EventType, int] = {
