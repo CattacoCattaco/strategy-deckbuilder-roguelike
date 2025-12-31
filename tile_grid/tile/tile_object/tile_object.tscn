@@ -1,22 +1,12 @@
-[gd_scene load_steps=21 format=3 uid="uid://iwl66mv6hxcn"]
+[gd_scene load_steps=19 format=3 uid="uid://iwl66mv6hxcn"]
 
 [ext_resource type="Script" uid="uid://8jj7we008eup" path="res://tile_grid/tile/tile_object/tile_object.gd" id="1_634g3"]
-[ext_resource type="Script" uid="uid://c2nkdbuc7i2gr" path="res://tile_grid/tile/tile_object/data/action_source/null_action_source.gd" id="2_2i68v"]
 [ext_resource type="Texture2D" uid="uid://cbhl6tngjiro3" path="res://tile_grid/tile/tile_object/textures/acid.png" id="2_634g3"]
-[ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="3_cmywa"]
 [ext_resource type="Texture2D" uid="uid://ci3bqqtsxhfnu" path="res://tile_grid/tile/tile_object/thought_bubble/thought_bubble.png" id="4_vv2ea"]
 [ext_resource type="Texture2D" uid="uid://00dpgd6fkw8o" path="res://tile_grid/tile/poison.png" id="5_2n5c3"]
+[ext_resource type="Texture2D" uid="uid://bmfd4rg8ta1qw" path="res://tile_grid/tile/tile_object/level_bars/poison_level.png" id="5_cmywa"]
+[ext_resource type="Texture2D" uid="uid://dgwjsysmb1375" path="res://tile_grid/tile/tile_object/level_bars/shield.png" id="7_2n5c3"]
 [ext_resource type="FontFile" uid="uid://dk14ye4bsbhg" path="res://font/Wild Jam 87 Font Small.ttf" id="7_cmywa"]
-
-[sub_resource type="Resource" id="Resource_cmywa"]
-script = ExtResource("2_2i68v")
-metadata/_custom_type_script = "uid://c2nkdbuc7i2gr"
-
-[sub_resource type="Resource" id="Resource_2n5c3"]
-script = ExtResource("3_cmywa")
-texture = ExtResource("2_634g3")
-action_source = SubResource("Resource_cmywa")
-metadata/_custom_type_script = "uid://g0hmwqu3bxiu"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
 atlas = ExtResource("2_634g3")
@@ -95,13 +85,15 @@ line_spacing = 0.0
 font = ExtResource("7_cmywa")
 font_size = 6
 
-[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite", "poisoned_sprite", "thought_bubble", "defense_label")]
+[node name="TileObject" type="Node2D" node_paths=PackedStringArray("sprite", "poisoned_sprite", "thought_bubble", "shield_level_bar", "poison_level_bar", "poison_level_label", "shield_label")]
 script = ExtResource("1_634g3")
 sprite = NodePath("Sprite")
 poisoned_sprite = NodePath("Poison")
 thought_bubble = NodePath("ThoughtBubble")
-defense_label = NodePath("DefenseLabel")
-data = SubResource("Resource_2n5c3")
+shield_level_bar = NodePath("Control/LevelLabels/ShieldLevelBar")
+poison_level_bar = NodePath("Control/LevelLabels/PoisonLevelBar")
+poison_level_label = NodePath("Control/LevelLabels/PoisonLevelBar/PosionLevelLabel")
+shield_label = NodePath("Control/LevelLabels/ShieldLevelBar/ShieldLabel")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_sf4dn")
@@ -112,7 +104,7 @@ centered = false
 [node name="Poison" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_nfi5s")
-frame_progress = 0.33344987
+frame_progress = 0.21369624
 centered = false
 
 [node name="ThoughtBubble" type="Sprite2D" parent="."]
@@ -120,11 +112,52 @@ visible = false
 texture = ExtResource("4_vv2ea")
 centered = false
 
-[node name="DefenseLabel" type="Label" parent="."]
-visible = false
-offset_left = 1.0
-offset_top = 25.0
-offset_right = 11.0
-offset_bottom = 31.0
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 10.0
+mouse_filter = 2
+
+[node name="LevelLabels" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_bottom = -2.0
+grow_vertical = 0
+theme_override_constants/separation = 1
+alignment = 2
+
+[node name="PoisonLevelBar" type="Control" parent="Control/LevelLabels"]
+custom_minimum_size = Vector2(20, 6)
+layout_mode = 2
+
+[node name="Poison" type="Sprite2D" parent="Control/LevelLabels/PoisonLevelBar"]
+position = Vector2(3, 3)
+texture = ExtResource("5_cmywa")
+
+[node name="PosionLevelLabel" type="Label" parent="Control/LevelLabels/PoisonLevelBar"]
+layout_mode = 0
+offset_left = 7.0
+offset_right = 17.0
+offset_bottom = 6.0
+text = "10"
+label_settings = SubResource("LabelSettings_kro7k")
+
+[node name="ShieldLevelBar" type="Control" parent="Control/LevelLabels"]
+custom_minimum_size = Vector2(20, 6)
+layout_mode = 2
+
+[node name="Shield" type="Sprite2D" parent="Control/LevelLabels/ShieldLevelBar"]
+position = Vector2(3, 3)
+texture = ExtResource("7_2n5c3")
+
+[node name="ShieldLabel" type="Label" parent="Control/LevelLabels/ShieldLevelBar"]
+layout_mode = 0
+offset_left = 7.0
+offset_right = 17.0
+offset_bottom = 6.0
 text = "10"
 label_settings = SubResource("LabelSettings_kro7k")

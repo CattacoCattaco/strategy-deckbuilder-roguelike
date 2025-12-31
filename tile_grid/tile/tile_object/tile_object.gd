@@ -29,7 +29,10 @@ const THOUGHT_BUBBLES: Array[Texture2D] = [
 @export var sprite: AnimatedSprite2D
 @export var poisoned_sprite: AnimatedSprite2D
 @export var thought_bubble: Sprite2D
-@export var defense_label: Label
+@export var shield_level_bar: Control
+@export var poison_level_bar: Control
+@export var poison_level_label: Label
+@export var shield_label: Label
 
 var data: TileObjectData:
 	set(value):
@@ -50,7 +53,8 @@ func _ready() -> void:
 	poisoned_sprite.play("default")
 	poisoned_sprite.hide()
 	
-	defense_label.hide()
+	shield_level_bar.hide()
+	poison_level_bar.hide()
 	
 	hide_thought_bubble()
 
@@ -147,10 +151,10 @@ func damage(target_pos: Vector2i, amount: int, from_player: bool, action: Modifi
 	if target.shield_level > 0:
 		target.shield_level -= 1
 		
-		target.defense_label.text = str(target.shield_level)
+		target.shield_label.text = str(target.shield_level)
 		
 		if target.shield_level == 0:
-			target.defense_label.hide()
+			target.shield_level_bar.hide()
 		
 		if not from_player:
 			StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_DAMAGE_BLOCKED)
@@ -185,6 +189,8 @@ func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	if target.poison_level > 0:
 		target.poison_level -= amount
 		
+		target.poison_level_label.text = str(target.poison_level)
+		
 		if target.poison_level <= 0:
 			target.poison_level = 0
 			target.poisoned_sprite.hide()
@@ -210,12 +216,14 @@ func poison(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	var target: TileObject = tile_grid.get_tile(target_pos.x, target_pos.y).object
 	
 	target.poison_level += amount
+	target.poison_level_label.text = str(target.poison_level)
 	
 	if from_player:
 		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_POISON_INCREASE)
 		StatsManager.check_new_highest(target.poison_level, StatsManager.Stat.HIGHEST_POISON_LEVEL)
 	
 	target.poisoned_sprite.show()
+	target.poison_level_bar.show()
 
 
 func defend(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -230,8 +238,8 @@ func defend(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 		StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_SHIELD_GAINED)
 		StatsManager.check_new_highest(target.shield_level, StatsManager.Stat.HIGHEST_SHIELD_LEVEL)
 	
-	target.defense_label.show()
-	target.defense_label.text = str(target.shield_level)
+	target.shield_level_bar.show()
+	target.shield_label.text = str(target.shield_level)
 
 
 func push(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -354,16 +362,18 @@ func do_poison() -> void:
 			StatsManager.check_new_highest(poison_level, StatsManager.Stat.HIGHEST_DAMAGE_BLOCKED)
 		
 		poison_level -= 1
+		poison_level_label.text = str(poison_level)
 	
 		if poison_level == 0:
 			poisoned_sprite.hide()
+			poison_level_bar.hide()
 		
 		shield_level -= 1
 		
-		defense_label.text = str(shield_level)
+		shield_label.text = str(shield_level)
 		
 		if shield_level == 0:
-			defense_label.hide()
+			shield_level_bar.hide()
 		
 		return
 	
@@ -373,9 +383,11 @@ func do_poison() -> void:
 	health -= poison_level
 	
 	poison_level -= 1
+	poison_level_label.text = str(poison_level)
 	
 	if poison_level == 0:
 		poisoned_sprite.hide()
+		poison_level_bar.hide()
 	
 	show_health()
 	
@@ -481,6 +493,9 @@ func hide_thought_bubble() -> void:
 
 
 func show_health() -> void:
+	if health < 0:
+		health = 0
+	
 	var health_chunks: int = data.texture.get_height() >> 5
 	var current_health_chunk: int = (
 			health_chunks - 1 - roundi(health as float / data.max_health * (health_chunks - 1)))
