@@ -4,18 +4,14 @@ const SAVE_PATH: String = "user://%s.json"
 
 
 func save_stats() -> void:
-	var file := FileAccess.open(SAVE_PATH % "stats", FileAccess.WRITE)
-	file.store_string(JSON.stringify(StatsManager.values, "\t"))
-	file.close()
+	save_data(StatsManager.values, "stats")
 
 
 func has_stats() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH % "stats"):
+	if not data_exists("stats"):
 		return false
 	
-	var file := FileAccess.open(SAVE_PATH % "stats", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("stats")
 	
 	if data is not Array:
 		return false
@@ -31,9 +27,7 @@ func has_stats() -> bool:
 
 
 func load_stats() -> void:
-	var file := FileAccess.open(SAVE_PATH % "stats", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("stats")
 	
 	for stat in len(data):
 		StatsManager.values.append(roundi(data[stat]))
@@ -74,18 +68,14 @@ func save_world_map(world_map: WorldMap) -> void:
 	
 	data["player_deck"] = player_deck
 	
-	var file := FileAccess.open(SAVE_PATH % "world", FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
-	file.close()
+	save_data(data, "world")
 
 
 func has_world_map() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH % "world"):
+	if not data_exists("world"):
 		return false
 	
-	var file := FileAccess.open(SAVE_PATH % "world", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("world")
 	
 	if data is not Dictionary:
 		return false
@@ -121,9 +111,7 @@ func has_world_map() -> bool:
 
 
 func load_world_map(world_map: WorldMap) -> bool:
-	var file := FileAccess.open(SAVE_PATH % "world", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("world")
 	
 	world_map.player_pos.x = roundi(data["player_x"])
 	world_map.player_pos.y = roundi(data["player_y"])
@@ -177,8 +165,7 @@ func load_world_map(world_map: WorldMap) -> bool:
 
 
 func delete_world_map() -> void:
-	while FileAccess.file_exists(SAVE_PATH % "world"):
-		DirAccess.remove_absolute(SAVE_PATH % "world")
+	delete_data("world")
 
 
 func are_world_tile_states_valid(tile_states: Array) -> bool:
@@ -273,18 +260,14 @@ func save_level(tile_grid: TileGrid) -> void:
 	
 	data["tiles"] = tiles_data
 	
-	var file := FileAccess.open(SAVE_PATH % "level", FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
-	file.close()
+	save_data(data, "level")
 
 
 func has_level() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH % "level"):
+	if not data_exists("level"):
 		return false
 	
-	var file := FileAccess.open(SAVE_PATH % "level", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("level")
 	
 	if data is not Dictionary:
 		return false
@@ -404,9 +387,7 @@ func has_level() -> bool:
 
 
 func load_level(tile_grid: TileGrid) -> void:
-	var file := FileAccess.open(SAVE_PATH % "level", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("level")
 	
 	tile_grid.size.x = roundi(data["size_x"])
 	tile_grid.size.y = roundi(data["size_y"])
@@ -490,8 +471,7 @@ func load_level(tile_grid: TileGrid) -> void:
 
 
 func delete_level() -> void:
-	while FileAccess.file_exists(SAVE_PATH % "level"):
-		DirAccess.remove_absolute(SAVE_PATH % "level")
+	delete_data("level")
 
 
 func save_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) -> void:
@@ -514,18 +494,14 @@ func save_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) ->
 		
 		data["draft_cards"] = draft_cards
 	
-	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
-	file.close()
+	save_data(data, "deck_manipulation")
 
 
 func has_deck_manipulation() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH % "deck_manipulation"):
+	if not data_exists("deck_manipulation"):
 		return false
 	
-	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("deck_manipulation")
 	
 	if data is not Dictionary:
 		return false
@@ -559,9 +535,7 @@ func has_deck_manipulation() -> bool:
 
 
 func load_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) -> void:
-	var file := FileAccess.open(SAVE_PATH % "deck_manipulation", FileAccess.READ)
-	var data: Variant = JSON.parse_string(file.get_as_text())
-	file.close()
+	var data: Variant = get_data("deck_manipulation")
 	
 	deck_manipulation_screen.set_slot_set(roundi(data["current_slot_set"]))
 	
@@ -581,5 +555,42 @@ func load_deck_manipulation(deck_manipulation_screen: DeckManipulationScreen) ->
 
 
 func delete_deck_manipulation() -> void:
-	while FileAccess.file_exists(SAVE_PATH % "deck_manipulation"):
-		DirAccess.remove_absolute(SAVE_PATH % "deck_manipulation")
+	delete_data("deck_manipulation")
+
+
+func save_data(data: Variant, file_name: String) -> void:
+	if OS.has_feature("web"):
+		var local_storage: JavaScriptObject = JavaScriptBridge.get_interface("localStorage")
+		local_storage.setItem(file_name, JSON.stringify(data, "\t"))
+	else:
+		var file := FileAccess.open(SAVE_PATH % file_name, FileAccess.WRITE)
+		file.store_string(JSON.stringify(data, "\t"))
+		file.close()
+
+
+func data_exists(file_name: String) -> bool:
+	if OS.has_feature("web"):
+		var local_storage: JavaScriptObject = JavaScriptBridge.get_interface("localStorage")
+		return not not local_storage.getItem(file_name)
+	else:
+		return FileAccess.file_exists(SAVE_PATH % file_name)
+
+
+func get_data(file_name: String) -> Variant:
+	if OS.has_feature("web"):
+		var local_storage: JavaScriptObject = JavaScriptBridge.get_interface("localStorage")
+		return JSON.parse_string(local_storage.getItem(file_name))
+	else:
+		var file := FileAccess.open(SAVE_PATH % file_name, FileAccess.READ)
+		var data: Variant = JSON.parse_string(file.get_as_text())
+		file.close()
+		return data
+
+
+func delete_data(file_name: String) -> void:
+	if OS.has_feature("web"):
+		var local_storage: JavaScriptObject = JavaScriptBridge.get_interface("localStorage")
+		local_storage.removeItem(file_name)
+	else:
+		while FileAccess.file_exists(SAVE_PATH % file_name):
+			DirAccess.remove_absolute(SAVE_PATH % file_name)
