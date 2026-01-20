@@ -104,7 +104,7 @@ centered = false
 [node name="Poison" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_nfi5s")
-frame_progress = 0.6080205
+frame_progress = 0.60864836
 centered = false
 
 [node name="ThoughtBubble" type="Sprite2D" parent="."]
@@ -132,6 +132,7 @@ theme_override_constants/separation = 1
 alignment = 2
 
 [node name="PoisonLevelBar" type="Control" parent="Control/LevelLabels"]
+visible = false
 custom_minimum_size = Vector2(20, 6)
 layout_mode = 2
 mouse_filter = 2
@@ -149,6 +150,7 @@ text = "10"
 label_settings = SubResource("LabelSettings_kro7k")
 
 [node name="ShieldLevelBar" type="Control" parent="Control/LevelLabels"]
+visible = false
 custom_minimum_size = Vector2(20, 6)
 layout_mode = 2
 mouse_filter = 2

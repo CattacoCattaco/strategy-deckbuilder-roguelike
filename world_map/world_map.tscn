@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://4gq17h5jwwyb"]
+[gd_scene load_steps=17 format=3 uid="uid://4gq17h5jwwyb"]
 
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="1_088kp"]
 [ext_resource type="Script" uid="uid://djskdjsrgxvnu" path="res://world_map/world_map.gd" id="1_yw1td"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="5_yqyfv"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="7_drcok"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_wfu35"]
+[ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="10_wfu35"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yqyfv"]
 atlas = ExtResource("3_g238a")
@@ -51,7 +52,35 @@ font = ExtResource("7_drcok")
 font_size = 64
 font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
 
-[node name="WorldMap" type="Node2D" node_paths=PackedStringArray("player", "you_win_screen", "return_button", "endless_button", "camera")]
+[node name="WorldMap" type="Node2D" node_paths=PackedStringArray("player", "you_win_screen", "return_button", "endless_button", "camera", "action_noise_player")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+position = Vector2(0, 0)
+rotation = 0.0
+scale = Vector2(1, 1)
+skew = 0.0
 script = ExtResource("1_yw1td")
 tile_scene = ExtResource("2_wrpkp")
 level_scene = ExtResource("3_fsjge")
@@ -62,6 +91,7 @@ you_win_screen = NodePath("YouWinScreen")
 return_button = NodePath("YouWinScreen/ReturnToMenuButton")
 endless_button = NodePath("YouWinScreen/EndlessButton")
 camera = NodePath("Camera2D")
+action_noise_player = NodePath("ActionNoisePlayer")
 win_world_num = 2
 
 [node name="Player" type="AnimatedSprite2D" parent="."]
@@ -126,3 +156,7 @@ text = "Endless"
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("world_map")]
 script = ExtResource("1_088kp")
 world_map = NodePath("..")
+
+[node name="ActionNoisePlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("10_wfu35")
+metadata/_custom_type_script = "uid://bh200pq2cqhm0"

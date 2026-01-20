@@ -165,6 +165,9 @@ func try_play() -> void:
 			for tile in targetable_tiles:
 				tile.hide_action_marker(action_marker)
 				tile.become_untargetable()
+			
+			if cancelled:
+				break
 	
 	needs_targets = false
 	

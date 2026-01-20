@@ -160,6 +160,8 @@ func damage(target_pos: Vector2i, amount: int, from_player: bool, action: Modifi
 			StatsManager.increase_total(amount, StatsManager.Stat.TOTAL_DAMAGE_BLOCKED)
 			StatsManager.check_new_highest(amount, StatsManager.Stat.HIGHEST_DAMAGE_BLOCKED)
 		
+		tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.DEFEND)
+		
 		return
 	
 	if from_player:
@@ -176,8 +178,11 @@ func damage(target_pos: Vector2i, amount: int, from_player: bool, action: Modifi
 	target.show_health()
 	
 	if target.health <= 0:
+		tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.DESTROY)
 		target.tile.delete_object()
 		return
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.DAMAGE)
 
 
 func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -195,6 +200,8 @@ func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 			target.poison_level = 0
 			target.poisoned_sprite.hide()
 		
+		tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.HEAL)
+		
 		return
 	
 	if from_player:
@@ -207,6 +214,8 @@ func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 		target.health = target.data.max_health
 	
 	target.show_health()
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.HEAL)
 
 
 func poison(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -224,6 +233,8 @@ func poison(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	
 	target.poisoned_sprite.show()
 	target.poison_level_bar.show()
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.POISON)
 
 
 func defend(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -240,6 +251,8 @@ func defend(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 	
 	target.shield_level_bar.show()
 	target.shield_label.text = str(target.shield_level)
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.DEFEND)
 
 
 func push(target_pos: Vector2i, amount: int, from_player: bool) -> void:
@@ -292,6 +305,8 @@ func push(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 			target.move_to(pushed_pos, from_player, false)
 			if target.data.max_health != -1:
 				damage(pushed_pos, amount - i, from_player, Modifier.Push.new())
+			
+			tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.PUSH)
 			return
 		
 		var pushed_tile: Tile = tile_grid.get_tile(new_pushed_pos.x, new_pushed_pos.y)
@@ -300,11 +315,15 @@ func push(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 			target.move_to(pushed_pos, from_player, false)
 			if target.data.max_health != -1:
 				damage(pushed_pos, amount - i, from_player, Modifier.Push.new())
+			
+			tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.PUSH)
 			return
 		
 		pushed_pos = new_pushed_pos
 	
 	target.move_to(pushed_pos, from_player, false)
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.PUSH)
 
 
 func swap(other_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
@@ -331,6 +350,8 @@ func swap(other_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 		EnemyActionSource.player_distances = {}
 	elif TileObjectData.ObjectType.DEFENDABLE in [data.object_type, other_object.data.object_type]:
 		EnemyActionSource.defendable_distances = {}
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.SWAP)
 
 
 func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
@@ -353,6 +374,8 @@ func move_to(new_pos: Vector2i, from_player: bool, is_jump: bool) -> void:
 		EnemyActionSource.player_distances = {}
 	elif data.object_type == TileObjectData.ObjectType.DEFENDABLE:
 		EnemyActionSource.defendable_distances = {}
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.MOVE)
 
 
 func do_poison() -> void:
@@ -375,6 +398,8 @@ func do_poison() -> void:
 		if shield_level == 0:
 			shield_level_bar.hide()
 		
+		tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.DEFEND)
+		
 		return
 	
 	if data.object_type == TileObjectData.ObjectType.ENEMY:
@@ -393,6 +418,8 @@ func do_poison() -> void:
 	
 	if health <= 0:
 		tile.delete_object()
+	
+	tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.POISON)
 
 
 func get_tiles_in_range(range_size: int, can_jump: bool, base_effect: Modifier.BaseAction

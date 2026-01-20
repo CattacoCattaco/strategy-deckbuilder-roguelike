@@ -13,6 +13,7 @@ signal endless_entered()
 @export var return_button: Button
 @export var endless_button: Button
 @export var camera: DraggableCamera
+@export var action_noise_player: ActionNoisePlayer
 
 @export var win_world_num: int = 4
 @export var used_size: int = 4
@@ -205,6 +206,8 @@ func try_move_player_in_dir(dir: Vector2i) -> void:
 	
 	player_pos = neighbor_pos
 	player.position = neighbor_tile.position
+	
+	action_noise_player.play_sound(ActionNoisePlayer.Sound.MOVE)
 	
 	var new_tile: WorldMapTile = get_tile_from_vec(player_pos)
 	if new_tile.event_type == WorldMapTile.EventType.EXIT:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=42 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
@@ -33,6 +33,7 @@
 [ext_resource type="Resource" uid="uid://cg0gemqorgwb1" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/poison_bot.tres" id="22_4hrjl"]
 [ext_resource type="Resource" uid="uid://di7id4qrcgj8v" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/defend_bot.tres" id="24_j7dpo"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="33_i7s8n"]
+[ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="35_3jbtq"]
 
 [sub_resource type="Resource" id="Resource_s8kfo"]
 script = ExtResource("8_dnmic")
@@ -63,7 +64,37 @@ region = Rect2(0, 40, 48, 20)
 atlas = ExtResource("16_6mnwf")
 region = Rect2(0, 20, 48, 20)
 
-[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "focus_card_holder", "focus_card", "lose_screen", "return_button")]
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_jts4o"]
+
+[node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "focus_card_holder", "focus_card", "lose_screen", "return_button", "win_screen", "action_noise_player")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+position = Vector2(0, 0)
+rotation = 0.0
+scale = Vector2(1, 1)
+skew = 0.0
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 deck_view_scene = ExtResource("3_8yilv")
@@ -76,9 +107,38 @@ focus_card_holder = NodePath("DraggableCamera/UI/FocusCardHolder")
 focus_card = NodePath("DraggableCamera/UI/FocusCardHolder/FocusCard")
 lose_screen = NodePath("DraggableCamera/UI/YouLoseScreen")
 return_button = NodePath("DraggableCamera/UI/YouLoseScreen/ReturnToMenuButton")
-size = Vector2i(10, 10)
+win_screen = NodePath("DraggableCamera/UI/YouWinScreen")
+action_noise_player = NodePath("ActionNoisePlayer")
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+position = Vector2(0, 0)
+rotation = 0.0
+scale = Vector2(1, 1)
+skew = 0.0
 script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
 player_data = ExtResource("4_kqtwp")
@@ -87,6 +147,34 @@ environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResourc
 enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_s8kfo"), SubResource("Resource_2yo27")])
 
 [node name="RoundManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
+visible = true
+modulate = Color(1, 1, 1, 1)
+self_modulate = Color(1, 1, 1, 1)
+show_behind_parent = false
+top_level = false
+clip_children = 0
+light_mask = 1
+visibility_layer = 1
+z_index = 0
+z_as_relative = true
+y_sort_enabled = false
+texture_filter = 0
+texture_repeat = 0
+material = null
+use_parent_material = false
+position = Vector2(0, 0)
+rotation = 0.0
+scale = Vector2(1, 1)
+skew = 0.0
 script = ExtResource("8_5axyk")
 tile_grid = NodePath("..")
 
@@ -222,3 +310,36 @@ grow_vertical = 2
 theme = ExtResource("33_i7s8n")
 theme_override_font_sizes/font_size = 24
 text = "Return to Menu"
+
+[node name="YouWinScreen" type="ColorRect" parent="DraggableCamera/UI"]
+visible = false
+z_index = 10
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 1, 0, 0.4745098)
+
+[node name="YouLoseLabel" type="Label" parent="DraggableCamera/UI/YouWinScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -212.0
+offset_top = -32.0
+offset_right = 212.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You Win :)"
+label_settings = SubResource("LabelSettings_kqtwp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActionNoisePlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_jts4o")
+script = ExtResource("35_3jbtq")

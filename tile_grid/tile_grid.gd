@@ -16,6 +16,8 @@ signal tile_targeted(pos: Vector2i)
 @export var focus_card: Card
 @export var lose_screen: ColorRect
 @export var return_button: Button
+@export var win_screen: ColorRect
+@export var action_noise_player: ActionNoisePlayer
 
 @export var camera_padding := Vector2i(64, 64)
 
@@ -34,6 +36,7 @@ func _ready() -> void:
 	your_turn_label.hide()
 	focus_card_holder.hide()
 	lose_screen.hide()
+	win_screen.hide()
 
 	focus_card_holder.gui_input.connect(_focus_holder_gui_input)
 	return_button.pressed.connect(_return_to_deck_selection)
@@ -146,21 +149,27 @@ func unfocus_card() -> void:
 
 
 func win() -> void:
+	win_screen.show()
+	action_noise_player.play_sound(ActionNoisePlayer.Sound.WIN)
+	
 	round_manager.done = true
 	
 	world_map.get_tile_from_vec(world_map.player_pos).completed = true
-	
 	world_map.levels_beat += 1
-	get_tree().root.add_child(world_map)
-	queue_free()
 	
 	GameSaver.delete_level()
+	
+	await action_noise_player.finished
+	
+	get_tree().root.add_child(world_map)
+	queue_free()
 
 
 func lose() -> void:
 	round_manager.done = true
 	
 	lose_screen.show()
+	action_noise_player.play_sound(ActionNoisePlayer.Sound.LOSE)
 	
 	GameSaver.delete_world_map()
 	GameSaver.delete_level()
