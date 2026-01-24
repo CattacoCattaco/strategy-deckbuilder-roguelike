@@ -13,6 +13,10 @@ func _ready() -> void:
 	play_button.pressed.connect(play)
 	options_button.pressed.connect(open_options)
 	quit_button.pressed.connect(quit)
+	
+	BGMusicManager.bass_player.volume_db = 2
+	BGMusicManager.energetic_player.volume_db = 0
+	BGMusicManager.quick_player.volume_db = -100
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -198,7 +198,7 @@ func heal(target_pos: Vector2i, amount: int, from_player: bool) -> void:
 		
 		if target.poison_level <= 0:
 			target.poison_level = 0
-			target.poisoned_sprite.hide()
+			target.poison_level_bar.hide()
 		
 		tile_grid.action_noise_player.play_sound(ActionNoisePlayer.Sound.HEAL)
 		
@@ -527,3 +527,9 @@ func show_health() -> void:
 	var current_health_chunk: int = (
 			health_chunks - 1 - roundi(health as float / data.max_health * (health_chunks - 1)))
 	sprite.play(str(current_health_chunk))
+	
+	if data.object_type == TileObjectData.ObjectType.PLAYER:
+		var dif: int = health_chunks - current_health_chunk
+		BGMusicManager.bass_player.volume_db = -dif
+		BGMusicManager.energetic_player.volume_db = dif
+		BGMusicManager.quick_player.volume_db = -6 + dif * 2

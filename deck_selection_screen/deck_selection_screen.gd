@@ -192,6 +192,8 @@ func _choose_deck() -> void:
 	get_tree().root.add_child(world_map)
 	queue_free()
 	
+	world_map.update_music()
+	
 	if current_deck_index != -1:
 		var deck: StarterDeckData = get_current_deck()
 		

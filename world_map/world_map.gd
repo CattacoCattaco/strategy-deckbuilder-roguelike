@@ -363,3 +363,9 @@ func get_camera_bounds() -> Rect2:
 	bounds.size = Vector2(board_length * 32 * Vector2i(scale) + camera_padding * 2)
 	
 	return bounds
+
+
+func update_music() -> void:
+	BGMusicManager.bass_player.volume_db = 2
+	BGMusicManager.energetic_player.volume_db = 0
+	BGMusicManager.quick_player.volume_db = -15

@@ -43,6 +43,10 @@ func _ready() -> void:
 	return_button.pressed.connect(_return_to_deck_selection)
 	
 	focus_card.hand = hand
+	
+	BGMusicManager.bass_player.volume_db = 0
+	BGMusicManager.energetic_player.volume_db = 5
+	BGMusicManager.quick_player.volume_db = -6
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -170,6 +174,8 @@ func win() -> void:
 	
 	get_tree().root.add_child(world_map)
 	queue_free()
+	
+	world_map.update_music()
 
 
 func lose() -> void:
