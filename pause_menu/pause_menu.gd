@@ -13,6 +13,7 @@ extends Control
 @export var audio_settings_sliders: Array[Slider]
 @export var action_noise_player: ActionNoisePlayer
 
+var main_menu: MainMenu
 var deck_selection_screen: DeckSelectionScreen
 var world_map: WorldMap
 var tile_grid: TileGrid
@@ -30,7 +31,7 @@ func _ready() -> void:
 	
 	grab_focus.call_deferred()
 	
-	if deck_selection_screen:
+	if deck_selection_screen or main_menu:
 		deck_button.hide()
 	else:
 		deck_button.show()
