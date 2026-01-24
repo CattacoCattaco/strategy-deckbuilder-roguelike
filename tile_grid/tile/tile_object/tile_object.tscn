@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://00dpgd6fkw8o" path="res://tile_grid/tile/poison.png" id="5_2n5c3"]
 [ext_resource type="Texture2D" uid="uid://bmfd4rg8ta1qw" path="res://tile_grid/tile/tile_object/level_bars/poison_level.png" id="5_cmywa"]
 [ext_resource type="Texture2D" uid="uid://dgwjsysmb1375" path="res://tile_grid/tile/tile_object/level_bars/shield.png" id="7_2n5c3"]
-[ext_resource type="FontFile" uid="uid://dk14ye4bsbhg" path="res://font/Wild Jam 87 Font Small.ttf" id="7_cmywa"]
+[ext_resource type="FontFile" uid="uid://dk14ye4bsbhg" path="res://font/Pixel Font Small.ttf" id="7_cmywa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5k012"]
 atlas = ExtResource("2_634g3")
@@ -104,7 +104,7 @@ centered = false
 [node name="Poison" type="AnimatedSprite2D" parent="."]
 visible = false
 sprite_frames = SubResource("SpriteFrames_nfi5s")
-frame_progress = 0.60864836
+frame_progress = 0.92378145
 centered = false
 
 [node name="ThoughtBubble" type="Sprite2D" parent="."]

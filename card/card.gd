@@ -43,8 +43,10 @@ func _gui_input(event: InputEvent) -> void:
 					return
 				if hand.tile_grid:
 					if hand.tile_grid.round_manager.is_player_turn:
+						accept_event()
 						try_play()
 				elif hand.deck_manipulation_screen:
+					accept_event()
 					var parent: Control = get_parent_control()
 					if parent is Hand:
 						hand.deck_manipulation_screen.current_slot_set.add_card(self)
@@ -58,12 +60,15 @@ func _gui_input(event: InputEvent) -> void:
 					return
 				var parent: Control = get_parent_control()
 				if parent is GridContainer and deck_view:
+					accept_event()
 					deck_view.focus(card_data)
 				elif deck_view:
 					return
 				elif parent == hand and hand.tile_grid:
+					accept_event()
 					hand.tile_grid.focus(card_data)
 				elif (parent == hand or parent is CardSlot) and hand.deck_manipulation_screen:
+					accept_event()
 					hand.deck_manipulation_screen.focus(card_data)
 
 

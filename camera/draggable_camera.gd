@@ -5,9 +5,11 @@ extends Camera2D
 @export var world_map: WorldMap
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			get_viewport().set_input_as_handled()
+			
 			var scale_factor: Vector2
 			
 			if tile_grid:

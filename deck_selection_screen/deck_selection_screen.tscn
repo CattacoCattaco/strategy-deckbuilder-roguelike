@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b257j2086s2a0" path="res://deck_selection_screen/deck_selection_screen.gd" id="1_alses"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_cmc68"]
 [ext_resource type="PackedScene" uid="uid://4gq17h5jwwyb" path="res://world_map/world_map.tscn" id="2_wo7o8"]
-[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="3_8xbyr"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="3_8xbyr"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="4_cmc68"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6ggko"]

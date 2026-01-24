@@ -19,16 +19,17 @@ func _ready() -> void:
 	focus_card.deck_view = self
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed("exit"):
-			queue_free()
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action("exit"):
+		get_viewport().set_input_as_handled()
+		queue_free()
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			unfocus_card()
+			focus_card_holder.accept_event()
 
 
 func focus(card_data: CardData) -> void:

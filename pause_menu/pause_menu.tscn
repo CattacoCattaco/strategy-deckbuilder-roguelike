@@ -1,0 +1,236 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcnvy81p75c4i"]
+
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="1_5hbt6"]
+[ext_resource type="Script" uid="uid://daprgaaqsc4lb" path="res://pause_menu/pause_menu.gd" id="1_uwtdo"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="2_rd7dy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_uwtdo"]
+font = ExtResource("2_rd7dy")
+
+[node name="PauseMenu" type="Control" node_paths=PackedStringArray("main_options_list", "audio_settings_button", "deck_button", "return_button", "quit_button", "audio_settings_menu", "audio_settings_sliders")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 2
+script = ExtResource("1_uwtdo")
+main_options_list = NodePath("Options")
+audio_settings_button = NodePath("Options/AudioSettingsButton")
+deck_button = NodePath("Options/DeckButton")
+return_button = NodePath("Options/ReturnButton")
+quit_button = NodePath("Options/QuitButton")
+audio_settings_menu = NodePath("AudioSettings")
+audio_settings_sliders = [NodePath("AudioSettings/LoseVolumeSlider"), NodePath("AudioSettings/WinVolumeSlider"), NodePath("AudioSettings/ActionVolumeSlider"), NodePath("AudioSettings/AttackVolumeSlider"), NodePath("AudioSettings/DestroyVolumeSlider"), NodePath("AudioSettings/HealVolumeSlider"), NodePath("AudioSettings/MoveVolumeSlider"), NodePath("AudioSettings/PoisonVolumeSlider"), NodePath("AudioSettings/PushVolumeSlider"), NodePath("AudioSettings/ShieldVolumeSlider"), NodePath("AudioSettings/SwapVolumeSlider")]
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.3882353, 0.3882353, 0.3882353, 0.49803922)
+
+[node name="Options" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="AudioSettingsButton" type="Button" parent="Options"]
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_5hbt6")
+text = "Audio Settings"
+
+[node name="DeckButton" type="Button" parent="Options"]
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_5hbt6")
+text = "View Deck"
+
+[node name="ReturnButton" type="Button" parent="Options"]
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_5hbt6")
+text = "Return"
+
+[node name="QuitButton" type="Button" parent="Options"]
+layout_mode = 2
+mouse_filter = 1
+theme = ExtResource("1_5hbt6")
+text = "Quit"
+
+[node name="AudioSettings" type="GridContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/v_separation = 16
+columns = 2
+
+[node name="LoseVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Lose Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="LoseVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="WinVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Win Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="WinVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="ActionVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Action Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="ActionVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="AttackVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Attack Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="AttackVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="DestroyVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Destroy Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="DestroyVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="HealVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Heal Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="HealVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="MoveVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Move Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="MoveVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="PoisonVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Poison Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="PoisonVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="PushVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Push Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="PushVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="ShieldVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Shield Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="ShieldVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0
+
+[node name="SwapVolumeLabel" type="Label" parent="AudioSettings"]
+layout_mode = 2
+mouse_filter = 1
+text = "Swap Volume: "
+label_settings = SubResource("LabelSettings_uwtdo")
+
+[node name="SwapVolumeSlider" type="HSlider" parent="AudioSettings"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+mouse_filter = 1
+max_value = 200.0
+value = 100.0

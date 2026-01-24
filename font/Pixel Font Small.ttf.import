@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dcmcrpk7us45q"
-path="res://.godot/imported/Wild Jam 87 Font.ttf-d14f12d9fce9a485f5748b68a6f53c69.fontdata"
+uid="uid://dk14ye4bsbhg"
+path="res://.godot/imported/Pixel Font Small.ttf-746ef9adbf6f0c6b9b713d7ab2d7d3fd.fontdata"
 
 [deps]
 
-source_file="res://font/Wild Jam 87 Font.ttf"
-dest_files=["res://.godot/imported/Wild Jam 87 Font.ttf-d14f12d9fce9a485f5748b68a6f53c69.fontdata"]
+source_file="res://font/Pixel Font Small.ttf"
+dest_files=["res://.godot/imported/Pixel Font Small.ttf-746ef9adbf6f0c6b9b713d7ab2d7d3fd.fontdata"]
 
 [params]
 

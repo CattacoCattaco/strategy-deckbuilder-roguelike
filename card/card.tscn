@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://wqpyq6mjkh4t" path="res://card/card.gd" id="1_fdnr0"]
 [ext_resource type="Texture2D" uid="uid://dmk711rad4e2k" path="res://card/card.png" id="1_fjcud"]
-[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="2_trrkg"]
-[ext_resource type="FontFile" uid="uid://dk14ye4bsbhg" path="res://font/Wild Jam 87 Font Small.ttf" id="3_346uv"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="2_trrkg"]
+[ext_resource type="FontFile" uid="uid://dk14ye4bsbhg" path="res://font/Pixel Font Small.ttf" id="3_346uv"]
 [ext_resource type="Texture2D" uid="uid://c3eoeq21oxpdt" path="res://card/modifier/arrow.png" id="4_346uv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ply2h"]

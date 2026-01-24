@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 StatsManager="*res://stats/stats_manager.gd"
 GameSaver="*res://game_saver/game_saver.gd"
+Settings="*res://pause_menu/settings.gd"
 
 [debug]
 
@@ -92,4 +93,5 @@ exit={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.3882353, 0.3882353, 0.3882353, 1)
 2d/snap/snap_2d_transforms_to_pixel=true

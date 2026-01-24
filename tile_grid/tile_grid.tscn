@@ -20,7 +20,7 @@
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="11_pawdl"]
 [ext_resource type="Script" uid="uid://ctbryeqoij1nf" path="res://card/deck/deck.gd" id="13_3s7rm"]
 [ext_resource type="Resource" uid="uid://ut6behyv5072" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/aggressive_bot.tres" id="13_ycykd"]
-[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="14_ofus2"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="14_ofus2"]
 [ext_resource type="Resource" uid="uid://sjfa8gslyxmo" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/fear_bot.tres" id="15_h5v0e"]
 [ext_resource type="Resource" uid="uid://cauktvw7rxsc0" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/heal_bot.tres" id="15_s8kfo"]
 [ext_resource type="Texture2D" uid="uid://ba2p5h8us83x2" path="res://buttons/pass.png" id="16_6mnwf"]
@@ -67,34 +67,6 @@ region = Rect2(0, 20, 48, 20)
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_jts4o"]
 
 [node name="TileGrid" type="Node2D" node_paths=PackedStringArray("level_builder", "round_manager", "camera", "hand", "your_turn_label", "focus_card_holder", "focus_card", "lose_screen", "return_button", "win_screen", "action_noise_player")]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-visible = true
-modulate = Color(1, 1, 1, 1)
-self_modulate = Color(1, 1, 1, 1)
-show_behind_parent = false
-top_level = false
-clip_children = 0
-light_mask = 1
-visibility_layer = 1
-z_index = 0
-z_as_relative = true
-y_sort_enabled = false
-texture_filter = 0
-texture_repeat = 0
-material = null
-use_parent_material = false
-position = Vector2(0, 0)
-rotation = 0.0
-scale = Vector2(1, 1)
-skew = 0.0
 script = ExtResource("1_slx1t")
 tile_scene = ExtResource("2_fwkuo")
 deck_view_scene = ExtResource("3_8yilv")
@@ -111,34 +83,6 @@ win_screen = NodePath("DraggableCamera/UI/YouWinScreen")
 action_noise_player = NodePath("ActionNoisePlayer")
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-visible = true
-modulate = Color(1, 1, 1, 1)
-self_modulate = Color(1, 1, 1, 1)
-show_behind_parent = false
-top_level = false
-clip_children = 0
-light_mask = 1
-visibility_layer = 1
-z_index = 0
-z_as_relative = true
-y_sort_enabled = false
-texture_filter = 0
-texture_repeat = 0
-material = null
-use_parent_material = false
-position = Vector2(0, 0)
-rotation = 0.0
-scale = Vector2(1, 1)
-skew = 0.0
 script = ExtResource("3_tunm5")
 tile_grid = NodePath("..")
 player_data = ExtResource("4_kqtwp")
@@ -147,34 +91,6 @@ environments = Array[ExtResource("7_tuu3s")]([ExtResource("9_ycykd"), ExtResourc
 enemies_by_level = Array[ExtResource("8_dnmic")]([SubResource("Resource_s8kfo"), SubResource("Resource_2yo27")])
 
 [node name="RoundManager" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
-visible = true
-modulate = Color(1, 1, 1, 1)
-self_modulate = Color(1, 1, 1, 1)
-show_behind_parent = false
-top_level = false
-clip_children = 0
-light_mask = 1
-visibility_layer = 1
-z_index = 0
-z_as_relative = true
-y_sort_enabled = false
-texture_filter = 0
-texture_repeat = 0
-material = null
-use_parent_material = false
-position = Vector2(0, 0)
-rotation = 0.0
-scale = Vector2(1, 1)
-skew = 0.0
 script = ExtResource("8_5axyk")
 tile_grid = NodePath("..")
 

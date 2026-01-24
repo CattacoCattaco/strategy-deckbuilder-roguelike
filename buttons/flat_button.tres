@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=7 format=3 uid="uid://cb7yvbnqqc1l"]
 
-[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Wild Jam 87 Font.ttf" id="1_4iewc"]
+[ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="1_4iewc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4iewc"]
 content_margin_left = 4.0

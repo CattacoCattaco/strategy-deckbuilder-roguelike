@@ -39,20 +39,21 @@ func _ready() -> void:
 	GameSaver.save_deck_manipulation(self)
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed("view_deck"):
-			var deck_view: DeckView = deck_view_scene.instantiate()
-			add_child(deck_view)
-			deck_view.set_anchors_preset(Control.PRESET_CENTER)
-			deck_view.full_deck = world_map.player_deck
-			deck_view.show_deck()
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action("view_deck"):
+		get_viewport().set_input_as_handled()
+		var deck_view: DeckView = deck_view_scene.instantiate()
+		add_child(deck_view)
+		deck_view.set_anchors_preset(Control.PRESET_CENTER)
+		deck_view.full_deck = world_map.player_deck
+		deck_view.show_deck()
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			unfocus_card()
+			focus_card_holder.accept_event()
 
 
 func focus(card_data: CardData) -> void:

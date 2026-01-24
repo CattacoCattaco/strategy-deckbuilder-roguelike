@@ -44,34 +44,40 @@ func _ready() -> void:
 	endless_button.pressed.connect(enter_endless)
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.is_action_pressed("up"):
-			try_move_player_in_dir(Vector2i(0, -1))
-		elif event.is_action_pressed("left"):
-			try_move_player_in_dir(Vector2i(-1, 0))
-		elif event.is_action_pressed("down"):
-			try_move_player_in_dir(Vector2i(0, 1))
-		elif event.is_action_pressed("right"):
-			try_move_player_in_dir(Vector2i(1, 0))
-		elif event.is_action_pressed("do_event"):
-			try_do_event()
-		elif event.is_action_pressed("zoom"):
-			if scale == Vector2(1, 1):
-				camera.position *= 2
-				# Set camera scale to reciprocal of self scale so UI doesn't get scaled
-				camera.scale = Vector2(0.5, 0.5)
-				scale = Vector2(2, 2)
-			else:
-				camera.position /= 2
-				camera.scale = Vector2(1, 1)
-				scale = Vector2(1, 1)
-		elif event.is_action_pressed("view_deck"):
-			var deck_view: DeckView = deck_view_scene.instantiate()
-			add_child(deck_view)
-			deck_view.set_anchors_preset(Control.PRESET_CENTER)
-			deck_view.full_deck = player_deck
-			deck_view.show_deck()
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action("up"):
+		get_viewport().set_input_as_handled()
+		try_move_player_in_dir(Vector2i(0, -1))
+	elif event.is_action("left"):
+		get_viewport().set_input_as_handled()
+		try_move_player_in_dir(Vector2i(-1, 0))
+	elif event.is_action("down"):
+		get_viewport().set_input_as_handled()
+		try_move_player_in_dir(Vector2i(0, 1))
+	elif event.is_action("right"):
+		get_viewport().set_input_as_handled()
+		try_move_player_in_dir(Vector2i(1, 0))
+	elif event.is_action("do_event"):
+		get_viewport().set_input_as_handled()
+		try_do_event()
+	elif event.is_action("zoom"):
+		get_viewport().set_input_as_handled()
+		if scale == Vector2(1, 1):
+			camera.position *= 2
+			# Set camera scale to reciprocal of self scale so UI doesn't get scaled
+			camera.scale = Vector2(0.5, 0.5)
+			scale = Vector2(2, 2)
+		else:
+			camera.position /= 2
+			camera.scale = Vector2(1, 1)
+			scale = Vector2(1, 1)
+	elif event.is_action("view_deck"):
+		get_viewport().set_input_as_handled()
+		var deck_view: DeckView = deck_view_scene.instantiate()
+		add_child(deck_view)
+		deck_view.set_anchors_preset(Control.PRESET_CENTER)
+		deck_view.full_deck = player_deck
+		deck_view.show_deck()
 
 
 func player_deck_updated() -> void:
