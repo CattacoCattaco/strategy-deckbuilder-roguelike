@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://4gq17h5jwwyb"]
+[gd_scene load_steps=18 format=3 uid="uid://4gq17h5jwwyb"]
 
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="1_088kp"]
 [ext_resource type="Script" uid="uid://djskdjsrgxvnu" path="res://world_map/world_map.gd" id="1_yw1td"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b3jwdtrjlyjor" path="res://tile_grid/tile/tile_object/textures/player.png" id="3_g238a"]
 [ext_resource type="PackedScene" uid="uid://kjvs4xvvrmvc" path="res://deck_manipulation_screen/deck_manipulation_screen.tscn" id="4_nirhn"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="5_yqyfv"]
+[ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="6_7qa00"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="7_drcok"]
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_wfu35"]
 [ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="10_wfu35"]
@@ -52,17 +53,19 @@ font = ExtResource("7_drcok")
 font_size = 64
 font_color = Color(0.8745098, 0.8745098, 0.8745098, 1)
 
-[node name="WorldMap" type="Node2D" node_paths=PackedStringArray("player", "you_win_screen", "return_button", "endless_button", "camera", "action_noise_player")]
+[node name="WorldMap" type="Node2D" node_paths=PackedStringArray("player", "return_button", "endless_button", "camera", "ui", "you_win_screen", "action_noise_player")]
 script = ExtResource("1_yw1td")
 tile_scene = ExtResource("2_wrpkp")
 level_scene = ExtResource("3_fsjge")
 deck_manipulation_scene = ExtResource("4_nirhn")
 deck_view_scene = ExtResource("5_yqyfv")
+pause_menu_scene = ExtResource("6_7qa00")
 player = NodePath("Player")
-you_win_screen = NodePath("YouWinScreen")
-return_button = NodePath("YouWinScreen/ReturnToMenuButton")
-endless_button = NodePath("YouWinScreen/EndlessButton")
+return_button = NodePath("Camera2D/UI/YouWinScreen/ReturnToMenuButton")
+endless_button = NodePath("Camera2D/UI/YouWinScreen/EndlessButton")
 camera = NodePath("Camera2D")
+ui = NodePath("Camera2D/UI")
+you_win_screen = NodePath("Camera2D/UI/YouWinScreen")
 action_noise_player = NodePath("ActionNoisePlayer")
 win_world_num = 2
 
@@ -72,20 +75,45 @@ sprite_frames = SubResource("SpriteFrames_7qa00")
 frame_progress = 0.9810554
 centered = false
 
-[node name="YouWinScreen" type="ColorRect" parent="."]
-visible = false
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("world_map")]
+script = ExtResource("1_088kp")
+world_map = NodePath("..")
+
+[node name="UI" type="Control" parent="Camera2D"]
 z_index = 10
 custom_minimum_size = Vector2(960, 540)
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -270.0
+offset_right = 480.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="YouWinScreen" type="ColorRect" parent="Camera2D/UI"]
+visible = false
+z_index = 10
+custom_minimum_size = Vector2(960, 540)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -270.0
+offset_right = 480.0
+offset_bottom = 270.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 1, 0, 0.4745098)
 
-[node name="YouWinLabel" type="Label" parent="YouWinScreen"]
+[node name="YouWinLabel" type="Label" parent="Camera2D/UI/YouWinScreen"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -99,7 +127,7 @@ label_settings = SubResource("LabelSettings_7qa00")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ReturnToMenuButton" type="Button" parent="YouWinScreen"]
+[node name="ReturnToMenuButton" type="Button" parent="Camera2D/UI/YouWinScreen"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -112,7 +140,7 @@ theme = ExtResource("8_wfu35")
 theme_override_font_sizes/font_size = 24
 text = "Return to Menu"
 
-[node name="EndlessButton" type="Button" parent="YouWinScreen"]
+[node name="EndlessButton" type="Button" parent="Camera2D/UI/YouWinScreen"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -124,10 +152,6 @@ grow_vertical = 2
 theme = ExtResource("8_wfu35")
 theme_override_font_sizes/font_size = 24
 text = "Endless"
-
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("world_map")]
-script = ExtResource("1_088kp")
-world_map = NodePath("..")
 
 [node name="ActionNoisePlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("10_wfu35")

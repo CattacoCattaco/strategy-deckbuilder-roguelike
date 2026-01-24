@@ -136,7 +136,11 @@ func place_objects() -> void:
 			if EnemyActionSource.get_player_distance_from_vec(pos, tile_grid, false) == -1:
 				designated_movement_region.erase(pos)
 	
-	var current_enemies: WeightedObjectList = enemies_by_level[world_map.world_num]
+	var current_enemies: WeightedObjectList 
+	if world_map.world_num < len(enemies_by_level):
+		current_enemies = enemies_by_level[world_map.world_num]
+	else:
+		current_enemies = enemies_by_level[len(enemies_by_level) - 1]
 	
 	for i in range(enemy_count):
 		var pos_index: int = randi_range(0, len(designated_movement_region) - 1)

@@ -2,6 +2,7 @@ class_name DeckManipulationScreen
 extends Control
 
 @export var deck_view_scene: PackedScene
+@export var pause_menu_scene: PackedScene
 
 @export var slot_sets: Array[SlotSet]
 @export var hand: Hand
@@ -39,7 +40,7 @@ func _ready() -> void:
 	GameSaver.save_deck_manipulation(self)
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("view_deck"):
 		get_viewport().set_input_as_handled()
 		var deck_view: DeckView = deck_view_scene.instantiate()
@@ -47,6 +48,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		deck_view.set_anchors_preset(Control.PRESET_CENTER)
 		deck_view.full_deck = world_map.player_deck
 		deck_view.show_deck()
+	elif event.is_action_pressed("enter_settings"):
+		get_viewport().set_input_as_handled()
+		
+		var pause_menu: PauseMenu = pause_menu_scene.instantiate()
+		pause_menu.world_map = world_map
+		
+		get_tree().root.add_child(pause_menu)
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:

@@ -4,32 +4,48 @@ extends Control
 @export var main_options_list: VBoxContainer
 @export var audio_settings_button: Button
 @export var deck_button: Button
-@export var return_button: Button
+@export var close_button: Button
 @export var quit_button: Button
 
 @export var audio_settings_menu: GridContainer
 @export var audio_settings_sliders: Array[Slider]
 @export var action_noise_player: ActionNoisePlayer
 
+var deck_selection_screen: DeckSelectionScreen
+var world_map: WorldMap
+var tile_grid: TileGrid
+
 
 func _ready() -> void:
+	get_tree().paused = true
+	
 	audio_settings_button.pressed.connect(open_audio_settings)
+	close_button.pressed.connect(close)
 	
 	for i in len(audio_settings_sliders):
 		var audio_settings_slider: Slider = audio_settings_sliders[i]
 		audio_settings_slider.value_changed.connect(change_audio_setting.bind(i))
 	
 	grab_focus.call_deferred()
+	
+	if deck_selection_screen:
+		deck_button.hide()
+	else:
+		deck_button.show()
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event.is_action("exit"):
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("exit"):
 		get_viewport().set_input_as_handled()
 		if audio_settings_menu.visible:
 			close_audio_settings()
-			print("hi")
 		else:
-			pass
+			close()
+
+
+func close() -> void:
+	queue_free()
+	get_tree().paused = false
 
 
 func open_audio_settings() -> void:

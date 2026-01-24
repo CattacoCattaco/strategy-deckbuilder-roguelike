@@ -6,10 +6,12 @@ signal tile_targeted(pos: Vector2i)
 
 @export var tile_scene: PackedScene
 @export var deck_view_scene: PackedScene
+@export var pause_menu_scene: PackedScene
 
 @export var level_builder: LevelBuilder
 @export var round_manager: RoundManager
 @export var camera: Camera2D
+@export var ui: Control
 @export var hand: Hand
 @export var your_turn_label: Label
 @export var focus_card_holder: ColorRect
@@ -44,7 +46,7 @@ func _ready() -> void:
 	focus_card.hand = hand
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("zoom"):
 		get_viewport().set_input_as_handled()
 		if scale == Vector2(1, 1):
@@ -66,6 +68,13 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		deck_view.set_anchors_preset(Control.PRESET_CENTER)
 		deck_view.full_deck = world_map.player_deck
 		deck_view.show_deck()
+	elif event.is_action_pressed("enter_settings"):
+		get_viewport().set_input_as_handled()
+		
+		var pause_menu: PauseMenu = pause_menu_scene.instantiate()
+		pause_menu.tile_grid = self
+		
+		ui.add_child(pause_menu)
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:

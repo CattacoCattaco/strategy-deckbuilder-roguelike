@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://kjvs4xvvrmvc"]
+[gd_scene load_steps=11 format=3 uid="uid://kjvs4xvvrmvc"]
 
 [ext_resource type="Script" uid="uid://bqxweyi1r8t5d" path="res://deck_manipulation_screen/deck_manipulation_screen.gd" id="1_h76y5"]
 [ext_resource type="PackedScene" uid="uid://cjom4bor5y3ap" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot.tscn" id="2_4o6wb"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bibu4hvcj4j3e" path="res://deck_manipulation_screen/slot_set/slot_set.gd" id="2_g0t5s"]
 [ext_resource type="Script" uid="uid://bji1oaue4cmst" path="res://card/hand/hand.gd" id="2_wl2k6"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_ya4dx"]
+[ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="3_4g6gn"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="3_dawdr"]
 [ext_resource type="Texture2D" uid="uid://cxl0d084p7fa3" path="res://deck_manipulation_screen/slot_set/plus.png" id="3_g0t5s"]
 [ext_resource type="Texture2D" uid="uid://bmwc7v524qmfj" path="res://deck_manipulation_screen/slot_set/arrow.png" id="4_ya4dx"]
@@ -19,6 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_h76y5")
 deck_view_scene = ExtResource("2_ya4dx")
+pause_menu_scene = ExtResource("3_4g6gn")
 slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbolSlotSet"), NodePath("SlotRegion/PlusRangeSlotSet"), NodePath("SlotRegion/PlusEffectSizeSlotSet"), NodePath("SlotRegion/DestroyCardSlotSet"), NodePath("HandlessSlotRegion/DraftCardSlotSet"), NodePath("SlotRegion/StatSwapSlotSet")]
 hand = NodePath("Hand")
 focus_card_holder = NodePath("FocusCardHolder")

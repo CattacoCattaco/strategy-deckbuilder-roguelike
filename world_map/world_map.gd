@@ -7,12 +7,14 @@ signal endless_entered()
 @export var level_scene: PackedScene
 @export var deck_manipulation_scene: PackedScene
 @export var deck_view_scene: PackedScene
+@export var pause_menu_scene: PackedScene
 
 @export var player: AnimatedSprite2D
-@export var you_win_screen: ColorRect
 @export var return_button: Button
 @export var endless_button: Button
 @export var camera: DraggableCamera
+@export var ui: Control
+@export var you_win_screen: ColorRect
 @export var action_noise_player: ActionNoisePlayer
 
 @export var win_world_num: int = 4
@@ -44,7 +46,7 @@ func _ready() -> void:
 	endless_button.pressed.connect(enter_endless)
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("up"):
 		get_viewport().set_input_as_handled()
 		try_move_player_in_dir(Vector2i(0, -1))
@@ -78,6 +80,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		deck_view.set_anchors_preset(Control.PRESET_CENTER)
 		deck_view.full_deck = player_deck
 		deck_view.show_deck()
+	elif event.is_action_pressed("enter_settings"):
+		get_viewport().set_input_as_handled()
+		
+		var pause_menu: PauseMenu = pause_menu_scene.instantiate()
+		pause_menu.world_map = self
+		
+		ui.add_child(pause_menu)
+		pause_menu.set_anchors_preset(Control.PRESET_CENTER)
 
 
 func player_deck_updated() -> void:
@@ -233,7 +243,6 @@ func try_do_event() -> void:
 			world_num += 1
 			if world_num == win_world_num:
 				you_win_screen.show()
-				await endless_entered
 			generate_map()
 		WorldMapTile.EventType.ENCOUNTER:
 			if not tile.completed:

@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="2_kvp8g"]
 
 [node name="DeckView" type="Control" node_paths=PackedStringArray("card_holder", "focus_card_holder", "focus_card")]
+process_mode = 2
 z_index = 100
 custom_minimum_size = Vector2(960, 540)
 layout_mode = 3

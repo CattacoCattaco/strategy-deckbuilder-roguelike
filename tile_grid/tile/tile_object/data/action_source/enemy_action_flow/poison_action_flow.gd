@@ -44,7 +44,7 @@ func _resolve(object: TileObject, action_source: EnemyActionSource) -> void:
 	else:
 		target_pos = Vector2i(-1, -1)
 	
-	var modifiers: Array[Modifier] = [Modifier.Attack.new()]
+	var modifiers: Array[Modifier] = [Modifier.Poison.new()]
 	if can_jump:
 		modifiers.append(Modifier.Jump.new())
 	

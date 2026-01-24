@@ -97,11 +97,12 @@ static var DECKS: Array[StarterDeckData] = [
 		CardData.new([Modifier.Defend.new()], 3, 1),
 		CardData.new([Modifier.Defend.new(), Modifier.Swap.new(), Modifier.Push.new()], 1, 1),
 	],
-	UnlockCond.new(StatsManager.Stat.TOTAL_DAMAGE_CAUSED, 500, "Deal 500 damage.")),
+	UnlockCond.new(StatsManager.Stat.TOTAL_DAMAGE_CAUSED, 1000, "Deal 1000 damage.")),
 ]
 
 @export var deck_view_scene: PackedScene
 @export var world_map_scene: PackedScene
+@export var pause_menu_scene: PackedScene
 
 @export var deck_name_label: Label
 @export var locked_label: Label
@@ -131,6 +132,16 @@ func _ready() -> void:
 	
 	setup_world_map.call_deferred()
 	_update_current_deck.call_deferred()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("enter_settings"):
+		get_viewport().set_input_as_handled()
+		
+		var pause_menu: PauseMenu = pause_menu_scene.instantiate()
+		pause_menu.deck_selection_screen = self
+		
+		get_tree().root.add_child(pause_menu)
 
 
 func setup_world_map() -> void:

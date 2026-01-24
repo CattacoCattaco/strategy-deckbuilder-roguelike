@@ -10,7 +10,9 @@ font = ExtResource("2_rd7dy")
 
 [sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_s1glv"]
 
-[node name="PauseMenu" type="Control" node_paths=PackedStringArray("main_options_list", "audio_settings_button", "deck_button", "return_button", "quit_button", "audio_settings_menu", "audio_settings_sliders", "action_noise_player")]
+[node name="PauseMenu" type="Control" node_paths=PackedStringArray("main_options_list", "audio_settings_button", "deck_button", "close_button", "quit_button", "audio_settings_menu", "audio_settings_sliders", "action_noise_player")]
+process_mode = 2
+z_index = 100
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +24,7 @@ script = ExtResource("1_uwtdo")
 main_options_list = NodePath("Options")
 audio_settings_button = NodePath("Options/AudioSettingsButton")
 deck_button = NodePath("Options/DeckButton")
-return_button = NodePath("Options/ReturnButton")
+close_button = NodePath("Options/CloseButton")
 quit_button = NodePath("Options/QuitButton")
 audio_settings_menu = NodePath("AudioSettings")
 audio_settings_sliders = [NodePath("AudioSettings/LoseVolumeSlider"), NodePath("AudioSettings/WinVolumeSlider"), NodePath("AudioSettings/ActionVolumeSlider"), NodePath("AudioSettings/AttackVolumeSlider"), NodePath("AudioSettings/DestroyVolumeSlider"), NodePath("AudioSettings/HealVolumeSlider"), NodePath("AudioSettings/MoveVolumeSlider"), NodePath("AudioSettings/PoisonVolumeSlider"), NodePath("AudioSettings/PushVolumeSlider"), NodePath("AudioSettings/ShieldVolumeSlider"), NodePath("AudioSettings/SwapVolumeSlider")]
@@ -36,7 +38,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.3882353, 0.3882353, 0.3882353, 0.49803922)
+color = Color(0.18431373, 0.18431373, 0.18431373, 0.7490196)
 
 [node name="Options" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -66,11 +68,11 @@ mouse_filter = 1
 theme = ExtResource("1_5hbt6")
 text = "View Deck"
 
-[node name="ReturnButton" type="Button" parent="Options"]
+[node name="CloseButton" type="Button" parent="Options"]
 layout_mode = 2
 mouse_filter = 1
 theme = ExtResource("1_5hbt6")
-text = "Return"
+text = "Close"
 
 [node name="QuitButton" type="Button" parent="Options"]
 layout_mode = 2

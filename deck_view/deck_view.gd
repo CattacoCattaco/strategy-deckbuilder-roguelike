@@ -19,7 +19,7 @@ func _ready() -> void:
 	focus_card.deck_view = self
 
 
-func _unhandled_key_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("exit"):
 		get_viewport().set_input_as_handled()
 		queue_free()
