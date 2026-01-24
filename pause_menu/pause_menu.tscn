@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bcnvy81p75c4i"]
+[gd_scene load_steps=8 format=3 uid="uid://bcnvy81p75c4i"]
 
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="1_5hbt6"]
 [ext_resource type="Script" uid="uid://daprgaaqsc4lb" path="res://pause_menu/pause_menu.gd" id="1_uwtdo"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="2_rd7dy"]
+[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_s1glv"]
 [ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="4_b4s0c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_uwtdo"]
@@ -21,6 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 2
 script = ExtResource("1_uwtdo")
+deck_view_scene = ExtResource("2_s1glv")
 main_options_list = NodePath("Options")
 audio_settings_button = NodePath("Options/AudioSettingsButton")
 deck_button = NodePath("Options/DeckButton")

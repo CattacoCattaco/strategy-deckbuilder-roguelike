@@ -100,6 +100,7 @@ offset_right = 32.0
 offset_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 theme = ExtResource("8_2s4jd")
 button_mask = 2
 

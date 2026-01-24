@@ -181,10 +181,11 @@ func _next_deck() -> void:
 
 func _preview_deck() -> void:
 	var deck_view: DeckView = deck_view_scene.instantiate()
+	deck_view.full_deck = get_current_deck().cards
+	deck_view.source = self
+	deck_view.show_deck()
 	add_child(deck_view)
 	deck_view.set_anchors_preset(Control.PRESET_CENTER)
-	deck_view.full_deck = get_current_deck().cards
-	deck_view.show_deck()
 
 
 func _choose_deck() -> void:

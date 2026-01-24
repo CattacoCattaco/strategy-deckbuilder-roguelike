@@ -106,7 +106,7 @@ func place_objects() -> void:
 	
 	EnemyActionSource.defendables = []
 	
-	var enemy_count: int = world_map.levels_beat - 3 * world_map.world_num + 1
+	var enemy_count: int = world_map.levels_beat - 2 * world_map.world_num + 1
 	
 	if enemy_count < 1:
 		enemy_count = 1
@@ -132,7 +132,8 @@ func place_objects() -> void:
 		EnemyActionSource.player_distances = {}
 		EnemyActionSource.defendable_distances = {}
 		
-		for pos in designated_movement_region:
+		var old_movement_region: Array[Vector2i] = designated_movement_region.duplicate()
+		for pos in old_movement_region:
 			if EnemyActionSource.get_player_distance_from_vec(pos, tile_grid, false) == -1:
 				designated_movement_region.erase(pos)
 	

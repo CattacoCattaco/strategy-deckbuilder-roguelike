@@ -5,7 +5,6 @@ extends Node2D
 signal tile_targeted(pos: Vector2i)
 
 @export var tile_scene: PackedScene
-@export var deck_view_scene: PackedScene
 @export var pause_menu_scene: PackedScene
 
 @export var level_builder: LevelBuilder
@@ -47,7 +46,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action("zoom"):
+	if event.is_action_pressed("zoom"):
 		get_viewport().set_input_as_handled()
 		if scale == Vector2(1, 1):
 			camera.position *= 2
@@ -58,16 +57,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			camera.position /= 2
 			camera.scale = Vector2(1, 1)
 			scale = Vector2(1, 1)
-	elif event.is_action("skip_target"):
+	elif event.is_action_pressed("skip_target"):
 		get_viewport().set_input_as_handled()
 		tile_targeted.emit(Vector2(-1, -1))
-	elif event.is_action("view_deck"):
-		get_viewport().set_input_as_handled()
-		var deck_view: DeckView = deck_view_scene.instantiate()
-		add_child(deck_view)
-		deck_view.set_anchors_preset(Control.PRESET_CENTER)
-		deck_view.full_deck = world_map.player_deck
-		deck_view.show_deck()
 	elif event.is_action_pressed("enter_settings"):
 		get_viewport().set_input_as_handled()
 		
@@ -118,9 +110,12 @@ func generate_level() -> void:
 	elif world_map.levels_beat < 31:
 		size = Vector2i(17, 17)
 		level_builder.density = LevelBuilder.ObjectDensity.DENSE
-	else:
+	elif world_map.levels_beat < 37:
 		size = Vector2i(17, 17)
 		level_builder.density = LevelBuilder.ObjectDensity.MILD
+	else:
+		size = Vector2i(17, 17)
+		level_builder.density = LevelBuilder.ObjectDensity.SPARSE
 	
 	var pixel_size: Vector2 = size * 32
 	var offset := -pixel_size / 2

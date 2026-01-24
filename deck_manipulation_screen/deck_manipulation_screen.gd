@@ -41,14 +41,7 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action("view_deck"):
-		get_viewport().set_input_as_handled()
-		var deck_view: DeckView = deck_view_scene.instantiate()
-		add_child(deck_view)
-		deck_view.set_anchors_preset(Control.PRESET_CENTER)
-		deck_view.full_deck = world_map.player_deck
-		deck_view.show_deck()
-	elif event.is_action_pressed("enter_settings"):
+	if event.is_action_pressed("enter_settings"):
 		get_viewport().set_input_as_handled()
 		
 		var pause_menu: PauseMenu = pause_menu_scene.instantiate()

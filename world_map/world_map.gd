@@ -6,7 +6,6 @@ signal endless_entered()
 @export var tile_scene: PackedScene
 @export var level_scene: PackedScene
 @export var deck_manipulation_scene: PackedScene
-@export var deck_view_scene: PackedScene
 @export var pause_menu_scene: PackedScene
 
 @export var player: AnimatedSprite2D
@@ -47,22 +46,22 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action("up"):
+	if event.is_action_pressed("up"):
 		get_viewport().set_input_as_handled()
 		try_move_player_in_dir(Vector2i(0, -1))
-	elif event.is_action("left"):
+	elif event.is_action_pressed("left"):
 		get_viewport().set_input_as_handled()
 		try_move_player_in_dir(Vector2i(-1, 0))
-	elif event.is_action("down"):
+	elif event.is_action_pressed("down"):
 		get_viewport().set_input_as_handled()
 		try_move_player_in_dir(Vector2i(0, 1))
-	elif event.is_action("right"):
+	elif event.is_action_pressed("right"):
 		get_viewport().set_input_as_handled()
 		try_move_player_in_dir(Vector2i(1, 0))
-	elif event.is_action("do_event"):
+	elif event.is_action_pressed("do_event"):
 		get_viewport().set_input_as_handled()
 		try_do_event()
-	elif event.is_action("zoom"):
+	elif event.is_action_pressed("zoom"):
 		get_viewport().set_input_as_handled()
 		if scale == Vector2(1, 1):
 			camera.position *= 2
@@ -73,13 +72,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			camera.position /= 2
 			camera.scale = Vector2(1, 1)
 			scale = Vector2(1, 1)
-	elif event.is_action("view_deck"):
-		get_viewport().set_input_as_handled()
-		var deck_view: DeckView = deck_view_scene.instantiate()
-		add_child(deck_view)
-		deck_view.set_anchors_preset(Control.PRESET_CENTER)
-		deck_view.full_deck = player_deck
-		deck_view.show_deck()
 	elif event.is_action_pressed("enter_settings"):
 		get_viewport().set_input_as_handled()
 		

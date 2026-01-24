@@ -17,12 +17,17 @@ func _ready() -> void:
 	focus_card_holder.gui_input.connect(_focus_holder_gui_input)
 	
 	focus_card.deck_view = self
+	
+	if source is DeckSelectionScreen:
+		get_tree().paused = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action("exit"):
+	if event.is_action_pressed("exit"):
 		get_viewport().set_input_as_handled()
 		queue_free()
+		if source is DeckSelectionScreen:
+			get_tree().paused = false
 
 
 func _focus_holder_gui_input(event: InputEvent) -> void:
