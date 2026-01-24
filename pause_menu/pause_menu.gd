@@ -35,6 +35,8 @@ func _ready() -> void:
 	else:
 		deck_button.show()
 		deck_button.pressed.connect(view_deck)
+	
+	quit_button.pressed.connect(quit)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -101,3 +103,7 @@ func view_deck() -> void:
 		deck_view.full_deck = tile_grid.world_map.player_deck
 	
 	deck_view.show_deck()
+
+
+func quit() -> void:
+	get_tree().quit()
