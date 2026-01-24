@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcnvy81p75c4i"]
+[gd_scene load_steps=7 format=3 uid="uid://bcnvy81p75c4i"]
 
 [ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="1_5hbt6"]
 [ext_resource type="Script" uid="uid://daprgaaqsc4lb" path="res://pause_menu/pause_menu.gd" id="1_uwtdo"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="2_rd7dy"]
+[ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="4_b4s0c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_uwtdo"]
 font = ExtResource("2_rd7dy")
 
-[node name="PauseMenu" type="Control" node_paths=PackedStringArray("main_options_list", "audio_settings_button", "deck_button", "return_button", "quit_button", "audio_settings_menu", "audio_settings_sliders")]
+[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_s1glv"]
+
+[node name="PauseMenu" type="Control" node_paths=PackedStringArray("main_options_list", "audio_settings_button", "deck_button", "return_button", "quit_button", "audio_settings_menu", "audio_settings_sliders", "action_noise_player")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +26,7 @@ return_button = NodePath("Options/ReturnButton")
 quit_button = NodePath("Options/QuitButton")
 audio_settings_menu = NodePath("AudioSettings")
 audio_settings_sliders = [NodePath("AudioSettings/LoseVolumeSlider"), NodePath("AudioSettings/WinVolumeSlider"), NodePath("AudioSettings/ActionVolumeSlider"), NodePath("AudioSettings/AttackVolumeSlider"), NodePath("AudioSettings/DestroyVolumeSlider"), NodePath("AudioSettings/HealVolumeSlider"), NodePath("AudioSettings/MoveVolumeSlider"), NodePath("AudioSettings/PoisonVolumeSlider"), NodePath("AudioSettings/PushVolumeSlider"), NodePath("AudioSettings/ShieldVolumeSlider"), NodePath("AudioSettings/SwapVolumeSlider")]
+action_noise_player = NodePath("ActionNoisePlayer")
 
 [node name="BG" type="ColorRect" parent="."]
 layout_mode = 1
@@ -234,3 +238,7 @@ layout_mode = 2
 mouse_filter = 1
 max_value = 200.0
 value = 100.0
+
+[node name="ActionNoisePlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamGenerator_s1glv")
+script = ExtResource("4_b4s0c")
