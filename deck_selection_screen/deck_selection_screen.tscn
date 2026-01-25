@@ -1,21 +1,90 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctg8erda034nl"]
+[gd_scene load_steps=34 format=3 uid="uid://ctg8erda034nl"]
 
 [ext_resource type="Script" uid="uid://b257j2086s2a0" path="res://deck_selection_screen/deck_selection_screen.gd" id="1_alses"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_cmc68"]
 [ext_resource type="PackedScene" uid="uid://4gq17h5jwwyb" path="res://world_map/world_map.tscn" id="2_wo7o8"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="3_8xbyr"]
-[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="4_cmc68"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://ui/flat_button.tres" id="4_cmc68"]
 [ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="4_vo2p6"]
+[ext_resource type="Texture2D" uid="uid://dfl1dludeqelq" path="res://background/bg.png" id="5_4gp4e"]
+[ext_resource type="Texture2D" uid="uid://5pejrtxhjegw" path="res://ui/deck_selection_box.png" id="6_gsrdp"]
+[ext_resource type="Texture2D" uid="uid://cga5x3yfv2qu3" path="res://ui/view_deck.png" id="9_w8f5r"]
+[ext_resource type="Texture2D" uid="uid://bx15wkky7twn3" path="res://ui/select.png" id="10_i6uxr"]
+[ext_resource type="BitMap" uid="uid://b6c6sdmqx7bhl" path="res://ui/view_deck_mask.png" id="10_w8f5r"]
+[ext_resource type="BitMap" uid="uid://iy5lwjfmvxf8" path="res://ui/select_mask.png" id="11_tder7"]
+[ext_resource type="Texture2D" uid="uid://b004b32vos2bb" path="res://ui/left_arrow.png" id="13_tder7"]
+[ext_resource type="BitMap" uid="uid://dcodjdyvou0lf" path="res://ui/left_arrow_mask.png" id="14_86jin"]
+[ext_resource type="Texture2D" uid="uid://ueb1jcdokvm6" path="res://ui/right_arrow.png" id="15_uexe2"]
+[ext_resource type="BitMap" uid="uid://c4gww12fl0qu7" path="res://ui/right_arrow_mask.png" id="16_btxye"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_6ggko"]
 font = ExtResource("3_8xbyr")
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_cmc68"]
 font = ExtResource("3_8xbyr")
+font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_vo2p6"]
 font = ExtResource("3_8xbyr")
 font_size = 8
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_86jin"]
+atlas = ExtResource("9_w8f5r")
+region = Rect2(0, 0, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uexe2"]
+atlas = ExtResource("9_w8f5r")
+region = Rect2(0, 40, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btxye"]
+atlas = ExtResource("9_w8f5r")
+region = Rect2(0, 20, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6wg65"]
+atlas = ExtResource("10_i6uxr")
+region = Rect2(0, 0, 69, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gjanb"]
+atlas = ExtResource("10_i6uxr")
+region = Rect2(0, 40, 69, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ov4b1"]
+atlas = ExtResource("10_i6uxr")
+region = Rect2(0, 20, 69, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycgrl"]
+atlas = ExtResource("13_tder7")
+region = Rect2(0, 0, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nmhi"]
+atlas = ExtResource("13_tder7")
+region = Rect2(0, 46, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_awsob"]
+atlas = ExtResource("13_tder7")
+region = Rect2(0, 23, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xvwd"]
+atlas = ExtResource("13_tder7")
+region = Rect2(0, 69, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q8y8g"]
+atlas = ExtResource("15_uexe2")
+region = Rect2(0, 0, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v861c"]
+atlas = ExtResource("15_uexe2")
+region = Rect2(0, 46, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yhw0s"]
+atlas = ExtResource("15_uexe2")
+region = Rect2(0, 23, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqupg"]
+atlas = ExtResource("15_uexe2")
+region = Rect2(0, 69, 32, 23)
 
 [node name="DeckSelectionScreen" type="Control" node_paths=PackedStringArray("deck_name_label", "locked_label", "unlock_cond_label", "preview_button", "select_button", "previous_button", "next_button")]
 layout_mode = 3
@@ -35,6 +104,11 @@ preview_button = NodePath("DeckOption/BG/PreviewButton")
 select_button = NodePath("DeckOption/BG/SelectButton")
 previous_button = NodePath("Previous")
 next_button = NodePath("Next")
+
+[node name="Bg" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("5_4gp4e")
+centered = false
 
 [node name="DeckOption" type="Control" parent="."]
 custom_minimum_size = Vector2(160, 240)
@@ -60,7 +134,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.26, 0.26, 0.26, 1)
+color = Color(0.25882354, 0.25882354, 0.25882354, 0)
+
+[node name="DeckSelectionBox" type="Sprite2D" parent="DeckOption/BG"]
+texture = ExtResource("6_gsrdp")
+centered = false
 
 [node name="NameLabel" type="Label" parent="DeckOption/BG"]
 layout_mode = 1
@@ -121,70 +199,76 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 
-[node name="PreviewButton" type="Button" parent="DeckOption/BG"]
+[node name="PreviewButton" type="TextureButton" parent="DeckOption/BG"]
 visible = false
 z_index = 2
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -84.0
-offset_right = 64.0
-offset_bottom = -52.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("4_cmc68")
-text = "Preview"
+texture_normal = SubResource("AtlasTexture_86jin")
+texture_pressed = SubResource("AtlasTexture_uexe2")
+texture_hover = SubResource("AtlasTexture_btxye")
+texture_click_mask = ExtResource("10_w8f5r")
 
-[node name="SelectButton" type="Button" parent="DeckOption/BG"]
+[node name="SelectButton" type="TextureButton" parent="DeckOption/BG"]
 visible = false
 z_index = 2
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -64.0
-offset_top = -44.0
-offset_right = 64.0
-offset_bottom = -12.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("4_cmc68")
-text = "Select"
+texture_normal = SubResource("AtlasTexture_6wg65")
+texture_pressed = SubResource("AtlasTexture_gjanb")
+texture_hover = SubResource("AtlasTexture_ov4b1")
+texture_click_mask = ExtResource("11_tder7")
 
-[node name="Previous" type="Button" parent="."]
+[node name="Previous" type="TextureButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.15
 anchor_top = 0.5
 anchor_right = 0.15
 anchor_bottom = 0.5
-offset_top = -4.0
-offset_bottom = 4.0
+offset_right = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cmc68")
-text = "<—"
+texture_normal = SubResource("AtlasTexture_ycgrl")
+texture_pressed = SubResource("AtlasTexture_2nmhi")
+texture_hover = SubResource("AtlasTexture_awsob")
+texture_disabled = SubResource("AtlasTexture_0xvwd")
+texture_click_mask = ExtResource("14_86jin")
 
-[node name="Next" type="Button" parent="."]
+[node name="Next" type="TextureButton" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.85
 anchor_top = 0.5
 anchor_right = 0.85
 anchor_bottom = 0.5
-offset_top = -4.0
-offset_bottom = 4.0
+offset_right = 30.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("4_cmc68")
-text = "—>"
+texture_normal = SubResource("AtlasTexture_q8y8g")
+texture_pressed = SubResource("AtlasTexture_v861c")
+texture_hover = SubResource("AtlasTexture_yhw0s")
+texture_disabled = SubResource("AtlasTexture_fqupg")
+texture_click_mask = ExtResource("16_btxye")

@@ -1,0 +1,49 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bj61m6vjk0eh1"]
+
+[ext_resource type="Texture2D" uid="uid://duuav2ccdfwid" path="res://ui/grabber.png" id="1_cftqm"]
+[ext_resource type="Texture2D" uid="uid://deeefojwr8lob" path="res://ui/grabber_disabled.png" id="2_1ralc"]
+[ext_resource type="Texture2D" uid="uid://dtw3mba4kpykp" path="res://ui/grabber_selected.png" id="3_wjp64"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s1glv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 1, 1, 0.49803922)
+border_width_left = 1
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wn31l"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 1, 1, 0.7490196)
+border_width_left = 1
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b0obc"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 1, 1, 0.24705882)
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[resource]
+HSlider/icons/grabber = ExtResource("1_cftqm")
+HSlider/icons/grabber_disabled = ExtResource("2_1ralc")
+HSlider/icons/grabber_highlight = ExtResource("3_wjp64")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_s1glv")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_wn31l")
+HSlider/styles/slider = SubResource("StyleBoxFlat_b0obc")

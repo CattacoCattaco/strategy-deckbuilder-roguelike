@@ -6,10 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://b3li581ttt0ou" path="res://tile_grid/tile_grid.tscn" id="3_fsjge"]
 [ext_resource type="Texture2D" uid="uid://b3jwdtrjlyjor" path="res://tile_grid/tile/tile_object/textures/player.png" id="3_g238a"]
 [ext_resource type="PackedScene" uid="uid://kjvs4xvvrmvc" path="res://deck_manipulation_screen/deck_manipulation_screen.tscn" id="4_nirhn"]
-[ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="5_yqyfv"]
 [ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="6_7qa00"]
+[ext_resource type="Texture2D" uid="uid://dfl1dludeqelq" path="res://background/bg.png" id="6_vfxag"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="7_drcok"]
-[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_wfu35"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://ui/flat_button.tres" id="8_wfu35"]
 [ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="10_wfu35"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yqyfv"]
@@ -58,7 +58,6 @@ script = ExtResource("1_yw1td")
 tile_scene = ExtResource("2_wrpkp")
 level_scene = ExtResource("3_fsjge")
 deck_manipulation_scene = ExtResource("4_nirhn")
-deck_view_scene = ExtResource("5_yqyfv")
 pause_menu_scene = ExtResource("6_7qa00")
 player = NodePath("Player")
 return_button = NodePath("Camera2D/UI/YouWinScreen/ReturnToMenuButton")
@@ -68,6 +67,10 @@ ui = NodePath("Camera2D/UI")
 you_win_screen = NodePath("Camera2D/UI/YouWinScreen")
 action_noise_player = NodePath("ActionNoisePlayer")
 win_world_num = 2
+
+[node name="Bg" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("6_vfxag")
 
 [node name="Player" type="AnimatedSprite2D" parent="."]
 z_index = 5

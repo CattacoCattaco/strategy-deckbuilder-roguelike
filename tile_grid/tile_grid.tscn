@@ -1,10 +1,11 @@
-[gd_scene load_steps=42 format=3 uid="uid://b3li581ttt0ou"]
+[gd_scene load_steps=43 format=3 uid="uid://b3li581ttt0ou"]
 
 [ext_resource type="Script" uid="uid://dv8bcihoqww0t" path="res://tile_grid/tile_grid.gd" id="1_slx1t"]
 [ext_resource type="PackedScene" uid="uid://bpsyv3nuyvf5d" path="res://tile_grid/tile/tile.tscn" id="2_fwkuo"]
 [ext_resource type="Script" uid="uid://cn56h7lmh3kpr" path="res://camera/draggable_camera.gd" id="3_gjkwh"]
 [ext_resource type="Script" uid="uid://cvaphaq5sg73r" path="res://tile_grid/level_builder/level_builder.gd" id="3_tunm5"]
 [ext_resource type="Resource" uid="uid://dy6mxnqsycfeo" path="res://tile_grid/tile/tile_object/data/objects/red_tile.tres" id="4_0vku6"]
+[ext_resource type="Texture2D" uid="uid://dfl1dludeqelq" path="res://background/bg.png" id="4_3jbtq"]
 [ext_resource type="Resource" uid="uid://dbbpwgdj87um5" path="res://tile_grid/tile/tile_object/data/objects/player.tres" id="4_kqtwp"]
 [ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="4_pjlwf"]
 [ext_resource type="Script" uid="uid://g0hmwqu3bxiu" path="res://tile_grid/tile/tile_object/data/tile_object_data.gd" id="4_t02f7"]
@@ -23,16 +24,16 @@
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="14_ofus2"]
 [ext_resource type="Resource" uid="uid://sjfa8gslyxmo" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/fear_bot.tres" id="15_h5v0e"]
 [ext_resource type="Resource" uid="uid://cauktvw7rxsc0" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/heal_bot.tres" id="15_s8kfo"]
-[ext_resource type="Texture2D" uid="uid://ba2p5h8us83x2" path="res://buttons/pass.png" id="16_6mnwf"]
+[ext_resource type="Texture2D" uid="uid://ba2p5h8us83x2" path="res://ui/pass.png" id="16_6mnwf"]
 [ext_resource type="Resource" uid="uid://bqk25tgqyvr2l" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/destructive_bot.tres" id="16_s8kfo"]
-[ext_resource type="BitMap" uid="uid://4t61j2twqjb8" path="res://buttons/pass_map.png" id="17_eoot7"]
 [ext_resource type="Resource" uid="uid://b48j05tnh0hef" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/poison_bot.tres" id="17_gsi5n"]
 [ext_resource type="Resource" uid="uid://dckre5kivv75q" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_0/defend_bot.tres" id="18_4hrjl"]
 [ext_resource type="Resource" uid="uid://d0p6glfbfxbq1" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/heal_bot.tres" id="18_s8kfo"]
 [ext_resource type="Resource" uid="uid://554kt32ybqho" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/destructive_bot.tres" id="20_2yo27"]
 [ext_resource type="Resource" uid="uid://cg0gemqorgwb1" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/poison_bot.tres" id="22_4hrjl"]
 [ext_resource type="Resource" uid="uid://di7id4qrcgj8v" path="res://tile_grid/tile/tile_object/data/objects/enemies/level_1/defend_bot.tres" id="24_j7dpo"]
-[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="33_i7s8n"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://ui/flat_button.tres" id="33_i7s8n"]
+[ext_resource type="BitMap" uid="uid://dj5s0atkkt2t6" path="res://ui/pass_mask.png" id="33_pjlwf"]
 [ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="35_3jbtq"]
 
 [sub_resource type="Resource" id="Resource_s8kfo"]
@@ -82,6 +83,10 @@ lose_screen = NodePath("DraggableCamera/UI/YouLoseScreen")
 return_button = NodePath("DraggableCamera/UI/YouLoseScreen/ReturnToMenuButton")
 win_screen = NodePath("DraggableCamera/UI/YouWinScreen")
 action_noise_player = NodePath("ActionNoisePlayer")
+
+[node name="Bg" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("4_3jbtq")
 
 [node name="LevelBuilder" type="Node2D" parent="." node_paths=PackedStringArray("tile_grid")]
 script = ExtResource("3_tunm5")
@@ -165,7 +170,7 @@ offset_bottom = 30.0
 texture_normal = SubResource("AtlasTexture_jp86b")
 texture_pressed = SubResource("AtlasTexture_yps0e")
 texture_hover = SubResource("AtlasTexture_8yilv")
-texture_click_mask = ExtResource("17_eoot7")
+texture_click_mask = ExtResource("33_pjlwf")
 
 [node name="FocusCardHolder" type="ColorRect" parent="DraggableCamera/UI"]
 visible = false

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ba2p5h8us83x2"
-path="res://.godot/imported/pass.png-744350806ffe996860523534c2cdf1df.ctex"
+uid="uid://dualonlvjt3jp"
+path="res://.godot/imported/play.png-7bd0a0a909edd1ae272335835918cbad.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://buttons/pass.png"
-dest_files=["res://.godot/imported/pass.png-744350806ffe996860523534c2cdf1df.ctex"]
+source_file="res://ui/play.png"
+dest_files=["res://.godot/imported/play.png-7bd0a0a909edd1ae272335835918cbad.ctex"]
 
 [params]
 

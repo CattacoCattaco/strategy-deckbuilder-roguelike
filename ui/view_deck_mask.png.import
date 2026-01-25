@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://b6c6sdmqx7bhl"
+path="res://.godot/imported/view_deck_mask.png-097c7a869abb6875b0dd51ea01feee65.res"
+
+[deps]
+
+source_file="res://ui/view_deck_mask.png"
+dest_files=["res://.godot/imported/view_deck_mask.png-097c7a869abb6875b0dd51ea01feee65.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

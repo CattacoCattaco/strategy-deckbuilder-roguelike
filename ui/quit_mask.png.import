@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://cfu6lu3ruobca"
+path="res://.godot/imported/quit_mask.png-036021ae9355bfc71c13be69a94f38ba.res"
+
+[deps]
+
+source_file="res://ui/quit_mask.png"
+dest_files=["res://.godot/imported/quit_mask.png-036021ae9355bfc71c13be69a94f38ba.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://dj5s0atkkt2t6"
+path="res://.godot/imported/pass_mask.png-d48662de1cb65e1108aabc3065cfd3bf.res"
+
+[deps]
+
+source_file="res://ui/pass_mask.png"
+dest_files=["res://.godot/imported/pass_mask.png-d48662de1cb65e1108aabc3065cfd3bf.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://56uyg7dx75c8" path="res://tile_grid/tile/action_markers/move_marker.png" id="6_a0n5t"]
 [ext_resource type="Texture2D" uid="uid://bd4uby3twrmrp" path="res://tile_grid/tile/action_markers/heal_marker.png" id="7_a3ykk"]
 [ext_resource type="Texture2D" uid="uid://biiemqhf2bhcd" path="res://tile_grid/tile/action_markers/defend_marker.png" id="7_l77t7"]
-[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="8_2s4jd"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://ui/flat_button.tres" id="8_2s4jd"]
 [ext_resource type="Texture2D" uid="uid://dmsh45m347832" path="res://tile_grid/tile/action_markers/enemy_attack_marker.png" id="8_28gbb"]
 [ext_resource type="Texture2D" uid="uid://ddnbnu7kpus7i" path="res://tile_grid/tile/action_markers/enemy_poison_marker.png" id="9_o2a2l"]
 [ext_resource type="Texture2D" uid="uid://c2s1bav2fttbg" path="res://tile_grid/tile/action_markers/enemy_push_marker.png" id="9_y3ccy"]

@@ -1,10 +1,66 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcnvy81p75c4i"]
+[gd_scene load_steps=28 format=3 uid="uid://bcnvy81p75c4i"]
 
-[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://buttons/flat_button.tres" id="1_5hbt6"]
+[ext_resource type="Theme" uid="uid://cb7yvbnqqc1l" path="res://ui/flat_button.tres" id="1_5hbt6"]
 [ext_resource type="Script" uid="uid://daprgaaqsc4lb" path="res://pause_menu/pause_menu.gd" id="1_uwtdo"]
 [ext_resource type="FontFile" uid="uid://dcmcrpk7us45q" path="res://font/Pixel Font.ttf" id="2_rd7dy"]
 [ext_resource type="PackedScene" uid="uid://ddr5jt22gsudo" path="res://deck_view/deck_view.tscn" id="2_s1glv"]
 [ext_resource type="Script" uid="uid://bh200pq2cqhm0" path="res://sounds/action_noise_player.gd" id="4_b4s0c"]
+[ext_resource type="Texture2D" uid="uid://lvhx4wbqv37v" path="res://ui/audio_settings.png" id="4_cux0y"]
+[ext_resource type="BitMap" uid="uid://d38nwnw5xfam8" path="res://ui/audio_settings_mask.png" id="5_teyq6"]
+[ext_resource type="Theme" uid="uid://bj61m6vjk0eh1" path="res://ui/slider.tres" id="5_wn31l"]
+[ext_resource type="Texture2D" uid="uid://cga5x3yfv2qu3" path="res://ui/view_deck.png" id="6_1nv8k"]
+[ext_resource type="BitMap" uid="uid://b6c6sdmqx7bhl" path="res://ui/view_deck_mask.png" id="7_qi88y"]
+[ext_resource type="Texture2D" uid="uid://dv7wn7y4bqojn" path="res://ui/return.png" id="8_ja1mc"]
+[ext_resource type="Texture2D" uid="uid://c1gmnapf2y71o" path="res://ui/quit.png" id="9_ja1mc"]
+[ext_resource type="BitMap" uid="uid://cfu6lu3ruobca" path="res://ui/quit_mask.png" id="10_2oqmc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p6csp"]
+atlas = ExtResource("4_cux0y")
+region = Rect2(0, 0, 146, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1nv8k"]
+atlas = ExtResource("4_cux0y")
+region = Rect2(0, 40, 146, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qi88y"]
+atlas = ExtResource("4_cux0y")
+region = Rect2(0, 20, 146, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2oqmc"]
+atlas = ExtResource("6_1nv8k")
+region = Rect2(0, 0, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sp6kg"]
+atlas = ExtResource("6_1nv8k")
+region = Rect2(0, 40, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aj446"]
+atlas = ExtResource("6_1nv8k")
+region = Rect2(0, 20, 92, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6n36"]
+atlas = ExtResource("8_ja1mc")
+region = Rect2(0, 0, 65, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvc88"]
+atlas = ExtResource("8_ja1mc")
+region = Rect2(0, 40, 65, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5u3lt"]
+atlas = ExtResource("8_ja1mc")
+region = Rect2(0, 20, 65, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gm4du"]
+atlas = ExtResource("9_ja1mc")
+region = Rect2(0, 0, 48, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etxg4"]
+atlas = ExtResource("9_ja1mc")
+region = Rect2(0, 40, 48, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsdwt"]
+atlas = ExtResource("9_ja1mc")
+region = Rect2(0, 20, 48, 20)
 
 [sub_resource type="LabelSettings" id="LabelSettings_uwtdo"]
 font = ExtResource("2_rd7dy")
@@ -58,29 +114,44 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/separation = 10
 
-[node name="AudioSettingsButton" type="Button" parent="Options"]
+[node name="AudioSettingsButton" type="TextureButton" parent="Options"]
 layout_mode = 2
 mouse_filter = 1
 theme = ExtResource("1_5hbt6")
-text = "Audio Settings"
+texture_normal = SubResource("AtlasTexture_p6csp")
+texture_pressed = SubResource("AtlasTexture_1nv8k")
+texture_hover = SubResource("AtlasTexture_qi88y")
+texture_click_mask = ExtResource("5_teyq6")
 
-[node name="DeckButton" type="Button" parent="Options"]
+[node name="DeckButton" type="TextureButton" parent="Options"]
+z_index = 2
 layout_mode = 2
-mouse_filter = 1
+size_flags_horizontal = 6
+size_flags_vertical = 3
 theme = ExtResource("1_5hbt6")
-text = "View Deck"
+texture_normal = SubResource("AtlasTexture_2oqmc")
+texture_pressed = SubResource("AtlasTexture_sp6kg")
+texture_hover = SubResource("AtlasTexture_aj446")
+texture_click_mask = ExtResource("7_qi88y")
 
-[node name="CloseButton" type="Button" parent="Options"]
+[node name="CloseButton" type="TextureButton" parent="Options"]
 layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 1
 theme = ExtResource("1_5hbt6")
-text = "Close"
+texture_normal = SubResource("AtlasTexture_y6n36")
+texture_pressed = SubResource("AtlasTexture_xvc88")
+texture_hover = SubResource("AtlasTexture_5u3lt")
 
-[node name="QuitButton" type="Button" parent="Options"]
+[node name="QuitButton" type="TextureButton" parent="Options"]
 layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 1
 theme = ExtResource("1_5hbt6")
-text = "Quit"
+texture_normal = SubResource("AtlasTexture_gm4du")
+texture_pressed = SubResource("AtlasTexture_etxg4")
+texture_hover = SubResource("AtlasTexture_nsdwt")
+texture_click_mask = ExtResource("10_2oqmc")
 
 [node name="AudioSettings" type="GridContainer" parent="."]
 visible = false
@@ -110,6 +181,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -123,6 +195,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -136,6 +209,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -149,6 +223,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -162,6 +237,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -175,6 +251,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -188,6 +265,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -201,6 +279,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -214,6 +293,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -227,6 +307,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 
@@ -240,6 +321,7 @@ label_settings = SubResource("LabelSettings_uwtdo")
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 mouse_filter = 1
+theme = ExtResource("5_wn31l")
 max_value = 200.0
 value = 100.0
 

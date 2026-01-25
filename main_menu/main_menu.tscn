@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://djcx0v3f8jvis" path="res://main_menu/main_menu.gd" id="1_6tl50"]
 [ext_resource type="Texture2D" uid="uid://bor2vlwr3jrsd" path="res://main_menu/main_screen.png" id="1_oa53l"]
-[ext_resource type="Texture2D" uid="uid://dualonlvjt3jp" path="res://buttons/play.png" id="2_3shxk"]
+[ext_resource type="Texture2D" uid="uid://dualonlvjt3jp" path="res://ui/play.png" id="2_3shxk"]
 [ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="2_t6bnd"]
-[ext_resource type="BitMap" uid="uid://bwgw5kif523pd" path="res://buttons/play_options_quit_mask.png" id="3_bws42"]
+[ext_resource type="BitMap" uid="uid://bwgw5kif523pd" path="res://ui/play_options_quit_mask.png" id="3_bws42"]
 [ext_resource type="PackedScene" uid="uid://ctg8erda034nl" path="res://deck_selection_screen/deck_selection_screen.tscn" id="3_ia84y"]
-[ext_resource type="Texture2D" uid="uid://60faoi8804kn" path="res://buttons/options.png" id="4_3f7m4"]
-[ext_resource type="Texture2D" uid="uid://c1gmnapf2y71o" path="res://buttons/quit.png" id="5_6tl50"]
+[ext_resource type="Texture2D" uid="uid://60faoi8804kn" path="res://ui/options.png" id="4_3f7m4"]
+[ext_resource type="Texture2D" uid="uid://dlux7an3yndg0" path="res://ui/big_quit.png" id="8_ia84y"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3f7m4"]
 atlas = ExtResource("2_3shxk")
@@ -34,15 +34,15 @@ atlas = ExtResource("4_3f7m4")
 region = Rect2(0, 33, 132, 33)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mvfl2"]
-atlas = ExtResource("5_6tl50")
+atlas = ExtResource("8_ia84y")
 region = Rect2(0, 0, 132, 33)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvn4f"]
-atlas = ExtResource("5_6tl50")
+atlas = ExtResource("8_ia84y")
 region = Rect2(0, 66, 132, 33)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g1omr"]
-atlas = ExtResource("5_6tl50")
+atlas = ExtResource("8_ia84y")
 region = Rect2(0, 33, 132, 33)
 
 [node name="MainMenu" type="Control" node_paths=PackedStringArray("play_button", "options_button", "quit_button")]

@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://c5r01b3p7vtvc"
+path="res://.godot/imported/return_mask.png-21b9c55118ccbc0fa60c4cec555e93d0.res"
+
+[deps]
+
+source_file="res://ui/return_mask.png"
+dest_files=["res://.godot/imported/return_mask.png-21b9c55118ccbc0fa60c4cec555e93d0.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

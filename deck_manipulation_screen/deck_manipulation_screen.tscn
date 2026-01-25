@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://kjvs4xvvrmvc"]
+[gd_scene load_steps=12 format=3 uid="uid://kjvs4xvvrmvc"]
 
 [ext_resource type="Script" uid="uid://bqxweyi1r8t5d" path="res://deck_manipulation_screen/deck_manipulation_screen.gd" id="1_h76y5"]
 [ext_resource type="PackedScene" uid="uid://cjom4bor5y3ap" path="res://deck_manipulation_screen/slot_set/card_slot/card_slot.tscn" id="2_4o6wb"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bcnvy81p75c4i" path="res://pause_menu/pause_menu.tscn" id="3_4g6gn"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="3_dawdr"]
 [ext_resource type="Texture2D" uid="uid://cxl0d084p7fa3" path="res://deck_manipulation_screen/slot_set/plus.png" id="3_g0t5s"]
+[ext_resource type="Texture2D" uid="uid://dfl1dludeqelq" path="res://background/bg.png" id="4_nabx0"]
 [ext_resource type="Texture2D" uid="uid://bmwc7v524qmfj" path="res://deck_manipulation_screen/slot_set/arrow.png" id="4_ya4dx"]
 
 [node name="DeckManipulationScreen" type="Control" node_paths=PackedStringArray("slot_sets", "hand", "focus_card_holder", "focus_card")]
@@ -25,6 +26,11 @@ slot_sets = [NodePath("SlotRegion/MergeSlotSet"), NodePath("SlotRegion/AddSymbol
 hand = NodePath("Hand")
 focus_card_holder = NodePath("FocusCardHolder")
 focus_card = NodePath("FocusCardHolder/FocusCard")
+
+[node name="Bg" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("4_nabx0")
+centered = false
 
 [node name="SlotRegion" type="Control" parent="."]
 layout_mode = 1

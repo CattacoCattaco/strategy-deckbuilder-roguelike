@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://d38nwnw5xfam8"
+path="res://.godot/imported/audio_settings_mask.png-3911b69e74cbf245bef680373436231a.res"
+
+[deps]
+
+source_file="res://ui/audio_settings_mask.png"
+dest_files=["res://.godot/imported/audio_settings_mask.png-3911b69e74cbf245bef680373436231a.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

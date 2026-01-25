@@ -1,7 +1,66 @@
-[gd_scene load_steps=3 format=3 uid="uid://ddr5jt22gsudo"]
+[gd_scene load_steps=8 format=3 uid="uid://ddr5jt22gsudo"]
 
 [ext_resource type="Script" uid="uid://cvoqiqtwehiiy" path="res://deck_view/deck_view.gd" id="1_puq7v"]
 [ext_resource type="PackedScene" uid="uid://b2b416pbggqo4" path="res://card/card.tscn" id="2_kvp8g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvp8g"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.9254902, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f0bht"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.9254902, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bld86"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.9254902, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stydu"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+bg_color = Color(0.3882353, 0.3882353, 0.3882353, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_detail = 6
+
+[sub_resource type="Theme" id="Theme_sxbhj"]
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_kvp8g")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_f0bht")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_bld86")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_stydu")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_stydu")
 
 [node name="DeckView" type="Control" node_paths=PackedStringArray("card_holder", "focus_card_holder", "focus_card")]
 process_mode = 2
@@ -38,6 +97,7 @@ offset_top = 50.0
 offset_right = -50.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_sxbhj")
 
 [node name="CardHolder" type="GridContainer" parent="CardHolderScroll"]
 layout_mode = 2

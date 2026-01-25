@@ -107,10 +107,10 @@ static var DECKS: Array[StarterDeckData] = [
 @export var deck_name_label: Label
 @export var locked_label: Label
 @export var unlock_cond_label: Label
-@export var preview_button: Button
-@export var select_button: Button
-@export var previous_button: Button
-@export var next_button: Button
+@export var preview_button: TextureButton
+@export var select_button: TextureButton
+@export var previous_button: TextureButton
+@export var next_button: TextureButton
 
 var current_deck_index: int = 0
 

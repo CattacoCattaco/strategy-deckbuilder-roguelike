@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://dcodjdyvou0lf"
+path="res://.godot/imported/left_arrow_mask.png-2ab581956eba35760ba81a4faf02ba7e.res"
+
+[deps]
+
+source_file="res://ui/left_arrow_mask.png"
+dest_files=["res://.godot/imported/left_arrow_mask.png-2ab581956eba35760ba81a4faf02ba7e.res"]
+
+[params]
+
+create_from=0
+threshold=0.5
